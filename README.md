@@ -81,6 +81,7 @@ pnpm start
 │   ├── config.ts           # 链接配置和翻译
 │   ├── globals.css         # 全局样式
 │   ├── layout.tsx          # 根布局
+│   ├── metadata.ts         # SEO 元数据配置
 │   └── page.tsx            # 首页
 ├── public/
 │   ├── images/             # 图片资源
