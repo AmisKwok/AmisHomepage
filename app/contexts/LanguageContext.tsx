@@ -14,6 +14,12 @@ type TranslationReturnType = {
   quickLinks: string;
   footer: string;
   nav: Record<string, string>;
+  aboutMe: string;
+  techStack: string;
+  backend: string;
+  mobile: string;
+  frontend: string;
+  currentFocus: string;
 };
 
 interface LanguageContextType {

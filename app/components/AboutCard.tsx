@@ -5,7 +5,6 @@ import { techStackConfig, aboutMeConfig } from "../config";
 
 export default function AboutCard() {
   const { language, t } = useLanguage();
-  const isZh = language === "zh";
 
   return (
     <div className="w-full max-w-3xl mx-auto space-y-6">
