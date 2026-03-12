@@ -29,27 +29,43 @@
 ### 安装依赖
 
 ```bash
+# 使用 npm
 npm install
+
+# 或使用 pnpm
+pnpm install
 ```
 
 ### 开发模式
 
 ```bash
+# 使用 npm
 npm run dev
+
+# 或使用 pnpm
+pnpm dev
 ```
 
-访问 http://localhost:3000
+访问 http://localhost:9998
 
 ### 构建生产版本
 
 ```bash
+# 使用 npm
 npm run build
+
+# 或使用 pnpm
+pnpm build
 ```
 
 ### 启动生产服务器
 
 ```bash
+# 使用 npm
 npm start
+
+# 或使用 pnpm
+pnpm start
 ```
 
 ## 项目结构
@@ -71,6 +87,9 @@ npm start
 │   │   ├── index.jpg       # 背景图
 │   │   └── icon.png        # 网站图标
 │   └── svg/                # SVG 图标
+├── .env.example            # 环境变量示例
+├── Dockerfile              # Docker 配置
+├── docker-compose.yml      # Docker Compose 配置
 ├── next.config.ts          # Next.js 配置
 ├── tailwind.config.ts      # Tailwind 配置
 └── package.json
@@ -177,7 +196,11 @@ cd AmisHomepage
 ### 第三步：安装依赖
 
 ```bash
+# 使用 npm
 npm install
+
+# 或使用 pnpm
+pnpm install
 ```
 
 ### 第四步：修改配置
@@ -211,6 +234,144 @@ git push origin main
 git remote add upstream https://github.com/AmisKwok/AmisHomepage.git
 git fetch upstream
 git merge upstream/main
+```
+
+---
+
+## 其他部署方式
+
+### Docker 部署
+
+**使用 Docker Compose（推荐）**
+
+```bash
+# 构建并启动
+docker-compose up -d
+
+# 查看日志
+docker-compose logs -f
+
+# 停止
+docker-compose down
+```
+
+**使用 Docker 命令**
+
+```bash
+# 构建镜像
+docker build -t amis-homepage .
+
+# 运行容器
+docker run -d -p 9998:9998 --name amis-homepage amis-homepage
+```
+
+访问 http://localhost:3000
+
+### 服务器部署
+
+**方式一：使用 PM2**
+
+1. 安装 PM2
+```bash
+npm install -g pm2
+# 或
+pnpm add -g pm2
+```
+
+2. 安装依赖并构建项目
+```bash
+# 使用 npm
+npm install
+npm run build
+
+# 或使用 pnpm
+pnpm install
+pnpm build
+```
+
+3. 启动服务
+```bash
+# 使用 npm
+pm2 start npm --name "amis-homepage" -- start
+
+# 使用 pnpm
+pm2 start pnpm --name "amis-homepage" -- start
+```
+
+4. 常用命令
+```bash
+pm2 list                    # 查看所有进程
+pm2 logs amis-homepage      # 查看日志
+pm2 restart amis-homepage   # 重启
+pm2 stop amis-homepage      # 停止
+pm2 delete amis-homepage    # 删除
+
+# 开机自启
+pm2 startup
+pm2 save
+```
+
+**方式二：使用 Systemd**
+
+1. 构建项目
+```bash
+npm run build
+```
+
+2. 创建服务文件
+```bash
+sudo nano /etc/systemd/system/amis-homepage.service
+```
+
+3. 写入以下内容
+```ini
+[Unit]
+Description=Amis Homepage
+After=network.target
+
+[Service]
+Type=simple
+User=www-data
+WorkingDirectory=/path/to/AmisHomepage
+ExecStart=/usr/bin/npm start
+Restart=on-failure
+RestartSec=10
+
+[Install]
+WantedBy=multi-user.target
+```
+
+4. 启动服务
+```bash
+sudo systemctl daemon-reload
+sudo systemctl enable amis-homepage
+sudo systemctl start amis-homepage
+sudo systemctl status amis-homepage
+```
+
+**方式三：Nginx 反向代理**
+
+1. 配置 Nginx
+```nginx
+server {
+    listen 80;
+    server_name yourdomain.com;
+
+    location / {
+        proxy_pass http://localhost:9998;
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection 'upgrade';
+        proxy_set_header Host $host;
+        proxy_cache_bypass $http_upgrade;
+    }
+}
+```
+
+2. 重启 Nginx
+```bash
+sudo nginx -t
+sudo systemctl restart nginx
 ```
 
 ### 静态导出部署

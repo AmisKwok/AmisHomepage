@@ -1,0 +1,11 @@
+services:
+  amis-homepage:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: amis-homepage
+    restart: unless-stopped
+    ports:
+      - "9998:9998"
+    environment:
+      - NODE_ENV=production
