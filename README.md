@@ -82,11 +82,13 @@ pnpm start
 │   ├── globals.css         # 全局样式
 │   ├── layout.tsx          # 根布局
 │   ├── metadata.ts         # SEO 元数据配置
+│   ├── sitemap.ts          # 网站地图
 │   └── page.tsx            # 首页
 ├── public/
 │   ├── images/             # 图片资源
 │   │   ├── index.jpg       # 背景图
 │   │   └── icon.png        # 网站图标
+│   ├── robots.txt          # 爬虫规则
 │   └── svg/                # SVG 图标
 ├── .env.example            # 环境变量示例
 ├── Dockerfile              # Docker 配置

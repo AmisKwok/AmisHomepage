@@ -1,0 +1,12 @@
+# https://www.robotstxt.org/robotstxt.html
+User-agent: *
+Allow: /
+
+# 禁止访问 API 路由
+Disallow: /api/
+
+# 禁止访问 Next.js 内部路径
+Disallow: /_next/
+
+# Sitemap 位置
+Sitemap: https://www.amisweb.cn/sitemap.xml
