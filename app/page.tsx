@@ -7,6 +7,8 @@ import { useLanguage } from "./contexts/LanguageContext";
 import TypeWriter from "./components/TypeWriter";
 import LanguageSwitcher from "./components/LanguageSwitcher";
 import DrawnTitle from "./components/DrawnTitle";
+import Avatar from "./components/Avatar";
+import AboutCard from "./components/AboutCard";
 
 export default function Home() {
   const { language, t } = useLanguage();
@@ -107,6 +109,14 @@ export default function Home() {
           id="site-info" 
           className={`absolute inset-0 flex flex-col items-center justify-center text-center text-white z-5 overflow-visible px-4 transition-opacity duration-300 ${isLanguageChanging ? 'opacity-0' : 'opacity-100'}`}
         >
+          {/* 头像 */}
+          <Avatar 
+            src="/images/avatar.jpg" 
+            alt="Amis" 
+            size={140} 
+            className="mb-6"
+          />
+          
           <div className="min-h-[80px] flex items-center justify-center w-[90vw] mb-4">
             <DrawnTitle text={t("siteTitle")} className="w-full" />
           </div>
@@ -173,81 +183,17 @@ export default function Home() {
         </div>
       </header>
       
-      {/* 内容区域 */}
-      <section id="content" className="py-16 px-6 md:px-12 bg-gray-50 dark:bg-gray-900">
+      {/* 内容区域 - 关于我 */}
+      <section id="content" className="py-16 px-6 md:px-12 bg-gradient-to-b from-transparent to-black/20">
         <div className="max-w-6xl mx-auto">
-          <h2 className="text-3xl font-bold text-center text-gray-900 dark:text-white mb-12">
-            {t("quickLinks")}
-          </h2>
-          
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {/* Blog卡片 */}
-            <a 
-              href={linksConfig.blog.url}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="group bg-white dark:bg-gray-800 rounded-xl shadow-md hover:shadow-2xl hover:-translate-y-2 transition-all duration-300 overflow-hidden"
-            >
-              <div className="h-32 bg-gradient-to-br from-blue-400 to-blue-600 flex items-center justify-center group-hover:scale-105 transition-transform duration-300">
-                <i className="fas fa-blog text-4xl text-white"></i>
-              </div>
-              <div className="p-6">
-                <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-2 group-hover:text-blue-500 transition-colors">
-                  {linksConfig.blog.title[language]}
-                </h3>
-                <p className="text-gray-600 dark:text-gray-400">
-                  {linksConfig.blog.description[language]}
-                </p>
-              </div>
-            </a>
-            
-            {/* GitHub卡片 */}
-            <a 
-              href={linksConfig.github.url}
-              target="_blank" 
-              rel="noopener noreferrer"
-              className="group bg-white dark:bg-gray-800 rounded-xl shadow-md hover:shadow-2xl hover:-translate-y-2 transition-all duration-300 overflow-hidden"
-            >
-              <div className="h-32 bg-gradient-to-br from-gray-700 to-gray-900 flex items-center justify-center group-hover:scale-105 transition-transform duration-300">
-                <i className="fab fa-github text-4xl text-white"></i>
-              </div>
-              <div className="p-6">
-                <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-2 group-hover:text-gray-600 transition-colors">
-                  {linksConfig.github.title[language]}
-                </h3>
-                <p className="text-gray-600 dark:text-gray-400">
-                  {linksConfig.github.description[language]}
-                </p>
-              </div>
-            </a>
-            
-            {/* Gitee卡片 */}
-            <a 
-              href={linksConfig.gitee.url}
-              target="_blank" 
-              rel="noopener noreferrer"
-              className="group bg-white dark:bg-gray-800 rounded-xl shadow-md hover:shadow-2xl hover:-translate-y-2 transition-all duration-300 overflow-hidden"
-            >
-              <div className="h-32 bg-gradient-to-br from-red-500 to-red-700 flex items-center justify-center group-hover:scale-105 transition-transform duration-300">
-                <i className="fab fa-gitee text-4xl text-white"></i>
-              </div>
-              <div className="p-6">
-                <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-2 group-hover:text-red-500 transition-colors">
-                  {linksConfig.gitee.title[language]}
-                </h3>
-                <p className="text-gray-600 dark:text-gray-400">
-                  {linksConfig.gitee.description[language]}
-                </p>
-              </div>
-            </a>
-          </div>
+          <AboutCard />
         </div>
       </section>
       
       {/* 页脚 */}
-      <footer className="bg-gray-900 text-white py-8 px-6">
+      <footer className="bg-black/30 backdrop-blur-sm text-white py-8 px-6">
         <div className="max-w-6xl mx-auto text-center">
-          <p className="text-gray-400">
+          <p className="text-white/60">
             {t("footer")}
           </p>
         </div>
