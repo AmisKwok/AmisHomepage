@@ -265,7 +265,7 @@ docker build -t amis-homepage .
 docker run -d -p 9998:9998 --name amis-homepage amis-homepage
 ```
 
-访问 http://localhost:3000
+访问 http://localhost:9998
 
 ### 服务器部署
 
