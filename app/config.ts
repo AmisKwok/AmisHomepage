@@ -84,6 +84,32 @@ export const projectsConfig: Project[] = [
     icon: "fas fa-music",
     gradient: "from-pink-500 to-rose-600",
   },
+  {
+    id: "amis-homepage",
+    name: "Amis's Homepage",
+    description: {
+      zh: "个人主页项目，支持亮色/暗色主题切换、多语言、动态背景效果",
+      en: "Personal homepage with light/dark theme switching, multi-language support, and dynamic backgrounds",
+    },
+    url: "https://github.com/AmisKwok/AmisHomepage",
+    image: "/images/index5.jpg",
+    tags: ["Next.js", "TypeScript", "Tailwind CSS", "React"],
+    icon: "fas fa-home",
+    gradient: "from-violet-500 to-purple-600",
+  },
+  {
+    id: "amis-blog-demo",
+    name: "Amis's Blog Demo",
+    description: {
+      zh: "个人博客系统，支持 Markdown 编辑、图片管理、项目展示等功能",
+      en: "Personal blog system with Markdown editing, image management, and project showcase",
+    },
+    url: "https://github.com/AmisKwok/amis-s-blog-demo",
+    image: "/images/index6.jpg",
+    tags: ["Next.js", "React", "Markdown", "Tailwind CSS"],
+    icon: "fas fa-blog",
+    gradient: "from-emerald-500 to-teal-600",
+  },
 ];
 
 // 更多项目配置
