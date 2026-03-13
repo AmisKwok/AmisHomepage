@@ -99,7 +99,11 @@ export default function FeaturedProjects() {
               href={moreProjectsConfig.url}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-gradient-to-r from-violet-500 to-fuchsia-600 text-white font-medium hover:from-violet-600 hover:to-fuchsia-700 transition-all duration-300 hover:scale-105 hover:shadow-lg"
+              className={`inline-flex items-center gap-2 px-6 py-3 rounded-full font-medium transition-all duration-300 hover:scale-105 hover:shadow-lg ${
+                theme === "dark"
+                  ? "bg-gradient-to-r from-violet-500 to-fuchsia-600 text-white hover:from-violet-600 hover:to-fuchsia-700"
+                  : "bg-gradient-to-r from-blue-500 to-cyan-600 text-white hover:from-blue-600 hover:to-cyan-700"
+              }`}
             >
               <span>{moreProjectsConfig.title[language]}</span>
               <i className="fab fa-github"></i>
