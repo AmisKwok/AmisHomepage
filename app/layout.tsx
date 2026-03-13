@@ -24,13 +24,24 @@ const zcoolQingKeHuangYou = ZCOOL_QingKe_HuangYou({
   subsets: ["latin"],
 });
 
+const themeScript = `
+  (function() {
+    const savedTheme = localStorage.getItem('theme');
+    const theme = savedTheme || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+    document.documentElement.classList.add(theme);
+  })();
+`;
+
 export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="zh-CN">
+    <html lang="zh-CN" suppressHydrationWarning>
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: themeScript }} />
+      </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} ${zcoolQingKeHuangYou.variable} antialiased`}
       >

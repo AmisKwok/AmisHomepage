@@ -12,9 +12,17 @@
   --font-mono: var(--font-geist-mono);
 }
 
-body {
-  background: linear-gradient(180deg, #0a0a0a 0%, #1a1a2e 50%, #16213e 100%);
+html body {
+  background: #0a0a0a;
   color: var(--foreground);
+}
+
+html.light body {
+  background: #faf5eb;
+  color: #1e293b;
+}
+
+body {
   font-family: Arial, Helvetica, sans-serif;
   min-height: 100vh;
 }
