@@ -8,5 +8,19 @@ Disallow: /api/
 # 禁止访问 Next.js 内部路径
 Disallow: /_next/
 
+# 禁止访问其他不需要索引的路径
+Disallow: /*.json$
+Disallow: /*.xml$
+
+# 允许主要搜索引擎爬虫
+User-agent: Googlebot
+Allow: /
+
+User-agent: Bingbot
+Allow: /
+
+User-agent: Baiduspider
+Allow: /
+
 # Sitemap 位置
 Sitemap: https://www.amisweb.cn/sitemap.xml
