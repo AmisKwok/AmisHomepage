@@ -2,14 +2,25 @@
 
 import { useLanguage } from "../contexts/LanguageContext";
 import { techStackConfig, aboutMeConfig } from "../config";
+import { useScrollAnimation } from "../hooks/useScrollAnimation";
 
 export default function AboutCard() {
   const { language, t } = useLanguage();
 
+  const aboutSection = useScrollAnimation({ threshold: 0.1 });
+  const techSection = useScrollAnimation({ threshold: 0.1 });
+  const focusSection = useScrollAnimation({ threshold: 0.1 });
+  const mottoSection = useScrollAnimation({ threshold: 0.1 });
+
   return (
     <div className="w-full max-w-3xl mx-auto space-y-8">
       {/* 关于我 */}
-      <div className="relative group">
+      <div 
+        ref={aboutSection.ref as React.RefObject<HTMLDivElement>}
+        className={`relative group transition-all duration-1000 ${
+          aboutSection.isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
+        }`}
+      >
         <div className="absolute -inset-1 bg-gradient-to-r from-blue-500/30 via-purple-500/30 to-pink-500/30 rounded-2xl blur-lg opacity-50 group-hover:opacity-75 transition duration-500"></div>
         <div className="relative bg-[#0d0d1a]/80 backdrop-blur-md rounded-2xl p-6 shadow-xl border border-white/10 hover:border-white/20 transition-all duration-300">
           <h3 className="text-lg font-semibold text-white mb-5 flex items-center gap-2">
@@ -41,7 +52,12 @@ export default function AboutCard() {
       </div>
 
       {/* 技术栈 */}
-      <div className="relative group">
+      <div 
+        ref={techSection.ref as React.RefObject<HTMLDivElement>}
+        className={`relative group transition-all duration-1000 delay-200 ${
+          techSection.isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
+        }`}
+      >
         <div className="absolute -inset-1 bg-gradient-to-r from-cyan-500/30 via-blue-500/30 to-purple-500/30 rounded-2xl blur-lg opacity-50 group-hover:opacity-75 transition duration-500"></div>
         <div className="relative bg-[#0d0d1a]/80 backdrop-blur-md rounded-2xl p-6 shadow-xl border border-white/10 hover:border-white/20 transition-all duration-300">
           <h3 className="text-lg font-semibold text-white mb-5 flex items-center gap-2">
@@ -85,7 +101,12 @@ export default function AboutCard() {
       </div>
 
       {/* 当前关注 */}
-      <div className="relative group">
+      <div 
+        ref={focusSection.ref as React.RefObject<HTMLDivElement>}
+        className={`relative group transition-all duration-1000 delay-400 ${
+          focusSection.isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
+        }`}
+      >
         <div className="absolute -inset-1 bg-gradient-to-r from-green-500/30 via-emerald-500/30 to-teal-500/30 rounded-2xl blur-lg opacity-50 group-hover:opacity-75 transition duration-500"></div>
         <div className="relative bg-[#0d0d1a]/80 backdrop-blur-md rounded-2xl p-6 shadow-xl border border-white/10 hover:border-white/20 transition-all duration-300">
           <h3 className="text-lg font-semibold text-white mb-5 flex items-center gap-2">
@@ -112,7 +133,12 @@ export default function AboutCard() {
       </div>
 
       {/* 座右铭 */}
-      <div className="relative">
+      <div 
+        ref={mottoSection.ref as React.RefObject<HTMLDivElement>}
+        className={`relative transition-all duration-1000 delay-600 ${
+          mottoSection.isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
+        }`}
+      >
         <div className="absolute inset-0 bg-gradient-to-r from-yellow-500/10 via-orange-500/10 to-red-500/10 blur-xl"></div>
         <div className="relative text-center py-6 px-8">
           <div className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-white/5 border border-white/10">

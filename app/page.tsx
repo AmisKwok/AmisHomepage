@@ -9,6 +9,8 @@ import LanguageSwitcher from "./components/LanguageSwitcher";
 import DrawnTitle from "./components/DrawnTitle";
 import Avatar from "./components/Avatar";
 import AboutCard from "./components/AboutCard";
+import StarryBackground from "./components/StarryBackground";
+import LoadingScreen from "./components/LoadingScreen";
 
 export default function Home() {
   const { language, t } = useLanguage();
@@ -59,7 +61,12 @@ export default function Home() {
   };
 
   return (
-    <div className={`min-h-screen font-sans transition-opacity duration-1000 ${isLoaded ? "opacity-100" : "opacity-0"}`}>
+    <>
+      <LoadingScreen />
+      <div className={`min-h-screen font-sans transition-opacity duration-1000 ${isLoaded ? "opacity-100" : "opacity-0"}`}>
+        {/* 星空动态背景 */}
+        <StarryBackground />
+      
       {/* 全屏Header */}
       <header className="relative h-screen w-full">
         {/* 背景图 - 使用Next.js Image优化 */}
@@ -210,6 +217,7 @@ export default function Home() {
       >
         <i className="fas fa-arrow-up"></i>
       </button>
-    </div>
+      </div>
+    </>
   );
 }
