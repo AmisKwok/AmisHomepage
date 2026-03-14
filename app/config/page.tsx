@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import { useTheme } from '../contexts/ThemeContext';
 import { toast, Toaster } from 'sonner';
+import LoadingScreen from '../components/LoadingScreen';
 
 interface ConfigState {
   config: any;
@@ -317,14 +318,7 @@ export default function ConfigPage() {
   };
 
   if (state.loading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-100 dark:bg-gray-900">
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500 mx-auto"></div>
-          <p className="mt-4 text-gray-600 dark:text-gray-300">加载中...</p>
-        </div>
-      </div>
-    );
+    return <LoadingScreen />;
   }
 
   if (state.error) {
