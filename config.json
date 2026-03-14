@@ -137,7 +137,13 @@
         },
         "url": "https://github.com/AmisKwok/vibe-music-server",
         "image": "/images/index3.jpg",
-        "tags": ["Spring Boot", "Java", "MySQL", "Redis", "MinIO"],
+        "tags": [
+          "Spring Boot",
+          "Java",
+          "MySQL",
+          "Redis",
+          "MinIO"
+        ],
         "icon": "fas fa-server",
         "gradient": "from-blue-500 to-purple-600"
       },
@@ -150,7 +156,12 @@
         },
         "url": "https://github.com/AmisKwok/vibe-music-app",
         "image": "/images/index2.jpg",
-        "tags": ["Flutter", "Dart", "GetX", "Material Design"],
+        "tags": [
+          "Flutter",
+          "Dart",
+          "GetX",
+          "Material Design"
+        ],
         "icon": "fas fa-music",
         "gradient": "from-pink-500 to-rose-600"
       },
@@ -163,7 +174,12 @@
         },
         "url": "https://github.com/AmisKwok/AmisHomepage",
         "image": "/images/index5.jpg",
-        "tags": ["Next.js", "TypeScript", "Tailwind CSS", "React"],
+        "tags": [
+          "Next.js",
+          "TypeScript",
+          "Tailwind CSS",
+          "React"
+        ],
         "icon": "fas fa-home",
         "gradient": "from-violet-500 to-purple-600"
       },
@@ -176,7 +192,12 @@
         },
         "url": "https://github.com/AmisKwok/amis-s-blog-demo",
         "image": "/images/index6.jpg",
-        "tags": ["Next.js", "React", "Markdown", "Tailwind CSS"],
+        "tags": [
+          "Next.js",
+          "React",
+          "Markdown",
+          "Tailwind CSS"
+        ],
         "icon": "fas fa-blog",
         "gradient": "from-emerald-500 to-teal-600"
       }
@@ -184,31 +205,111 @@
     "moreProjectsUrl": "https://github.com/AmisKwok"
   },
   "skills": [
-    { "name": "Java", "level": 90, "color": "from-orange-500 to-red-500", "icon": "fab fa-java" },
-    { "name": "Spring Boot", "level": 85, "color": "from-green-500 to-emerald-600", "icon": "fas fa-leaf" },
-    { "name": "Flutter", "level": 80, "color": "from-blue-500 to-cyan-600", "icon": "fas fa-mobile-alt" },
-    { "name": "Next.js", "level": 75, "color": "from-gray-700 to-gray-900", "icon": "fas fa-bolt" },
-    { "name": "MySQL", "level": 85, "color": "from-blue-600 to-blue-800", "icon": "fas fa-database" },
-    { "name": "Redis", "level": 75, "color": "from-red-500 to-red-700", "icon": "fas fa-bolt" },
-    { "name": "TypeScript", "level": 70, "color": "from-blue-600 to-indigo-700", "icon": "fab fa-js" },
-    { "name": "React", "level": 70, "color": "from-cyan-500 to-blue-600", "icon": "fab fa-react" }
+    {
+      "name": "Java",
+      "level": 90,
+      "color": "from-orange-500 to-red-500",
+      "icon": "fab fa-java"
+    },
+    {
+      "name": "Spring Boot",
+      "level": 85,
+      "color": "from-green-500 to-emerald-600",
+      "icon": "fas fa-leaf"
+    },
+    {
+      "name": "Flutter",
+      "level": 80,
+      "color": "from-blue-500 to-cyan-600",
+      "icon": "fas fa-mobile-alt"
+    },
+    {
+      "name": "Next.js",
+      "level": 75,
+      "color": "from-gray-700 to-gray-900",
+      "icon": "fas fa-bolt"
+    },
+    {
+      "name": "MySQL",
+      "level": 85,
+      "color": "from-blue-600 to-blue-800",
+      "icon": "fas fa-database"
+    },
+    {
+      "name": "Redis",
+      "level": 75,
+      "color": "from-red-500 to-red-700",
+      "icon": "fas fa-bolt"
+    },
+    {
+      "name": "TypeScript",
+      "level": 70,
+      "color": "from-blue-600 to-indigo-700",
+      "icon": "fab fa-js"
+    },
+    {
+      "name": "React",
+      "level": 70,
+      "color": "from-cyan-500 to-blue-600",
+      "icon": "fab fa-react"
+    }
   ],
   "techStack": {
     "backend": [
-      { "name": "Java", "color": "bg-orange-500", "icon": "fab fa-java" },
-      { "name": "Spring Boot", "color": "bg-green-600", "icon": "fas fa-leaf" },
-      { "name": "MySQL", "color": "bg-blue-600", "icon": "fas fa-database" },
-      { "name": "Redis", "color": "bg-red-500", "icon": "fas fa-bolt" }
+      {
+        "name": "Java",
+        "color": "bg-orange-500",
+        "icon": "fab fa-java"
+      },
+      {
+        "name": "Spring Boot",
+        "color": "bg-green-600",
+        "icon": "fas fa-leaf"
+      },
+      {
+        "name": "MySQL",
+        "color": "bg-blue-600",
+        "icon": "fas fa-database"
+      },
+      {
+        "name": "Redis",
+        "color": "bg-red-500",
+        "icon": "fas fa-bolt"
+      }
     ],
     "mobile": [
-      { "name": "Flutter", "color": "bg-blue-500", "icon": "fas fa-mobile-alt" },
-      { "name": "Dart", "color": "bg-blue-700", "icon": "fas fa-code" },
-      { "name": "Android", "color": "bg-green-500", "icon": "fab fa-android" }
+      {
+        "name": "Flutter",
+        "color": "bg-blue-500",
+        "icon": "fas fa-mobile-alt"
+      },
+      {
+        "name": "Dart",
+        "color": "bg-blue-700",
+        "icon": "fas fa-code"
+      },
+      {
+        "name": "Android",
+        "color": "bg-green-500",
+        "icon": "fab fa-android"
+      }
     ],
     "frontend": [
-      { "name": "Next.js", "color": "bg-gray-800", "icon": "fas fa-bolt" },
-      { "name": "TypeScript", "color": "bg-blue-600", "icon": "fab fa-js" },
-      { "name": "React", "color": "bg-cyan-500", "icon": "fab fa-react" }
+      {
+        "name": "Next.js",
+        "color": "bg-gray-800",
+        "icon": "fas fa-bolt"
+      },
+      {
+        "name": "TypeScript",
+        "color": "bg-blue-600",
+        "icon": "fab fa-js"
+      },
+      {
+        "name": "React",
+        "color": "bg-cyan-500",
+        "icon": "fab fa-react"
+      }
     ]
   },
   "translations": {
