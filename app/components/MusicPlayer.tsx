@@ -170,8 +170,8 @@ export default function MusicPlayer() {
               animateExpand ? "scale-100 opacity-100" : "scale-75 opacity-0"
             } ${
               isDark
-                ? "bg-gray-900/95 backdrop-blur-xl border border-white/10"
-                : "bg-white/95 backdrop-blur-xl border border-gray-200"
+                ? "bg-gray-900/70 backdrop-blur-2xl border border-white/10"
+                : "bg-white/70 backdrop-blur-2xl border border-gray-200"
             }`}
           >
             <div className="p-4 md:p-5 min-w-[280px] md:min-w-[320px]">
@@ -332,8 +332,8 @@ export default function MusicPlayer() {
 
             {showPlaylist && (
               <div
-                className={`music-playlist border-t overflow-y-auto ${
-                  isDark ? "border-white/10 bg-black/20" : "border-gray-200 bg-gray-50"
+                className={`music-playlist border-t overflow-y-auto backdrop-blur-2xl ${
+                  isDark ? "border-white/10 bg-black/20" : "border-gray-200 bg-white/20"
                 }`}
                 style={{ maxHeight: "200px" }}
                 onWheel={handlePlaylistScroll}
