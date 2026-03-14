@@ -18,9 +18,9 @@ export default function MobileNav() {
   const isScrollingRef = useRef(false);
 
   const sections: { id: Section; icon: string }[] = [
-    ...(siteContent?.showProjects !== false ? [{ id: "projects", icon: "fas fa-star" }] : []),
-    { id: "about", icon: "fas fa-user" },
-    ...(siteContent?.showSkills !== false ? [{ id: "skills", icon: "fas fa-chart-line" }] : []),
+    ...(siteContent?.showProjects !== false ? [{ id: "projects" as Section, icon: "fas fa-star" }] : []),
+    { id: "about" as Section, icon: "fas fa-user" },
+    ...(siteContent?.showSkills !== false ? [{ id: "skills" as Section, icon: "fas fa-chart-line" }] : []),
   ];
 
   const scrollToSection = (sectionId: Section) => {

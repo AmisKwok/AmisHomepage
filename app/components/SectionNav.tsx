@@ -18,9 +18,9 @@ export default function SectionNav() {
   const isScrollingRef = useRef(false);
 
   const sections: { id: Section; label: string; icon: string }[] = [
-    ...(siteContent?.showProjects !== false ? [{ id: "projects", label: t("featuredProjects"), icon: "fas fa-star" }] : []),
-    { id: "about", label: t("aboutMe"), icon: "fas fa-user" },
-    ...(siteContent?.showSkills !== false ? [{ id: "skills", label: t("skills"), icon: "fas fa-chart-line" }] : []),
+    ...(siteContent?.showProjects !== false ? [{ id: "projects" as Section, label: t("featuredProjects"), icon: "fas fa-star" }] : []),
+    { id: "about" as Section, label: t("aboutMe"), icon: "fas fa-user" },
+    ...(siteContent?.showSkills !== false ? [{ id: "skills" as Section, label: t("skills"), icon: "fas fa-chart-line" }] : []),
   ];
 
   const scrollToSection = (sectionId: Section) => {
