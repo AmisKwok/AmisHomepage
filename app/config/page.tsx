@@ -13,6 +13,13 @@ interface ConfigState {
   privateKey: string;
 }
 
+interface MusicFile {
+  id: string;
+  name: string;
+  path: string;
+  order: number;
+}
+
 export default function ConfigPage() {
   const { theme } = useTheme();
   const [state, setState] = useState<ConfigState>({
@@ -23,10 +30,12 @@ export default function ConfigPage() {
     saveSuccess: false,
     privateKey: ''
   });
+  const [musicList, setMusicList] = useState<MusicFile[]>([]);
 
   useEffect(() => {
     fetchConfig();
     loadPrivateKey();
+    fetchMusicList();
   }, []);
 
   const fetchConfig = async () => {
@@ -54,6 +63,82 @@ export default function ConfigPage() {
     const saved = localStorage.getItem('github_private_key');
     if (saved) {
       setState(prev => ({ ...prev, privateKey: saved }));
+    }
+  };
+
+  const fetchMusicList = async () => {
+    try {
+      const response = await fetch('/api/music');
+      const data = await response.json();
+      if (data.success && data.music) {
+        setMusicList(data.music);
+      }
+    } catch (error) {
+      console.error('Failed to fetch music list:', error);
+    }
+  };
+
+  const moveMusic = async (fromIndex: number, toIndex: number) => {
+    if (toIndex < 0 || toIndex >= musicList.length) return;
+    
+    const newList = [...musicList];
+    const [movedItem] = newList.splice(fromIndex, 1);
+    newList.splice(toIndex, 0, movedItem);
+    
+    setMusicList(newList);
+    
+    const order: Record<string, number> = {};
+    newList.forEach((music, index) => {
+      const filename = music.path.replace('/music/', '');
+      order[filename] = index;
+    });
+    
+    try {
+      const response = await fetch('/api/music/order', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          order,
+          privateKey: state.privateKey
+        })
+      });
+      
+      if (!response.ok) {
+        throw new Error('Failed to update order');
+      }
+    } catch (error) {
+      console.error('Failed to update music order:', error);
+      toast.error('调整顺序失败');
+      fetchMusicList();
+    }
+  };
+
+  const deleteMusic = async (music: MusicFile) => {
+    if (!confirm(`确定要删除 "${music.name}" 吗？`)) return;
+    
+    const filename = music.path.replace('/music/', '');
+    
+    try {
+      const response = await fetch(`/api/music?filename=${encodeURIComponent(filename)}`, {
+        method: 'DELETE',
+        headers: {
+          'X-Private-Key': state.privateKey
+        }
+      });
+      
+      const data = await response.json();
+      
+      if (!response.ok) {
+        throw new Error(data.error || '删除失败');
+      }
+      
+      toast.success('音乐删除成功');
+      fetchMusicList();
+    } catch (error) {
+      console.error('Failed to delete music:', error);
+      toast.error('删除音乐失败');
     }
   };
 
@@ -840,6 +925,112 @@ export default function ConfigPage() {
                       </div>
                     </div>
                   ))}
+                </div>
+              </div>
+              
+              {/* 音乐管理 */}
+              <div className={`rounded-2xl p-6 ${colors.card} backdrop-blur-md`}>
+                <div className="flex items-center justify-between mb-6">
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-pink-500 to-rose-600 flex items-center justify-center">
+                      <i className="fas fa-music text-white"></i>
+                    </div>
+                    <h3 className={`text-xl font-semibold ${colors.text}`}>音乐管理</h3>
+                  </div>
+                  <button
+                    onClick={async () => {
+                      const input = document.createElement('input');
+                      input.type = 'file';
+                      input.accept = 'audio/*';
+                      input.onchange = async (e) => {
+                        const file = (e.target as HTMLInputElement).files?.[0];
+                        if (file) {
+                          if (!state.privateKey) {
+                            toast.error('请先上传 GitHub App PEM 密钥');
+                            return;
+                          }
+                          toast.info('正在上传音乐...');
+                          try {
+                            const formData = new FormData();
+                            formData.append('file', file);
+                            formData.append('privateKey', state.privateKey);
+                            const response = await fetch('/api/music/upload', {
+                              method: 'POST',
+                              body: formData
+                            });
+                            const data = await response.json();
+                            if (!response.ok) {
+                              throw new Error(data.error || '上传失败');
+                            }
+                            toast.success('音乐上传成功');
+                            fetchMusicList();
+                          } catch (error) {
+                            console.error('Upload error:', error);
+                            toast.error('音乐上传失败');
+                          }
+                        }
+                      };
+                      input.click();
+                    }}
+                    className="px-4 py-2 bg-gradient-to-r from-pink-500 to-rose-600 text-white rounded-xl hover:from-pink-600 hover:to-rose-700 transition-all"
+                  >
+                    <i className="fas fa-upload mr-2"></i>
+                    上传音乐
+                  </button>
+                </div>
+                <p className={`text-sm mb-4 ${colors.textSecondary}`}>
+                  上传的音乐将保存到 public/music 目录，支持 MP3、WAV、OGG、M4A、FLAC 格式，最大 20MB
+                </p>
+                <div className="space-y-2">
+                  {musicList.length === 0 ? (
+                    <div className={`text-center py-8 rounded-xl border ${colors.card}`}>
+                      <i className={`fas fa-music text-4xl mb-3 ${colors.textSecondary}`}></i>
+                      <p className={colors.textSecondary}>暂无音乐，点击上方按钮上传</p>
+                    </div>
+                  ) : (
+                    musicList.map((music: any, index: number) => (
+                      <div
+                        key={music.id}
+                        className={`flex items-center gap-3 p-3 rounded-xl border ${colors.card} group`}
+                      >
+                        <div className="flex flex-col gap-1">
+                          <button
+                            onClick={() => moveMusic(index, index - 1)}
+                            disabled={index === 0}
+                            className={`w-6 h-6 rounded flex items-center justify-center transition-colors ${
+                              index === 0 ? 'opacity-30 cursor-not-allowed' : 'hover:bg-white/10'
+                            } ${colors.textSecondary}`}
+                          >
+                            <i className="fas fa-chevron-up text-xs"></i>
+                          </button>
+                          <button
+                            onClick={() => moveMusic(index, index + 1)}
+                            disabled={index === musicList.length - 1}
+                            className={`w-6 h-6 rounded flex items-center justify-center transition-colors ${
+                              index === musicList.length - 1 ? 'opacity-30 cursor-not-allowed' : 'hover:bg-white/10'
+                            } ${colors.textSecondary}`}
+                          >
+                            <i className="fas fa-chevron-down text-xs"></i>
+                          </button>
+                        </div>
+                        <span className={`w-6 text-center text-sm ${colors.textSecondary}`}>
+                          {index + 1}
+                        </span>
+                        <div className="flex-1 flex items-center gap-3 min-w-0">
+                          <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-pink-500/20 to-rose-500/20 flex items-center justify-center flex-shrink-0">
+                            <i className="fas fa-music text-pink-500"></i>
+                          </div>
+                          <span className={`truncate ${colors.text}`}>{music.name}</span>
+                        </div>
+                        <button
+                          onClick={() => deleteMusic(music)}
+                          className={`w-8 h-8 rounded-lg flex items-center justify-center transition-all opacity-0 group-hover:opacity-100 ${colors.buttonDelete}`}
+                        >
+                          <i className="fas fa-trash-alt text-sm"></i>
+                        </button>
+                      </div>
+                    ))
+                  )}
                 </div>
               </div>
               

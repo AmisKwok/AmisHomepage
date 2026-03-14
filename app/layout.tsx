@@ -4,6 +4,8 @@ import "./globals.css";
 import "@fortawesome/fontawesome-free/css/all.min.css";
 import { LanguageProvider } from "./contexts/LanguageContext";
 import { ThemeProvider } from "./contexts/ThemeContext";
+import { MusicPlayerProvider } from "./contexts/MusicPlayerContext";
+import MusicPlayer from "./components/MusicPlayer";
 import { metadata, viewport } from "./metadata";
 
 export { metadata, viewport };
@@ -47,7 +49,10 @@ export default function RootLayout({
       >
         <ThemeProvider>
           <LanguageProvider>
-            {children}
+            <MusicPlayerProvider>
+              {children}
+              <MusicPlayer />
+            </MusicPlayerProvider>
           </LanguageProvider>
         </ThemeProvider>
         <Analytics />

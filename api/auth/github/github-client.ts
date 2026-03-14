@@ -230,3 +230,54 @@ export async function listRepoFilesRecursive(token: string, owner: string, repo:
 
 	return fetchPath(path)
 }
+
+/**
+ * 获取文件信息（包含内容和 SHA）
+ * @param token 认证令牌
+ * @param owner 仓库所有者
+ * @param repo 仓库名称
+ * @param path 文件路径
+ * @param branch 分支名称
+ * @returns 文件信息或 null
+ */
+export async function getFile(token: string, owner: string, repo: string, path: string, branch: string): Promise<{ content: string; sha: string } | null> {
+	const res = await fetch(`${GH_API}/repos/${owner}/${repo}/contents/${encodeURIComponent(path)}?ref=${encodeURIComponent(branch)}`, {
+		headers: {
+			Authorization: `Bearer ${token}`,
+			Accept: 'application/vnd.github+json',
+			'X-GitHub-Api-Version': '2022-11-28'
+		}
+	})
+	if (res.status === 404) return null
+	if (!res.ok) throw new Error(`get file failed: ${res.status}`)
+	const data = await res.json()
+	if (Array.isArray(data) || !data.content) return null
+	return { content: data.content, sha: data.sha }
+}
+
+/**
+ * 删除文件
+ * @param token 认证令牌
+ * @param owner 仓库所有者
+ * @param repo 仓库名称
+ * @param path 文件路径
+ * @param message 提交消息
+ * @param branch 分支名称
+ */
+export async function deleteFile(token: string, owner: string, repo: string, path: string, message: string, branch: string) {
+	const sha = await getFileSha(token, owner, repo, path, branch)
+	if (!sha) return
+	
+	const res = await fetch(`${GH_API}/repos/${owner}/${repo}/contents/${encodeURIComponent(path)}`, {
+		method: 'DELETE',
+		headers: {
+			Authorization: `Bearer ${token}`,
+			Accept: 'application/vnd.github+json',
+			'X-GitHub-Api-Version': '2022-11-28',
+			'Content-Type': 'application/json'
+		},
+		body: JSON.stringify({ message, sha, branch })
+	})
+	if (!res.ok) throw new Error(`delete file failed: ${res.status}`)
+	return res.json()
+}
