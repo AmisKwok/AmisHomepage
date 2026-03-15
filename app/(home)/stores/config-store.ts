@@ -11,6 +11,7 @@ interface SiteContent {
 	isCachePem?: boolean // 是否缓存私钥
 	showProjects?: boolean // 是否显示项目模块
 	showSkills?: boolean // 是否显示技能模块
+	showLocalTime?: boolean // 是否显示时间组件
 }
 
 /**

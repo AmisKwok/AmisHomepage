@@ -22,6 +22,7 @@ import SectionNav from "./components/SectionNav";
 import MobileNav from "./components/MobileNav";
 import ThemeTransition from "./components/ThemeTransition";
 import LocalTime from "./components/LocalTime";
+import CustomCursor from "./components/CustomCursor";
 
 export default function Home() {
   const { language, t } = useLanguage();
@@ -67,6 +68,8 @@ export default function Home() {
   return (
     <>
       <LoadingScreen />
+      {/* 鼠标光晕效果 */}
+      <CustomCursor />
       {/* 主题切换过渡动画 */}
       <ThemeTransition />
       <div className={`min-h-screen font-sans transition-all duration-500 ease-in-out ${isLoaded ? "opacity-100" : "opacity-0"}`}>
@@ -333,7 +336,7 @@ export default function Home() {
       <SectionNav />
 
       {/* 本地时间显示 */}
-      <LocalTime />
+      {siteContent?.showLocalTime !== false && <LocalTime />}
 
       {/* 返回顶部按钮 */}
       <button

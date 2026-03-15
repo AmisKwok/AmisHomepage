@@ -1,6 +1,7 @@
 {
   "showSkills": true,
   "showProjects": true,
+  "showLocalTime": true,
   "site": {
     "name": "Amis's Homepage",
     "title": "Amis's Homepage",
