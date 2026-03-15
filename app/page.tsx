@@ -21,6 +21,7 @@ import LoadingScreen from "./components/LoadingScreen";
 import SectionNav from "./components/SectionNav";
 import MobileNav from "./components/MobileNav";
 import ThemeTransition from "./components/ThemeTransition";
+import LocalTime from "./components/LocalTime";
 
 export default function Home() {
   const { language, t } = useLanguage();
@@ -330,6 +331,9 @@ export default function Home() {
 
       {/* 桌面端侧边导航 */}
       <SectionNav />
+
+      {/* 本地时间显示 */}
+      <LocalTime />
 
       {/* 返回顶部按钮 */}
       <button

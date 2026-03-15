@@ -40,6 +40,10 @@ type TranslationReturnType = {
   switchToLightMode: string;
   switchToDarkMode: string;
   configManagement: string;
+  locationLoading: string;
+  locationDenied: string;
+  weekdays: string[];
+  months: string[];
 };
 
 interface LanguageContextType {

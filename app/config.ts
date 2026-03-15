@@ -163,6 +163,10 @@ export const translations = {
     switchToLightMode: "切换到亮色模式",
     switchToDarkMode: "切换到暗色模式",
     configManagement: "配置管理",
+    locationLoading: "定位中...",
+    locationDenied: "位置未授权",
+    weekdays: ["周日", "周一", "周二", "周三", "周四", "周五", "周六"],
+    months: ["1月", "2月", "3月", "4月", "5月", "6月", "7月", "8月", "9月", "10月", "11月", "12月"],
   },
   en: {
     siteTitle: appConfig.translations.en.siteTitle || appConfig.site.title,
@@ -200,6 +204,10 @@ export const translations = {
     switchToLightMode: "Switch to light mode",
     switchToDarkMode: "Switch to dark mode",
     configManagement: "Config Management",
+    locationLoading: "Locating...",
+    locationDenied: "Location denied",
+    weekdays: ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
+    months: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
   },
 };
 
