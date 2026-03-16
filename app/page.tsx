@@ -3,6 +3,7 @@
 
 import { useState, useEffect } from "react";
 import Image from "next/image";
+import Link from "next/link";
 import { linksConfig } from "./config";
 import { useLanguage } from "./contexts/LanguageContext";
 import { useTheme } from "./contexts/ThemeContext";
@@ -353,7 +354,7 @@ export default function Home() {
             {t("footer")}
           </p>
           <div className="mt-2 hidden md:block">
-            <a
+            <Link
               href="/config"
               className={`text-xs transition-all duration-300 ${
                 theme === "dark"
@@ -364,7 +365,7 @@ export default function Home() {
             >
               <i className="fas fa-cog mr-1"></i>
               Config
-            </a>
+            </Link>
           </div>
         </div>
       </footer>

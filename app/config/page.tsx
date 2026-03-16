@@ -2,6 +2,7 @@
 "use client";
 
 import { useState, useEffect, useRef, useCallback, useMemo } from 'react';
+import Link from 'next/link';
 import { useTheme } from '../contexts/ThemeContext';
 import { useLanguage } from '../contexts/LanguageContext';
 import { useConfigStore } from '../(home)/stores/config-store';
@@ -557,13 +558,13 @@ export default function ConfigPage() {
       <div className="max-w-6xl mx-auto px-4 py-8 lg:px-28 xl:px-36">
         <header className="mb-8 text-center">
           <div className="flex items-center justify-center gap-4 mb-4">
-            <a
+            <Link
               href="/"
               className={`px-4 py-2 rounded-xl border ${colors.card} ${colors.text} hover:bg-blue-500/10 transition-all flex items-center gap-2`}
             >
               <i className="fas fa-arrow-left"></i>
               {t('backToHome')}
-            </a>
+            </Link>
             <div className="inline-flex items-center gap-3">
               <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center">
                 <i className="fas fa-cog text-white text-xl"></i>

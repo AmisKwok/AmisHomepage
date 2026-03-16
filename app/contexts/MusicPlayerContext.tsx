@@ -63,14 +63,17 @@ export function MusicPlayerProvider({ children }: { children: ReactNode }) {
       const data = await response.json();
       if (data.success && data.music) {
         setMusicList(data.music);
-        if (currentIndex === -1 && data.music.length > 0) {
-          setCurrentIndex(0);
-        }
+        setCurrentIndex((prev) => {
+          if (prev === -1 && data.music.length > 0) {
+            return 0;
+          }
+          return prev;
+        });
       }
     } catch (error) {
       console.error("Failed to fetch music list:", error);
     }
-  }, [currentIndex]);
+  }, []);
 
   useEffect(() => {
     fetchMusicList();
