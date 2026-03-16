@@ -317,8 +317,14 @@ config.json
    | `GITHUB_REPO_OWNER` | 仓库所有者 | `yourusername` |
    | `GITHUB_REPO_NAME` | 仓库名称 | `AmisHomepage` |
    | `GITHUB_REPO_BRANCH` | 分支名称 | `main` |
+   | `ENCRYPTION_KEY` | 加密密钥（用于加密存储的私钥） | `随机生成的32字节十六进制字符串` |
 
    > ⚠️ **注意**：`.env` 文件不会被上传到 GitHub，所以必须在 Vercel 控制台手动配置这些环境变量！
+   > 
+   > 💡 **生成加密密钥**：可以使用以下命令生成安全的随机密钥：
+   > ```bash
+   > node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"
+   > ```
 
 4. **导入项目**
    - 点击 `New Project`

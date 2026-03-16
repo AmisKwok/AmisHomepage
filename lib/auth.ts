@@ -41,7 +41,25 @@ export async function hasAuth(): Promise<boolean> {
  */
 export async function getPemFromCache(): Promise<string | null> {
 	if (typeof localStorage === 'undefined') return null
-	return localStorage.getItem(AUTH_PRIVATE_KEY)
+	const encrypted = localStorage.getItem(AUTH_PRIVATE_KEY)
+	if (!encrypted) return null
+	
+	try {
+		const response = await fetch('/api/decrypt', {
+			method: 'POST',
+			headers: { 'Content-Type': 'application/json' },
+			body: JSON.stringify({ encrypted })
+		})
+		
+		const data = await response.json()
+		if (data.success) {
+			return data.decrypted
+		}
+	} catch (error) {
+		console.error('Failed to decrypt:', error)
+	}
+	
+	return null
 }
 
 /**
@@ -50,7 +68,21 @@ export async function getPemFromCache(): Promise<string | null> {
  */
 export async function savePemToCache(key: string): Promise<void> {
 	if (typeof localStorage === 'undefined') return
-	localStorage.setItem(AUTH_PRIVATE_KEY, key)
+	
+	try {
+		const response = await fetch('/api/encrypt', {
+			method: 'POST',
+			headers: { 'Content-Type': 'application/json' },
+			body: JSON.stringify({ text: key })
+		})
+		
+		const data = await response.json()
+		if (data.success) {
+			localStorage.setItem(AUTH_PRIVATE_KEY, data.encrypted)
+		}
+	} catch (error) {
+		console.error('Failed to encrypt:', error)
+	}
 }
 
 /**
