@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useTheme } from '../contexts/ThemeContext';
 import { useLanguage } from '../contexts/LanguageContext';
 import { useConfigStore } from '../(home)/stores/config-store';
@@ -24,6 +24,14 @@ interface MusicFile {
   order: number;
 }
 
+interface SectionConfig {
+  id: string;
+  title: string;
+  icon: string;
+  gradient: string;
+  expanded: boolean;
+}
+
 export default function ConfigPage() {
   const { theme } = useTheme();
   const { t } = useLanguage();
@@ -37,12 +45,43 @@ export default function ConfigPage() {
     privateKey: ''
   });
   const [musicList, setMusicList] = useState<MusicFile[]>([]);
+  const [activeSection, setActiveSection] = useState('github');
+  const sectionsRef = useRef<{ [key: string]: HTMLElement | null }>({});
+
+  const [sections, setSections] = useState<SectionConfig[]>([
+    { id: 'github', title: 'githubAuth', icon: 'fab fa-github', gradient: 'from-blue-500 to-purple-600', expanded: true },
+    { id: 'components', title: 'siteComponents', icon: 'fas fa-puzzle-piece', gradient: 'from-cyan-500 to-blue-600', expanded: true },
+    { id: 'site', title: 'siteInfo', icon: 'fas fa-globe', gradient: 'from-violet-500 to-purple-600', expanded: true },
+    { id: 'profile', title: 'profile', icon: 'fas fa-user', gradient: 'from-pink-500 to-rose-600', expanded: true },
+    { id: 'projects', title: 'featuredProjects', icon: 'fas fa-star', gradient: 'from-amber-500 to-orange-600', expanded: true },
+    { id: 'skills', title: 'skills', icon: 'fas fa-chart-line', gradient: 'from-emerald-500 to-teal-600', expanded: true },
+    { id: 'music', title: 'uploadMusic', icon: 'fas fa-music', gradient: 'from-pink-500 to-purple-600', expanded: true },
+  ]);
 
   useEffect(() => {
     fetchConfig();
     loadPrivateKey();
     fetchMusicList();
   }, []);
+
+  const scrollToSection = (sectionId: string) => {
+    setActiveSection(sectionId);
+    sectionsRef.current[sectionId]?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  };
+
+  const toggleSection = (sectionId: string) => {
+    setSections(prev => prev.map(s => 
+      s.id === sectionId ? { ...s, expanded: !s.expanded } : s
+    ));
+  };
+
+  const expandAll = () => {
+    setSections(prev => prev.map(s => ({ ...s, expanded: true })));
+  };
+
+  const collapseAll = () => {
+    setSections(prev => prev.map(s => ({ ...s, expanded: false })));
+  };
 
   const fetchConfig = async () => {
     try {
@@ -267,20 +306,23 @@ export default function ConfigPage() {
   const addProject = () => {
     setState(prev => {
       const newConfig = { ...prev.config };
+      if (!newConfig.projects) {
+        newConfig.projects = { featured: [] };
+      }
       if (!newConfig.projects.featured) {
         newConfig.projects.featured = [];
       }
       const newProject = {
-        id: `project-${Date.now()}`,
+        id: `project-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
         name: '新项目',
         description: { zh: '项目描述', en: 'Project description' },
         url: '',
         image: '',
         tags: [],
-        icon: 'fas fa-project',
+        icon: 'fas fa-star',
         gradient: 'from-blue-500 to-purple-600'
       };
-      newConfig.projects.featured.push(newProject);
+      newConfig.projects.featured = [...newConfig.projects.featured, newProject];
       return { ...prev, config: newConfig };
     });
   };
@@ -288,7 +330,7 @@ export default function ConfigPage() {
   const removeProject = (index: number) => {
     setState(prev => {
       const newConfig = { ...prev.config };
-      newConfig.projects.featured.splice(index, 1);
+      newConfig.projects.featured = newConfig.projects.featured.filter((_: any, i: number) => i !== index);
       return { ...prev, config: newConfig };
     });
   };
@@ -326,7 +368,9 @@ export default function ConfigPage() {
     input: theme === 'dark' ? 'bg-white/5 border-white/10 text-white placeholder-gray-500' : 'bg-white border-gray-200 text-gray-900 placeholder-gray-400',
     button: theme === 'dark' ? 'bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700' : 'bg-gradient-to-r from-blue-500 to-cyan-600 hover:from-blue-600 hover:to-cyan-700',
     buttonDelete: theme === 'dark' ? 'bg-red-500/20 hover:bg-red-500/30 text-red-400' : 'bg-red-50 hover:bg-red-100 text-red-600',
-    checkbox: theme === 'dark' ? 'border-white/20' : 'border-gray-300'
+    checkbox: theme === 'dark' ? 'border-white/20' : 'border-gray-300',
+    sidebar: theme === 'dark' ? 'bg-white/5 border-white/10' : 'bg-white/80 border-gray-200',
+    activeNav: theme === 'dark' ? 'bg-blue-500/20 text-blue-400' : 'bg-blue-50 text-blue-600'
   };
 
   if (state.loading) {
@@ -349,11 +393,79 @@ export default function ConfigPage() {
     );
   }
 
+  const renderSectionHeader = (section: SectionConfig) => (
+    <div 
+      className="flex items-center justify-between cursor-pointer select-none"
+      onClick={() => toggleSection(section.id)}
+    >
+      <div className="flex items-center gap-3">
+        <div className={`w-10 h-10 rounded-lg bg-gradient-to-br ${section.gradient} flex items-center justify-center`}>
+          <i className={`${section.icon} text-white`}></i>
+        </div>
+        <h3 className={`text-xl font-semibold ${colors.text}`}>{t(section.title as any)}</h3>
+      </div>
+      <i className={`fas fa-chevron-down ${colors.textSecondary} transition-transform duration-300 ${section.expanded ? 'rotate-180' : ''}`}></i>
+    </div>
+  );
+
   return (
     <div className={`min-h-screen ${colors.background}`}>
       <Toaster position="top-center" richColors />
-      <div className="max-w-7xl mx-auto px-4 py-12">
-        <header className="mb-12 text-center">
+      
+      <aside className={`fixed left-4 top-1/2 -translate-y-1/2 w-56 ${colors.sidebar} backdrop-blur-md border rounded-2xl p-4 hidden lg:block z-40`}>
+        <div className="flex items-center justify-between mb-4">
+          <h4 className={`text-sm font-semibold ${colors.text}`}>{t('quickNav')}</h4>
+          <div className="flex gap-1">
+            <button
+              onClick={expandAll}
+              className={`p-1.5 rounded-lg hover:bg-white/10 transition-colors ${colors.textSecondary}`}
+              title={t('expandAll')}
+            >
+              <i className="fas fa-expand-alt text-xs"></i>
+            </button>
+            <button
+              onClick={collapseAll}
+              className={`p-1.5 rounded-lg hover:bg-white/10 transition-colors ${colors.textSecondary}`}
+              title={t('collapseAll')}
+            >
+              <i className="fas fa-compress-alt text-xs"></i>
+            </button>
+          </div>
+        </div>
+        <nav className="space-y-1">
+          {sections.map(section => (
+            <button
+              key={section.id}
+              onClick={() => scrollToSection(section.id)}
+              className={`w-full flex items-center gap-3 px-3 py-2 rounded-xl transition-all text-left ${
+                activeSection === section.id ? colors.activeNav : `hover:bg-white/5 ${colors.textSecondary}`
+              }`}
+            >
+              <i className={`${section.icon} text-sm w-5`}></i>
+              <span className="text-sm">{t(section.title as any)}</span>
+            </button>
+          ))}
+        </nav>
+      </aside>
+
+      <div className={`fixed right-4 top-1/2 -translate-y-1/2 hidden lg:flex flex-col items-center gap-3 z-40`}>
+        <button
+          onClick={handleSaveConfig}
+          disabled={state.isSaving || !state.config}
+          className={`w-14 h-14 rounded-2xl text-white font-medium transition-all disabled:opacity-50 disabled:cursor-not-allowed hover:scale-110 shadow-lg ${colors.button}`}
+          title={t('saveToGithub')}
+        >
+          {state.isSaving ? (
+            <i className="fas fa-spinner fa-spin"></i>
+          ) : (
+            <i className="fas fa-save text-lg"></i>
+          )}
+        </button>
+        <span className={`text-xs ${colors.textSecondary} writing-mode-vertical`}>{t('saveToGithub')}</span>
+      </div>
+
+      <div className="max-w-6xl mx-auto px-4 py-8 lg:px-28 xl:px-36">
+        <header className="mb-8 text-center">
           <div className="flex items-center justify-center gap-4 mb-4">
             <a
               href="/"
@@ -366,642 +478,491 @@ export default function ConfigPage() {
               <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center">
                 <i className="fas fa-cog text-white text-xl"></i>
               </div>
-              <h1 className="text-4xl font-bold bg-gradient-to-r from-blue-500 to-purple-600 bg-clip-text text-transparent">
+              <h1 className="text-3xl font-bold bg-gradient-to-r from-blue-500 to-purple-600 bg-clip-text text-transparent">
                 {t('configManagement')}
               </h1>
             </div>
           </div>
-          <p className={`${colors.textSecondary} text-lg max-w-2xl mx-auto`}>
+          <p className={`${colors.textSecondary} max-w-2xl mx-auto`}>
             {t('configDescription')}
           </p>
         </header>
         
-        <div className="space-y-8">
+        <div className="space-y-4">
           {state.config ? (
             <>
-              {/* GitHub 认证 */}
-              <div className={`rounded-2xl p-6 ${colors.card} backdrop-blur-md`}>
-                <div className="flex items-center gap-3 mb-6">
-                  <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center">
-                    <i className="fab fa-github text-white"></i>
-                  </div>
-                  <h3 className={`text-xl font-semibold ${colors.text}`}>{t('githubAuth')}</h3>
-                </div>
-                <div className="space-y-4">
-                  <div>
-                    <label className={`block text-sm font-medium mb-2 ${colors.textSecondary}`}>
-                      {t('pemKeyFile')} <span className="text-red-500">*</span>
-                    </label>
-                    <div className="relative">
-                      <input
-                        type="file"
-                        accept=".pem"
-                        onChange={handlePemUpload}
-                        className={`w-full px-4 py-3 rounded-xl border ${colors.input} file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:bg-gradient-to-r file:from-blue-500 file:to-purple-600 file:text-white file:cursor-pointer`}
-                      />
-                    </div>
-                    <p className={`text-xs mt-2 ${colors.textSecondary}`}>
-                      {t('pemKeyHint')}
-                    </p>
-                  </div>
-                  {state.privateKey && (
-                    <div className="flex items-center gap-2 text-green-600 dark:text-green-400 p-3 bg-green-500/10 rounded-xl">
-                      <i className="fas fa-check-circle"></i>
-                      <span>{t('pemKeyLoaded')}</span>
-                    </div>
-                  )}
-                </div>
-              </div>
-              
-              {/* 网站组件 */}
-              <div className={`rounded-2xl p-6 ${colors.card} backdrop-blur-md`}>
-                <div className="flex items-center gap-3 mb-6">
-                  <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-cyan-500 to-blue-600 flex items-center justify-center">
-                    <i className="fas fa-puzzle-piece text-white"></i>
-                  </div>
-                  <h3 className={`text-xl font-semibold ${colors.text}`}>{t('siteComponents')}</h3>
-                </div>
-                
-                <div className="space-y-6">
-                  {/* 时间组件 */}
-                  <div className={`p-4 rounded-xl ${theme === 'dark' ? 'bg-white/5' : 'bg-gray-50'}`}>
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center gap-3">
-                        <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-purple-500 to-pink-600 flex items-center justify-center">
-                          <i className="fas fa-clock text-white text-sm"></i>
+              <section 
+                ref={el => { sectionsRef.current['github'] = el; }}
+                id="github"
+                className={`rounded-2xl p-6 ${colors.card} backdrop-blur-md scroll-mt-4 overflow-hidden`}
+              >
+                {renderSectionHeader(sections[0])}
+                {sections[0].expanded && (
+                  <div className="mt-6 space-y-4">
+                    {state.privateKey ? (
+                      <div className="flex items-center justify-between p-4 bg-green-500/10 rounded-xl">
+                        <div className="flex items-center gap-3 text-green-600 dark:text-green-400">
+                          <i className="fas fa-check-circle text-xl"></i>
+                          <span className="font-medium">{t('pemKeyLoaded')}</span>
                         </div>
-                        <div>
-                          <label className={`block text-sm font-medium ${colors.text}`}>{t('localTimeComponent')}</label>
-                          <p className={`text-xs mt-0.5 ${colors.textSecondary}`}>{t('enableLocalTime')}</p>
-                        </div>
+                        <button
+                          onClick={() => setState(prev => ({ ...prev, privateKey: '' }))}
+                          className={`px-3 py-1.5 rounded-lg border ${colors.card} ${colors.text} hover:bg-red-500/10 hover:border-red-500/30 transition-all text-sm`}
+                        >
+                          <i className="fas fa-times mr-1"></i>
+                          {t('clear')}
+                        </button>
                       </div>
-                      <button
-                        onClick={() => handleInputChange('showLocalTime', !state.config.showLocalTime)}
-                        className={`relative w-14 h-7 rounded-full transition-all duration-300 ${
-                          state.config.showLocalTime 
-                            ? 'bg-gradient-to-r from-purple-500 to-pink-600' 
-                            : theme === 'dark' ? 'bg-white/20' : 'bg-gray-300'
-                        }`}
-                      >
-                        <span 
-                          className={`absolute top-1 w-5 h-5 rounded-full bg-white shadow-md transition-all duration-300 ${
-                            state.config.showLocalTime ? 'left-8' : 'left-1'
-                          }`}
-                        />
-                      </button>
-                    </div>
-                  </div>
-                  
-                  {/* 鼠标指针组件 */}
-                  <div className={`p-4 rounded-xl ${theme === 'dark' ? 'bg-white/5' : 'bg-gray-50'}`}>
-                    <div className="flex items-center justify-between mb-4">
-                      <div className="flex items-center gap-3">
-                        <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-cyan-500 to-blue-600 flex items-center justify-center">
-                          <i className="fas fa-mouse-pointer text-white text-sm"></i>
-                        </div>
+                    ) : (
+                      <>
                         <div>
-                          <label className={`block text-sm font-medium ${colors.text}`}>{t('cursorSettings')}</label>
-                          <p className={`text-xs mt-0.5 ${colors.textSecondary}`}>{t('cursorFileHint')}</p>
-                        </div>
-                      </div>
-                      <button
-                        onClick={() => handleInputChange('showCustomCursor', !state.config.showCustomCursor)}
-                        className={`relative w-14 h-7 rounded-full transition-all duration-300 ${
-                          state.config.showCustomCursor 
-                            ? 'bg-gradient-to-r from-cyan-500 to-blue-600' 
-                            : theme === 'dark' ? 'bg-white/20' : 'bg-gray-300'
-                        }`}
-                      >
-                        <span 
-                          className={`absolute top-1 w-5 h-5 rounded-full bg-white shadow-md transition-all duration-300 ${
-                            state.config.showCustomCursor ? 'left-8' : 'left-1'
-                          }`}
-                        />
-                      </button>
-                    </div>
-                    
-                    {state.config.showCustomCursor && (
-                      <div className="space-y-3 pt-3 border-t border-white/10">
-                        <div>
-                          <label className={`block text-xs font-medium mb-2 ${colors.textSecondary}`}>
-                            {t('cursorFile')}
+                          <label className={`block text-sm font-medium mb-2 ${colors.textSecondary}`}>
+                            {t('pemKeyFile')} <span className="text-red-500">*</span>
                           </label>
-                          <div className="flex items-center gap-2">
-                            <input
-                              type="text"
-                              value={state.config.customCursorPath || '/cursors/watermelon.cur'}
-                              onChange={(e) => handleInputChange('customCursorPath', e.target.value)}
-                              className={`flex-1 px-3 py-2 rounded-lg border ${colors.input} focus:outline-none focus:ring-2 focus:ring-blue-500/50 text-sm`}
-                            />
-                            <input
-                              type="file"
-                              accept=".cur"
-                              onChange={async (e) => {
-                                const file = e.target.files?.[0];
-                                if (!file) return;
-                                
-                                if (!file.name.toLowerCase().endsWith('.cur')) {
-                                  toast.error(t('cursorFileError'));
-                                  return;
-                                }
-                                
-                                if (!state.privateKey) {
-                                  toast.error(t('uploadPemFirst'));
-                                  return;
-                                }
-                                
-                                try {
-                                  const formData = new FormData();
-                                  formData.append('file', file);
-                                  formData.append('privateKey', state.privateKey);
-                                  formData.append('targetDir', 'cursors');
-
-                                  const response = await fetch('/api/upload', {
-                                    method: 'POST',
-                                    body: formData
-                                  });
-
-                                  const data = await response.json();
-
-                                  if (!response.ok) {
-                                    throw new Error(data.error || '上传失败');
-                                  }
-
-                                  handleInputChange('customCursorPath', data.path);
-                                  toast.success(t('cursorUploadSuccess'));
-                                } catch (error) {
-                                  console.error('Cursor upload error:', error);
-                                  toast.error(t('cursorUploadError'));
-                                }
-                              }}
-                              className={`px-3 py-2 rounded-lg border ${colors.input} file:mr-2 file:py-1 file:px-3 file:rounded-lg file:border-0 file:bg-gradient-to-r file:from-cyan-500 file:to-blue-600 file:text-white file:cursor-pointer text-sm`}
-                            />
-                          </div>
+                          <input
+                            type="file"
+                            accept=".pem"
+                            onChange={handlePemUpload}
+                            className={`w-full px-4 py-3 rounded-xl border ${colors.input} file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:bg-gradient-to-r file:from-blue-500 file:to-purple-600 file:text-white file:cursor-pointer`}
+                          />
+                          <p className={`text-xs mt-2 ${colors.textSecondary}`}>
+                            {t('pemKeyHint')}
+                          </p>
                         </div>
-                        
-                        <div className="flex items-center gap-3">
-                          <div 
-                            className={`w-10 h-10 rounded-lg border ${colors.card} flex items-center justify-center`}
-                            style={{ cursor: `url('${state.config.customCursorPath || '/cursors/watermelon.cur'}'), auto` }}
-                          >
-                            <i className={`fas fa-mouse-pointer ${colors.textSecondary}`}></i>
-                          </div>
-                          <span className={`text-xs ${colors.textSecondary} flex-1`}>
-                            {t('cursorPreviewHint')}
-                          </span>
-                          <button
-                            onClick={() => handleInputChange('customCursorPath', '/cursors/watermelon.cur')}
-                            className={`px-3 py-1.5 rounded-lg border ${colors.card} ${colors.text} hover:bg-red-500/10 hover:border-red-500/30 transition-all text-xs`}
-                          >
-                            <i className="fas fa-undo mr-1"></i>
-                            {t('resetCursor')}
-                          </button>
-                        </div>
-                      </div>
+                      </>
                     )}
                   </div>
-                </div>
-              </div>
+                )}
+              </section>
               
-              {/* 网站信息 */}
-              <div className={`rounded-2xl p-6 ${colors.card} backdrop-blur-md`}>
-                <div className="flex items-center gap-3 mb-6">
-                  <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-violet-500 to-purple-600 flex items-center justify-center">
-                    <i className="fas fa-globe text-white"></i>
+              <section 
+                ref={el => { sectionsRef.current['components'] = el; }}
+                id="components"
+                className={`rounded-2xl p-6 ${colors.card} backdrop-blur-md scroll-mt-4 overflow-hidden`}
+              >
+                {renderSectionHeader(sections[1])}
+                {sections[1].expanded && (
+                  <div className="mt-6 space-y-4">
+                    <div className={`p-4 rounded-xl ${theme === 'dark' ? 'bg-white/5' : 'bg-gray-50'}`}>
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center gap-3">
+                          <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-purple-500 to-pink-600 flex items-center justify-center">
+                            <i className="fas fa-clock text-white text-sm"></i>
+                          </div>
+                          <div>
+                            <label className={`block text-sm font-medium ${colors.text}`}>{t('localTimeComponent')}</label>
+                            <p className={`text-xs ${colors.textSecondary}`}>{t('enableLocalTime')}</p>
+                          </div>
+                        </div>
+                        <button
+                          onClick={() => handleInputChange('showLocalTime', !state.config.showLocalTime)}
+                          className={`relative w-14 h-7 rounded-full transition-all duration-300 ${
+                            state.config.showLocalTime 
+                              ? 'bg-gradient-to-r from-purple-500 to-pink-600' 
+                              : theme === 'dark' ? 'bg-white/20' : 'bg-gray-300'
+                          }`}
+                        >
+                          <span className={`absolute top-1 w-5 h-5 rounded-full bg-white shadow-md transition-all duration-300 ${state.config.showLocalTime ? 'left-8' : 'left-1'}`} />
+                        </button>
+                      </div>
+                    </div>
+                    
+                    <div className={`p-4 rounded-xl ${theme === 'dark' ? 'bg-white/5' : 'bg-gray-50'}`}>
+                      <div className="flex items-center justify-between mb-4">
+                        <div className="flex items-center gap-3">
+                          <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-cyan-500 to-blue-600 flex items-center justify-center">
+                            <i className="fas fa-mouse-pointer text-white text-sm"></i>
+                          </div>
+                          <div>
+                            <label className={`block text-sm font-medium ${colors.text}`}>{t('cursorSettings')}</label>
+                            <p className={`text-xs ${colors.textSecondary}`}>{t('cursorFileHint')}</p>
+                          </div>
+                        </div>
+                        <button
+                          onClick={() => handleInputChange('showCustomCursor', !state.config.showCustomCursor)}
+                          className={`relative w-14 h-7 rounded-full transition-all duration-300 ${
+                            state.config.showCustomCursor 
+                              ? 'bg-gradient-to-r from-cyan-500 to-blue-600' 
+                              : theme === 'dark' ? 'bg-white/20' : 'bg-gray-300'
+                          }`}
+                        >
+                          <span className={`absolute top-1 w-5 h-5 rounded-full bg-white shadow-md transition-all duration-300 ${state.config.showCustomCursor ? 'left-8' : 'left-1'}`} />
+                        </button>
+                      </div>
+                      
+                      {state.config.showCustomCursor && (
+                        <div className="space-y-3 pt-3 border-t border-white/10">
+                          <div>
+                            <label className={`block text-xs font-medium mb-2 ${colors.textSecondary}`}>{t('cursorFile')}</label>
+                            <div className="flex flex-col sm:flex-row items-start sm:items-center gap-2">
+                              <input
+                                type="text"
+                                value={state.config.customCursorPath || '/cursors/watermelon.cur'}
+                                onChange={(e) => handleInputChange('customCursorPath', e.target.value)}
+                                className={`flex-1 w-full sm:w-auto px-3 py-2 rounded-lg border ${colors.input} focus:outline-none focus:ring-2 focus:ring-blue-500/50 text-sm`}
+                              />
+                              <input
+                                type="file"
+                                accept=".cur"
+                                onChange={async (e) => {
+                                  const file = e.target.files?.[0];
+                                  if (!file) return;
+                                  if (!file.name.toLowerCase().endsWith('.cur')) {
+                                    toast.error(t('cursorFileError'));
+                                    return;
+                                  }
+                                  if (!state.privateKey) {
+                                    toast.error(t('uploadPemFirst'));
+                                    return;
+                                  }
+                                  try {
+                                    const formData = new FormData();
+                                    formData.append('file', file);
+                                    formData.append('privateKey', state.privateKey);
+                                    formData.append('targetDir', 'cursors');
+                                    const response = await fetch('/api/upload', { method: 'POST', body: formData });
+                                    const data = await response.json();
+                                    if (!response.ok) throw new Error(data.error || '上传失败');
+                                    handleInputChange('customCursorPath', data.path);
+                                    toast.success(t('cursorUploadSuccess'));
+                                  } catch (error) {
+                                    console.error('Cursor upload error:', error);
+                                    toast.error(t('cursorUploadError'));
+                                  }
+                                }}
+                                className={`w-full sm:w-auto px-3 py-2 rounded-lg border ${colors.input} file:mr-2 file:py-1 file:px-3 file:rounded-lg file:border-0 file:bg-gradient-to-r file:from-cyan-500 file:to-blue-600 file:text-white file:cursor-pointer text-sm`}
+                              />
+                            </div>
+                          </div>
+                          <div className="flex items-center gap-3">
+                            <div 
+                              className={`w-10 h-10 rounded-lg border ${colors.card} flex items-center justify-center`}
+                              style={{ cursor: `url('${state.config.customCursorPath || '/cursors/watermelon.cur'}'), auto` }}
+                            >
+                              <i className={`fas fa-mouse-pointer ${colors.textSecondary}`}></i>
+                            </div>
+                            <span className={`text-xs ${colors.textSecondary} flex-1`}>{t('cursorPreviewHint')}</span>
+                            <button
+                              onClick={() => handleInputChange('customCursorPath', '/cursors/watermelon.cur')}
+                              className={`px-3 py-1.5 rounded-lg border ${colors.card} ${colors.text} hover:bg-red-500/10 hover:border-red-500/30 transition-all text-xs`}
+                            >
+                              <i className="fas fa-undo mr-1"></i>
+                              {t('resetCursor')}
+                            </button>
+                          </div>
+                        </div>
+                      )}
+                    </div>
                   </div>
-                  <h3 className={`text-xl font-semibold ${colors.text}`}>{t('siteInfo')}</h3>
-                </div>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div>
-                    <label className={`block text-sm font-medium mb-2 ${colors.textSecondary}`}>{t('siteName')}</label>
-                    <input
-                      type="text"
-                      value={state.config.site?.name || ''}
-                      onChange={(e) => handleInputChange('site.name', e.target.value)}
-                      className={`w-full px-4 py-3 rounded-xl border ${colors.input} focus:outline-none focus:ring-2 focus:ring-blue-500/50`}
-                    />
-                  </div>
-                  <div>
-                    <label className={`block text-sm font-medium mb-2 ${colors.textSecondary}`}>{t('siteTitleLabel')}</label>
-                    <input
-                      type="text"
-                      value={state.config.site?.title || ''}
-                      onChange={(e) => handleInputChange('site.title', e.target.value)}
-                      className={`w-full px-4 py-3 rounded-xl border ${colors.input} focus:outline-none focus:ring-2 focus:ring-blue-500/50`}
-                    />
-                  </div>
-                  <div className="md:col-span-2">
-                    <label className={`block text-sm font-medium mb-2 ${colors.textSecondary}`}>{t('siteUrl')}</label>
-                    <input
-                      type="text"
-                      value={state.config.site?.url || ''}
-                      onChange={(e) => handleInputChange('site.url', e.target.value)}
-                      className={`w-full px-4 py-3 rounded-xl border ${colors.input} focus:outline-none focus:ring-2 focus:ring-blue-500/50`}
-                    />
-                  </div>
-                </div>
-              </div>
-              
-              {/* 个人资料 */}
-              <div className={`rounded-2xl p-6 ${colors.card} backdrop-blur-md`}>
-                <div className="flex items-center gap-3 mb-6">
-                  <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-pink-500 to-rose-600 flex items-center justify-center">
-                    <i className="fas fa-user text-white"></i>
-                  </div>
-                  <h3 className={`text-xl font-semibold ${colors.text}`}>{t('profile')}</h3>
-                </div>
-                <div className="space-y-4">
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                )}
+              </section>
+
+              <section 
+                ref={el => { sectionsRef.current['site'] = el; }}
+                id="site"
+                className={`rounded-2xl p-6 ${colors.card} backdrop-blur-md scroll-mt-4 overflow-hidden`}
+              >
+                {renderSectionHeader(sections[2])}
+                {sections[2].expanded && (
+                  <div className="mt-6 grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
-                      <label className={`block text-sm font-medium mb-2 ${colors.textSecondary}`}>{t('name')}</label>
+                      <label className={`block text-sm font-medium mb-2 ${colors.textSecondary}`}>{t('siteName')}</label>
                       <input
                         type="text"
-                        value={state.config.profile?.name || ''}
-                        onChange={(e) => handleInputChange('profile.name', e.target.value)}
+                        value={state.config.site?.name || ''}
+                        onChange={(e) => handleInputChange('site.name', e.target.value)}
                         className={`w-full px-4 py-3 rounded-xl border ${colors.input} focus:outline-none focus:ring-2 focus:ring-blue-500/50`}
                       />
                     </div>
                     <div>
-                      <label className={`block text-sm font-medium mb-2 ${colors.textSecondary}`}>{t('avatar')}</label>
-                      <div className="flex items-center gap-3">
+                      <label className={`block text-sm font-medium mb-2 ${colors.textSecondary}`}>{t('siteTitleLabel')}</label>
+                      <input
+                        type="text"
+                        value={state.config.site?.title || ''}
+                        onChange={(e) => handleInputChange('site.title', e.target.value)}
+                        className={`w-full px-4 py-3 rounded-xl border ${colors.input} focus:outline-none focus:ring-2 focus:ring-blue-500/50`}
+                      />
+                    </div>
+                    <div className="md:col-span-2">
+                      <label className={`block text-sm font-medium mb-2 ${colors.textSecondary}`}>{t('siteUrl')}</label>
+                      <input
+                        type="text"
+                        value={state.config.site?.url || ''}
+                        onChange={(e) => handleInputChange('site.url', e.target.value)}
+                        className={`w-full px-4 py-3 rounded-xl border ${colors.input} focus:outline-none focus:ring-2 focus:ring-blue-500/50`}
+                      />
+                    </div>
+                  </div>
+                )}
+              </section>
+              
+              <section 
+                ref={el => { sectionsRef.current['profile'] = el; }}
+                id="profile"
+                className={`rounded-2xl p-6 ${colors.card} backdrop-blur-md scroll-mt-4 overflow-hidden`}
+              >
+                {renderSectionHeader(sections[3])}
+                {sections[3].expanded && (
+                  <div className="mt-6 space-y-4">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      <div>
+                        <label className={`block text-sm font-medium mb-2 ${colors.textSecondary}`}>{t('name')}</label>
                         <input
                           type="text"
-                          value={state.config.profile?.avatar || ''}
-                          onChange={(e) => handleInputChange('profile.avatar', e.target.value)}
-                          className={`flex-1 px-4 py-3 rounded-xl border ${colors.input} focus:outline-none focus:ring-2 focus:ring-blue-500/50`}
+                          value={state.config.profile?.name || ''}
+                          onChange={(e) => handleInputChange('profile.name', e.target.value)}
+                          className={`w-full px-4 py-3 rounded-xl border ${colors.input} focus:outline-none focus:ring-2 focus:ring-blue-500/50`}
+                        />
+                      </div>
+                      <div className="md:col-span-2">
+                        <label className={`block text-sm font-medium mb-2 ${colors.textSecondary}`}>{t('avatar')}</label>
+                        <div className="flex flex-col gap-3">
+                          <input
+                            type="text"
+                            value={state.config.profile?.avatar || ''}
+                            onChange={(e) => handleInputChange('profile.avatar', e.target.value)}
+                            className={`w-full px-4 py-3 rounded-xl border ${colors.input} focus:outline-none focus:ring-2 focus:ring-blue-500/50`}
+                          />
+                          <input
+                            type="file"
+                            accept="image/*"
+                            onChange={async (e) => {
+                              const file = e.target.files?.[0];
+                              if (file) {
+                                const path = await handleFileUpload(file);
+                                if (path) handleInputChange('profile.avatar', path);
+                              }
+                            }}
+                            className={`w-full px-4 py-3 rounded-xl border ${colors.input} file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:bg-gradient-to-r file:from-blue-500 file:to-purple-600 file:text-white file:cursor-pointer`}
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                )}
+              </section>
+              
+              <section 
+                ref={el => { sectionsRef.current['projects'] = el; }}
+                id="projects"
+                className={`rounded-2xl p-6 ${colors.card} backdrop-blur-md scroll-mt-4 overflow-hidden`}
+              >
+                {renderSectionHeader(sections[4])}
+                {sections[4].expanded && (
+                  <div className="mt-6 space-y-4">
+                    <button
+                      onClick={addProject}
+                      className={`w-full py-3 rounded-xl border-2 border-dashed ${theme === 'dark' ? 'border-white/20 hover:border-white/40' : 'border-gray-300 hover:border-gray-400'} ${colors.text} transition-all flex items-center justify-center gap-2`}
+                    >
+                      <i className="fas fa-plus"></i>
+                      {t('addProject')}
+                    </button>
+                    {state.config.projects?.featured?.map((project: any, index: number) => (
+                      <div key={project.id || index} className={`p-4 rounded-xl ${theme === 'dark' ? 'bg-white/5' : 'bg-gray-50'} space-y-3`}>
+                        <div className="flex items-center gap-3">
+                          <div className="flex-1">
+                            <label className={`block text-xs font-medium mb-1 ${colors.textSecondary}`}>{t('projectName')}</label>
+                            <input
+                              type="text"
+                              value={project.name}
+                              onChange={(e) => handleInputChange(`projects.featured.${index}.name`, e.target.value)}
+                              className={`w-full px-3 py-2 rounded-lg border ${colors.input} text-sm font-semibold`}
+                              placeholder={t('projectName')}
+                            />
+                          </div>
+                          <button
+                            onClick={() => removeProject(index)}
+                            className={`p-2 rounded-lg ${colors.buttonDelete} mt-5`}
+                          >
+                            <i className="fas fa-trash-alt"></i>
+                          </button>
+                        </div>
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                          <div>
+                            <label className={`block text-xs font-medium mb-1 ${colors.textSecondary}`}>{t('projectUrl')}</label>
+                            <input
+                              type="text"
+                              value={project.url || ''}
+                              onChange={(e) => handleInputChange(`projects.featured.${index}.url`, e.target.value)}
+                              className={`w-full px-3 py-2 rounded-lg border ${colors.input} text-sm`}
+                            />
+                          </div>
+                          <div>
+                            <label className={`block text-xs font-medium mb-1 ${colors.textSecondary}`}>{t('projectImage')}</label>
+                            <input
+                              type="text"
+                              value={project.image || ''}
+                              onChange={(e) => handleInputChange(`projects.featured.${index}.image`, e.target.value)}
+                              className={`w-full px-3 py-2 rounded-lg border ${colors.input} text-sm`}
+                            />
+                          </div>
+                          <div>
+                            <label className={`block text-xs font-medium mb-1 ${colors.textSecondary}`}>{t('projectIcon')}</label>
+                            <input
+                              type="text"
+                              value={project.icon || ''}
+                              onChange={(e) => handleInputChange(`projects.featured.${index}.icon`, e.target.value)}
+                              className={`w-full px-3 py-2 rounded-lg border ${colors.input} text-sm`}
+                              placeholder="fas fa-star"
+                            />
+                          </div>
+                          <div>
+                            <label className={`block text-xs font-medium mb-1 ${colors.textSecondary}`}>{t('projectGradient')}</label>
+                            <input
+                              type="text"
+                              value={project.gradient || ''}
+                              onChange={(e) => handleInputChange(`projects.featured.${index}.gradient`, e.target.value)}
+                              className={`w-full px-3 py-2 rounded-lg border ${colors.input} text-sm`}
+                              placeholder="from-blue-500 to-purple-600"
+                            />
+                          </div>
+                        </div>
+                        <div>
+                          <label className={`block text-xs font-medium mb-1 ${colors.textSecondary}`}>{t('projectDescription')} ({t('chinese')})</label>
+                          <textarea
+                            value={project.description?.zh || ''}
+                            onChange={(e) => handleInputChange(`projects.featured.${index}.description.zh`, e.target.value)}
+                            rows={2}
+                            className={`w-full px-3 py-2 rounded-lg border ${colors.input} text-sm`}
+                          />
+                        </div>
+                        <div>
+                          <label className={`block text-xs font-medium mb-1 ${colors.textSecondary}`}>{t('projectDescription')} ({t('english')})</label>
+                          <textarea
+                            value={project.description?.en || ''}
+                            onChange={(e) => handleInputChange(`projects.featured.${index}.description.en`, e.target.value)}
+                            rows={2}
+                            className={`w-full px-3 py-2 rounded-lg border ${colors.input} text-sm`}
+                          />
+                        </div>
+                        <div>
+                          <label className={`block text-xs font-medium mb-1 ${colors.textSecondary}`}>{t('projectTags')}</label>
+                          <input
+                            type="text"
+                            value={project.tags?.join(', ') || ''}
+                            onChange={(e) => handleInputChange(`projects.featured.${index}.tags`, e.target.value.split(',').map((t: string) => t.trim()).filter(Boolean))}
+                            className={`w-full px-3 py-2 rounded-lg border ${colors.input} text-sm`}
+                            placeholder="Spring Boot, Java, MySQL"
+                          />
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </section>
+              
+              <section 
+                ref={el => { sectionsRef.current['skills'] = el; }}
+                id="skills"
+                className={`rounded-2xl p-6 ${colors.card} backdrop-blur-md scroll-mt-4 overflow-hidden`}
+              >
+                {renderSectionHeader(sections[5])}
+                {sections[5].expanded && (
+                  <div className="mt-6 space-y-4">
+                    <button
+                      onClick={addSkill}
+                      className={`w-full py-3 rounded-xl border-2 border-dashed ${theme === 'dark' ? 'border-white/20 hover:border-white/40' : 'border-gray-300 hover:border-gray-400'} ${colors.text} transition-all flex items-center justify-center gap-2`}
+                    >
+                      <i className="fas fa-plus"></i>
+                      {t('addSkill')}
+                    </button>
+                    {state.config.skills?.map((skill: any, index: number) => (
+                      <div key={index} className={`p-4 rounded-xl ${theme === 'dark' ? 'bg-white/5' : 'bg-gray-50'} flex items-center gap-4`}>
+                        <input
+                          type="text"
+                          value={skill.name}
+                          onChange={(e) => handleInputChange(`skills.${index}.name`, e.target.value)}
+                          className={`flex-1 px-3 py-2 rounded-lg border ${colors.input}`}
                         />
                         <input
-                          type="file"
-                          accept="image/*"
-                          onChange={async (e) => {
-                            const file = e.target.files?.[0];
-                            if (file) {
-                              const path = await handleFileUpload(file);
-                              if (path) {
-                                handleInputChange('profile.avatar', path);
-                              }
-                            }
-                          }}
-                          className={`px-4 py-3 rounded-xl border ${colors.input} file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:bg-gradient-to-r file:from-blue-500 file:to-purple-600 file:text-white file:cursor-pointer`}
+                          type="number"
+                          value={skill.level}
+                          onChange={(e) => handleInputChange(`skills.${index}.level`, parseInt(e.target.value))}
+                          min="0"
+                          max="100"
+                          className={`w-20 px-3 py-2 rounded-lg border ${colors.input}`}
                         />
-                      </div>
-                    </div>
-                  </div>
-                  <div>
-                    <label className={`block text-sm font-medium mb-2 ${colors.textSecondary}`}>{t('bioChinese')}</label>
-                    <textarea
-                      value={state.config.profile?.currentFocus?.[0]?.text?.zh || ''}
-                      onChange={(e) => handleInputChange('profile.currentFocus.0.text.zh', e.target.value)}
-                      rows={3}
-                      className={`w-full px-4 py-3 rounded-xl border ${colors.input} focus:outline-none focus:ring-2 focus:ring-blue-500/50`}
-                    />
-                  </div>
-                  <div>
-                    <label className={`block text-sm font-medium mb-2 ${colors.textSecondary}`}>{t('bioEnglish')}</label>
-                    <textarea
-                      value={state.config.profile?.currentFocus?.[0]?.text?.en || ''}
-                      onChange={(e) => handleInputChange('profile.currentFocus.0.text.en', e.target.value)}
-                      rows={3}
-                      className={`w-full px-4 py-3 rounded-xl border ${colors.input} focus:outline-none focus:ring-2 focus:ring-blue-500/50`}
-                    />
-                  </div>
-                </div>
-              </div>
-
-              {/* 背景大标题配置 */}
-              <div className={`rounded-2xl p-6 ${colors.card} backdrop-blur-md`}>
-                <div className="flex items-center gap-3 mb-6">
-                  <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center">
-                    <i className="fas fa-heading text-white"></i>
-                  </div>
-                  <h3 className={`text-xl font-semibold ${colors.text}`}>{t('bgTitle')}</h3>
-                </div>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div>
-                    <label className={`block text-sm font-medium mb-2 ${colors.textSecondary}`}>{t('titleChinese')}</label>
-                    <input
-                      type="text"
-                      value={state.config.translations?.zh?.siteTitle || ''}
-                      onChange={(e) => handleInputChange('translations.zh.siteTitle', e.target.value)}
-                      className={`w-full px-4 py-3 rounded-xl border ${colors.input} focus:outline-none focus:ring-2 focus:ring-blue-500/50`}
-                    />
-                  </div>
-                  <div>
-                    <label className={`block text-sm font-medium mb-2 ${colors.textSecondary}`}>{t('titleEnglish')}</label>
-                    <input
-                      type="text"
-                      value={state.config.translations?.en?.siteTitle || ''}
-                      onChange={(e) => handleInputChange('translations.en.siteTitle', e.target.value)}
-                      className={`w-full px-4 py-3 rounded-xl border ${colors.input} focus:outline-none focus:ring-2 focus:ring-blue-500/50`}
-                    />
-                  </div>
-                </div>
-              </div>
-
-              {/* 项目配置 */}
-              <div className={`rounded-2xl p-6 ${colors.card} backdrop-blur-md`}>
-                <div className="flex items-center justify-between mb-6">
-                  <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-amber-500 to-orange-600 flex items-center justify-center">
-                      <i className="fas fa-folder-open text-white"></i>
-                    </div>
-                    <h3 className={`text-xl font-semibold ${colors.text}`}>{t('featuredProjects')}</h3>
-                  </div>
-                  <button
-                    onClick={addProject}
-                    className={`px-4 py-2 rounded-xl ${colors.button} text-white transition-all`}
-                  >
-                    <i className="fas fa-plus mr-2"></i>
-                    {t('addProject')}
-                  </button>
-                </div>
-                <div className="space-y-4">
-                  {state.config.projects?.featured?.map((project: any, index: number) => (
-                    <div key={project.id} className={`p-4 rounded-xl border ${colors.card}`}>
-                      <div className="flex items-center justify-between mb-4">
-                        <span className={`font-medium ${colors.text}`}>{project.name}</span>
-                        <button
-                          onClick={() => removeProject(index)}
-                          className={`px-3 py-1 rounded-lg ${colors.buttonDelete} transition-all`}
-                        >
-                          <i className="fas fa-trash-alt mr-1"></i>
-                          {t('delete')}
-                        </button>
-                      </div>
-                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <div>
-                          <label className={`block text-sm font-medium mb-2 ${colors.textSecondary}`}>{t('name')}</label>
-                          <input
-                            type="text"
-                            value={project.name}
-                            onChange={(e) => {
-                              const newProjects = [...state.config.projects.featured];
-                              newProjects[index].name = e.target.value;
-                              handleInputChange('projects.featured', newProjects);
-                            }}
-                            className={`w-full px-4 py-3 rounded-xl border ${colors.input} focus:outline-none focus:ring-2 focus:ring-blue-500/50`}
-                          />
-                        </div>
-                        <div>
-                          <label className={`block text-sm font-medium mb-2 ${colors.textSecondary}`}>URL</label>
-                          <input
-                            type="text"
-                            value={project.url}
-                            onChange={(e) => {
-                              const newProjects = [...state.config.projects.featured];
-                              newProjects[index].url = e.target.value;
-                              handleInputChange('projects.featured', newProjects);
-                            }}
-                            className={`w-full px-4 py-3 rounded-xl border ${colors.input} focus:outline-none focus:ring-2 focus:ring-blue-500/50`}
-                          />
-                        </div>
-                        <div>
-                          <label className={`block text-sm font-medium mb-2 ${colors.textSecondary}`}>{t('description')} ({t('chinese')})</label>
-                          <input
-                            type="text"
-                            value={project.description?.zh || ''}
-                            onChange={(e) => {
-                              const newProjects = [...state.config.projects.featured];
-                              newProjects[index].description.zh = e.target.value;
-                              handleInputChange('projects.featured', newProjects);
-                            }}
-                            className={`w-full px-4 py-3 rounded-xl border ${colors.input} focus:outline-none focus:ring-2 focus:ring-blue-500/50`}
-                          />
-                        </div>
-                        <div>
-                          <label className={`block text-sm font-medium mb-2 ${colors.textSecondary}`}>{t('description')} ({t('english')})</label>
-                          <input
-                            type="text"
-                            value={project.description?.en || ''}
-                            onChange={(e) => {
-                              const newProjects = [...state.config.projects.featured];
-                              newProjects[index].description.en = e.target.value;
-                              handleInputChange('projects.featured', newProjects);
-                            }}
-                            className={`w-full px-4 py-3 rounded-xl border ${colors.input} focus:outline-none focus:ring-2 focus:ring-blue-500/50`}
-                          />
-                        </div>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-
-              {/* 技能配置 */}
-              <div className={`rounded-2xl p-6 ${colors.card} backdrop-blur-md`}>
-                <div className="flex items-center justify-between mb-6">
-                  <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-emerald-500 to-teal-600 flex items-center justify-center">
-                      <i className="fas fa-chart-line text-white"></i>
-                    </div>
-                    <h3 className={`text-xl font-semibold ${colors.text}`}>{t('skills')}</h3>
-                  </div>
-                  <button
-                    onClick={addSkill}
-                    className={`px-4 py-2 rounded-xl ${colors.button} text-white transition-all`}
-                  >
-                    <i className="fas fa-plus mr-2"></i>
-                    {t('addSkill')}
-                  </button>
-                </div>
-                <div className="space-y-4">
-                  {state.config.skills?.map((skill: any, index: number) => (
-                    <div key={index} className={`p-4 rounded-xl border ${colors.card}`}>
-                      <div className="flex items-center justify-between mb-4">
-                        <span className={`font-medium ${colors.text}`}>{skill.name}</span>
                         <button
                           onClick={() => removeSkill(index)}
-                          className={`px-3 py-1 rounded-lg ${colors.buttonDelete} transition-all`}
+                          className={`p-2 rounded-lg ${colors.buttonDelete}`}
                         >
-                          <i className="fas fa-trash-alt mr-1"></i>
-                          {t('delete')}
+                          <i className="fas fa-trash-alt"></i>
                         </button>
                       </div>
-                      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                        <div>
-                          <label className={`block text-sm font-medium mb-2 ${colors.textSecondary}`}>{t('name')}</label>
-                          <input
-                            type="text"
-                            value={skill.name}
-                            onChange={(e) => {
-                              const newSkills = [...state.config.skills];
-                              newSkills[index].name = e.target.value;
-                              handleInputChange('skills', newSkills);
-                            }}
-                            className={`w-full px-4 py-3 rounded-xl border ${colors.input} focus:outline-none focus:ring-2 focus:ring-blue-500/50`}
-                          />
-                        </div>
-                        <div>
-                          <label className={`block text-sm font-medium mb-2 ${colors.textSecondary}`}>{t('level')} (0-100)</label>
-                          <input
-                            type="number"
-                            min="0"
-                            max="100"
-                            value={skill.level}
-                            onChange={(e) => {
-                              const newSkills = [...state.config.skills];
-                              newSkills[index].level = parseInt(e.target.value) || 0;
-                              handleInputChange('skills', newSkills);
-                            }}
-                            className={`w-full px-4 py-3 rounded-xl border ${colors.input} focus:outline-none focus:ring-2 focus:ring-blue-500/50`}
-                          />
-                        </div>
-                        <div>
-                          <label className={`block text-sm font-medium mb-2 ${colors.textSecondary}`}>{t('icon')}</label>
-                          <input
-                            type="text"
-                            value={skill.icon}
-                            onChange={(e) => {
-                              const newSkills = [...state.config.skills];
-                              newSkills[index].icon = e.target.value;
-                              handleInputChange('skills', newSkills);
-                            }}
-                            className={`w-full px-4 py-3 rounded-xl border ${colors.input} focus:outline-none focus:ring-2 focus:ring-blue-500/50`}
-                            placeholder="fas fa-star"
-                          />
-                        </div>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-
-              {/* 音乐管理 */}
-              <div className={`rounded-2xl p-6 ${colors.card} backdrop-blur-md`}>
-                <div className="flex items-center justify-between mb-6">
-                  <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-pink-500 to-rose-600 flex items-center justify-center">
-                      <i className="fas fa-music text-white"></i>
-                    </div>
-                    <h3 className={`text-xl font-semibold ${colors.text}`}>{t('playlist')}</h3>
+                    ))}
                   </div>
-                  <button
-                    onClick={() => {
-                      const input = document.createElement('input');
-                      input.type = 'file';
-                      input.accept = '.mp3,.wav,.ogg,.m4a,.flac';
-                      input.onchange = async (e: any) => {
-                        const file = e.target?.files?.[0];
-                        if (file) {
-                          if (!state.privateKey) {
-                            toast.error(t('uploadPemFirst'));
-                            return;
-                          }
-                          try {
-                            const formData = new FormData();
-                            formData.append('file', file);
-                            formData.append('privateKey', state.privateKey);
-                            formData.append('targetDir', 'music');
-
-                            const response = await fetch('/api/upload', {
-                              method: 'POST',
-                              body: formData
-                            });
-
-                            const data = await response.json();
-
-                            if (!response.ok) {
-                              throw new Error(data.error || '上传失败');
-                            }
-
-                            toast.success(t('fileUploadSuccess'));
-                            fetchMusicList();
-                          } catch (error) {
-                            console.error('Upload error:', error);
-                            toast.error(t('fileUploadFailed'));
-                          }
-                        }
-                      };
-                      input.click();
-                    }}
-                    className="px-4 py-2 bg-gradient-to-r from-pink-500 to-rose-600 text-white rounded-xl hover:from-pink-600 hover:to-rose-700 transition-all"
-                  >
-                    <i className="fas fa-upload mr-2"></i>
-                    {t('uploadMusic')}
-                  </button>
-                </div>
-                <p className={`text-sm mb-4 ${colors.textSecondary}`}>
-                  {t('musicUploadHint')}
-                </p>
-                <div className="space-y-2">
-                  {musicList.length === 0 ? (
-                    <div className={`text-center py-8 rounded-xl border ${colors.card}`}>
-                      <i className={`fas fa-music text-4xl mb-3 ${colors.textSecondary}`}></i>
-                      <p className={colors.textSecondary}>{t('noMusic')}</p>
-                    </div>
-                  ) : (
-                    musicList.map((music: any, index: number) => (
-                      <div
-                        key={music.id}
-                        className={`flex items-center gap-3 p-3 rounded-xl border ${colors.card} group`}
-                      >
-                        <div className="flex flex-col gap-1">
-                          <button
-                            onClick={() => moveMusic(index, index - 1)}
-                            disabled={index === 0}
-                            className={`w-6 h-6 rounded flex items-center justify-center transition-colors ${
-                              index === 0 ? 'opacity-30 cursor-not-allowed' : 'hover:bg-white/10'
-                            } ${colors.textSecondary}`}
-                          >
-                            <i className="fas fa-chevron-up text-xs"></i>
-                          </button>
-                          <button
-                            onClick={() => moveMusic(index, index + 1)}
-                            disabled={index === musicList.length - 1}
-                            className={`w-6 h-6 rounded flex items-center justify-center transition-colors ${
-                              index === musicList.length - 1 ? 'opacity-30 cursor-not-allowed' : 'hover:bg-white/10'
-                            } ${colors.textSecondary}`}
-                          >
-                            <i className="fas fa-chevron-down text-xs"></i>
-                          </button>
-                        </div>
-                        <span className={`w-6 text-center text-sm ${colors.textSecondary}`}>
-                          {index + 1}
-                        </span>
-                        <div className="flex-1 flex items-center gap-3 min-w-0">
-                          <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-pink-500/20 to-rose-500/20 flex items-center justify-center flex-shrink-0">
-                            <i className="fas fa-music text-pink-500"></i>
-                          </div>
-                          <span className={`truncate ${colors.text}`}>{music.name}</span>
-                        </div>
-                        <button
-                          onClick={() => deleteMusic(music)}
-                          className={`w-8 h-8 rounded-lg flex items-center justify-center transition-all opacity-0 group-hover:opacity-100 ${colors.buttonDelete}`}
-                        >
-                          <i className="fas fa-trash-alt text-sm"></i>
-                        </button>
-                      </div>
-                    ))
-                  )}
-                </div>
-              </div>
+                )}
+              </section>
               
-              {/* 保存按钮 */}
-              <div className="flex justify-center pt-8">
-                <button
-                  onClick={handleSaveConfig}
-                  disabled={state.isSaving}
-                  className={`px-8 py-4 rounded-xl text-white font-medium transition-all disabled:opacity-50 disabled:cursor-not-allowed ${colors.button} shadow-lg hover:shadow-xl`}
-                >
-                  {state.isSaving ? (
-                    <>
-                      <i className="fas fa-spinner fa-spin mr-2"></i>
-                      {t('saving')}
-                    </>
-                  ) : (
-                    <>
-                      <i className="fas fa-save mr-2"></i>
-                      {t('saveToGithub')}
-                    </>
-                  )}
-                </button>
-              </div>
+              <section 
+                ref={el => { sectionsRef.current['music'] = el; }}
+                id="music"
+                className={`rounded-2xl p-6 ${colors.card} backdrop-blur-md scroll-mt-4 overflow-hidden`}
+              >
+                {renderSectionHeader(sections[6])}
+                {sections[6].expanded && (
+                  <div className="mt-6 space-y-4">
+                    <p className={`text-sm ${colors.textSecondary}`}>{t('musicUploadHint')}</p>
+                    <input
+                      type="file"
+                      accept="audio/*"
+                      multiple
+                      onChange={async (e) => {
+                        const files = e.target.files;
+                        if (!files) return;
+                        for (const file of Array.from(files)) {
+                          await handleFileUpload(file);
+                        }
+                        fetchMusicList();
+                      }}
+                      className={`w-full px-4 py-3 rounded-xl border ${colors.input} file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:bg-gradient-to-r file:from-pink-500 file:to-purple-600 file:text-white file:cursor-pointer`}
+                    />
+                    {musicList.length === 0 ? (
+                      <p className={`text-center py-8 ${colors.textSecondary}`}>{t('noMusic')}</p>
+                    ) : (
+                      <div className="space-y-2">
+                        {musicList.map((music, index) => (
+                          <div key={music.id} className={`group flex items-center gap-3 p-3 rounded-xl ${theme === 'dark' ? 'bg-white/5' : 'bg-gray-50'}`}>
+                            <div className="flex flex-col gap-1">
+                              <button
+                                onClick={() => moveMusic(index, index - 1)}
+                                disabled={index === 0}
+                                className={`w-6 h-6 rounded flex items-center justify-center transition-colors ${index === 0 ? 'opacity-30 cursor-not-allowed' : 'hover:bg-white/10'} ${colors.textSecondary}`}
+                              >
+                                <i className="fas fa-chevron-up text-xs"></i>
+                              </button>
+                              <button
+                                onClick={() => moveMusic(index, index + 1)}
+                                disabled={index === musicList.length - 1}
+                                className={`w-6 h-6 rounded flex items-center justify-center transition-colors ${index === musicList.length - 1 ? 'opacity-30 cursor-not-allowed' : 'hover:bg-white/10'} ${colors.textSecondary}`}
+                              >
+                                <i className="fas fa-chevron-down text-xs"></i>
+                              </button>
+                            </div>
+                            <span className={`w-6 text-center text-sm ${colors.textSecondary}`}>{index + 1}</span>
+                            <div className="flex-1 flex items-center gap-3 min-w-0">
+                              <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-pink-500/20 to-rose-500/20 flex items-center justify-center flex-shrink-0">
+                                <i className="fas fa-music text-pink-500"></i>
+                              </div>
+                              <span className={`truncate ${colors.text}`}>{music.name}</span>
+                            </div>
+                            <button
+                              onClick={() => deleteMusic(music)}
+                              className={`w-8 h-8 rounded-lg flex items-center justify-center transition-all opacity-0 group-hover:opacity-100 ${colors.buttonDelete}`}
+                            >
+                              <i className="fas fa-trash-alt text-sm"></i>
+                            </button>
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                )}
+              </section>
             </>
           ) : (
             <div className="text-center py-12">
-              <h2 className={`text-2xl font-semibold mb-4 ${colors.text}`}>
-                {t('loading')}
-              </h2>
+              <h2 className={`text-2xl font-semibold mb-4 ${colors.text}`}>{t('loading')}</h2>
             </div>
           )}
         </div>

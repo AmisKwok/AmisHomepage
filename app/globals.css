@@ -58,3 +58,8 @@ body {
 .animate-spin-slow {
   animation: spin-slow 20s linear infinite;
 }
+
+.writing-mode-vertical {
+  writing-mode: vertical-rl;
+  text-orientation: mixed;
+}

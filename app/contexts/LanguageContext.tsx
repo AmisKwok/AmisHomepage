@@ -55,6 +55,10 @@ type TranslationReturnType = {
   cursorUploadError: string;
   resetCursor: string;
   cursorPreviewHint: string;
+  expandAll: string;
+  collapseAll: string;
+  quickNav: string;
+  clear: string;
   backToHome: string;
   configDescription: string;
   githubAuth: string;
@@ -83,6 +87,13 @@ type TranslationReturnType = {
   saveToGithub: string;
   saving: string;
   addProject: string;
+  projectName: string;
+  projectUrl: string;
+  projectImage: string;
+  projectIcon: string;
+  projectGradient: string;
+  projectDescription: string;
+  projectTags: string;
   delete: string;
   description: string;
   chinese: string;
