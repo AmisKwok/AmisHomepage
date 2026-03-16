@@ -47,7 +47,9 @@ export default function Home() {
           showCustomCursor: config.showCustomCursor,
           customCursorPath: config.customCursorPath,
           site: {
-            backgroundImage: config.site?.backgroundImage
+            backgroundImage: config.site?.backgroundImage,
+            textColor: config.site?.textColor,
+            textSecondaryColor: config.site?.textSecondaryColor
           }
         });
       } catch (error) {
@@ -68,6 +70,18 @@ export default function Home() {
       return () => clearTimeout(timer);
     }
   }, [language, prevLanguage]);
+
+  const getTextColor = () => {
+    return theme === "dark" 
+      ? (siteContent?.site?.textColor?.dark || "#ffffff")
+      : (siteContent?.site?.textColor?.light || "#1f2937");
+  };
+
+  const getTextSecondaryColor = () => {
+    return theme === "dark" 
+      ? (siteContent?.site?.textSecondaryColor?.dark || "rgba(255, 255, 255, 0.9)")
+      : (siteContent?.site?.textSecondaryColor?.light || "rgba(31, 41, 55, 0.9)");
+  };
 
   // 页面加载动画
   useEffect(() => {
@@ -135,18 +149,16 @@ export default function Home() {
                   const section = document.getElementById("projects");
                   if (section) section.scrollIntoView({ behavior: "smooth" });
                 }}
-                className={`group transition-all duration-300 flex items-center gap-2 px-3 py-2 rounded-lg ${
-                  theme === "dark" 
-                    ? "text-white/90 hover:text-white hover:bg-white/10" 
-                    : "text-gray-700 hover:text-gray-900 hover:bg-gray-200/80"
-                }`}
+                className="group transition-all duration-300 flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-white/10"
+                style={{ color: getTextSecondaryColor() }}
               >
                 <i className="fas fa-star fa-fw group-hover:scale-110 transition-transform"></i>
                 <span className="relative">
                   {t("featuredProjects")}
-                  <span className={`absolute bottom-0 left-0 w-0 h-0.5 transition-all duration-300 group-hover:w-full ${
-                    theme === "dark" ? "bg-white" : "bg-gray-900"
-                  }`}></span>
+                  <span 
+                    className="absolute bottom-0 left-0 w-0 h-0.5 transition-all duration-300 group-hover:w-full"
+                    style={{ backgroundColor: getTextColor() }}
+                  ></span>
                 </span>
               </a>
             )}
@@ -157,18 +169,16 @@ export default function Home() {
                 const section = document.getElementById("about");
                 if (section) section.scrollIntoView({ behavior: "smooth" });
               }}
-              className={`group transition-all duration-300 flex items-center gap-2 px-3 py-2 rounded-lg ${
-                theme === "dark" 
-                  ? "text-white/90 hover:text-white hover:bg-white/10" 
-                  : "text-gray-700 hover:text-gray-900 hover:bg-gray-200/80"
-              }`}
+              className="group transition-all duration-300 flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-white/10"
+              style={{ color: getTextSecondaryColor() }}
             >
               <i className="fas fa-user fa-fw group-hover:scale-110 transition-transform"></i>
               <span className="relative">
                 {t("aboutMe")}
-                <span className={`absolute bottom-0 left-0 w-0 h-0.5 transition-all duration-300 group-hover:w-full ${
-                  theme === "dark" ? "bg-white" : "bg-gray-900"
-                }`}></span>
+                <span 
+                  className="absolute bottom-0 left-0 w-0 h-0.5 transition-all duration-300 group-hover:w-full"
+                  style={{ backgroundColor: getTextColor() }}
+                ></span>
               </span>
             </a>
             {siteContent?.showSkills !== false && (
@@ -179,18 +189,16 @@ export default function Home() {
                   const section = document.getElementById("skills");
                   if (section) section.scrollIntoView({ behavior: "smooth" });
                 }}
-                className={`group transition-all duration-300 flex items-center gap-2 px-3 py-2 rounded-lg ${
-                  theme === "dark" 
-                    ? "text-white/90 hover:text-white hover:bg-white/10" 
-                    : "text-gray-700 hover:text-gray-900 hover:bg-gray-200/80"
-                }`}
+                className="group transition-all duration-300 flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-white/10"
+                style={{ color: getTextSecondaryColor() }}
               >
                 <i className="fas fa-chart-line fa-fw group-hover:scale-110 transition-transform"></i>
                 <span className="relative">
                   {t("skills")}
-                  <span className={`absolute bottom-0 left-0 w-0 h-0.5 transition-all duration-300 group-hover:w-full ${
-                    theme === "dark" ? "bg-white" : "bg-gray-900"
-                  }`}></span>
+                  <span 
+                    className="absolute bottom-0 left-0 w-0 h-0.5 transition-all duration-300 group-hover:w-full"
+                    style={{ backgroundColor: getTextColor() }}
+                  ></span>
                 </span>
               </a>
             )}
@@ -208,9 +216,11 @@ export default function Home() {
         {/* 网站信息 */}
         <div 
           id="site-info" 
-          className={`absolute inset-0 flex flex-col items-center justify-center text-center z-5 overflow-visible px-4 transition-opacity duration-300 ${isLanguageChanging ? 'opacity-0' : 'opacity-100'} ${
-            theme === "dark" ? "text-white" : "text-gray-900"
-          }`}
+          className="absolute inset-0 flex flex-col items-center justify-center text-center z-5 overflow-visible px-4 transition-opacity duration-300"
+          style={{ 
+            color: getTextColor(),
+            opacity: isLanguageChanging ? 0 : 1
+          }}
         >
           {/* 头像 */}
           <Avatar 
@@ -223,11 +233,11 @@ export default function Home() {
           <div className="min-h-[80px] flex items-center justify-center w-[90vw] mb-4">
             <DrawnTitle text={t("siteTitle")} className="w-full" />
           </div>
-          <div id="site-subtitle" className={`text-lg md:text-xl mb-8 max-w-2xl px-4 font-medium ${
-            theme === "dark" 
-              ? "text-white/90" 
-              : "text-gray-900 drop-shadow-[0_1px_2px_rgba(255,255,255,0.8)]"
-          }`}>
+          <div 
+            id="site-subtitle" 
+            className="text-lg md:text-xl mb-8 max-w-2xl px-4 font-medium"
+            style={{ color: getTextSecondaryColor() }}
+          >
             <TypeWriter 
               key={language}
               texts={[t("typeWriterText"), t("typeWriterText2")]} 
@@ -246,11 +256,13 @@ export default function Home() {
                 rel="external nofollow noreferrer" 
                 target="_blank" 
                 title={linksConfig.email.title[language]}
-                className={`w-10 h-10 flex items-center justify-center rounded-full hover:scale-110 transition-all duration-300 ${
-                  theme === "dark" ? "bg-white/20 hover:bg-white/30" : "bg-gray-200 hover:bg-gray-300"
-                }`}
+                className="w-10 h-10 flex items-center justify-center rounded-full hover:scale-110 transition-all duration-300"
+                style={{ 
+                  backgroundColor: theme === "dark" ? "rgba(255,255,255,0.2)" : "rgba(229,231,235,1)",
+                  color: getTextColor()
+                }}
               >
-                <i className={`fas fa-envelope ${theme === "dark" ? "text-white" : "text-gray-700"}`}></i>
+                <i className="fas fa-envelope"></i>
               </a>
             )}
             {linksConfig.github?.show !== false && (
@@ -259,11 +271,13 @@ export default function Home() {
                 target="_blank" 
                 rel="noopener noreferrer"
                 title={linksConfig.github.title[language]}
-                className={`w-10 h-10 flex items-center justify-center rounded-full hover:scale-110 transition-all duration-300 ${
-                  theme === "dark" ? "bg-white/20 hover:bg-white/30" : "bg-gray-200 hover:bg-gray-300"
-                }`}
+                className="w-10 h-10 flex items-center justify-center rounded-full hover:scale-110 transition-all duration-300"
+                style={{ 
+                  backgroundColor: theme === "dark" ? "rgba(255,255,255,0.2)" : "rgba(229,231,235,1)",
+                  color: getTextColor()
+                }}
               >
-                <i className={`fab fa-github ${theme === "dark" ? "text-white" : "text-gray-700"}`}></i>
+                <i className="fab fa-github"></i>
               </a>
             )}
             {linksConfig.gitee?.show !== false && (
@@ -272,11 +286,13 @@ export default function Home() {
                 target="_blank" 
                 rel="noopener noreferrer"
                 title={linksConfig.gitee.title[language]}
-                className={`w-10 h-10 flex items-center justify-center rounded-full hover:scale-110 transition-all duration-300 ${
-                  theme === "dark" ? "bg-white/20 hover:bg-white/30" : "bg-gray-200 hover:bg-gray-300"
-                }`}
+                className="w-10 h-10 flex items-center justify-center rounded-full hover:scale-110 transition-all duration-300"
+                style={{ 
+                  backgroundColor: theme === "dark" ? "rgba(255,255,255,0.2)" : "rgba(229,231,235,1)",
+                  color: getTextColor()
+                }}
               >
-                <i className={`fab fa-gitee ${theme === "dark" ? "text-white" : "text-gray-700"}`}></i>
+                <i className="fab fa-gitee"></i>
               </a>
             )}
             {linksConfig.blog?.show !== false && (
@@ -284,11 +300,13 @@ export default function Home() {
                 href={linksConfig.blog.url}
                 target="_blank"
                 title={linksConfig.blog.title[language]}
-                className={`w-10 h-10 flex items-center justify-center rounded-full hover:scale-110 transition-all duration-300 ${
-                  theme === "dark" ? "bg-white/20 hover:bg-white/30" : "bg-gray-200 hover:bg-gray-300"
-                }`}
+                className="w-10 h-10 flex items-center justify-center rounded-full hover:scale-110 transition-all duration-300"
+                style={{ 
+                  backgroundColor: theme === "dark" ? "rgba(255,255,255,0.2)" : "rgba(229,231,235,1)",
+                  color: getTextColor()
+                }}
               >
-                <i className={`fas fa-blog ${theme === "dark" ? "text-white" : "text-gray-700"}`}></i>
+                <i className="fas fa-blog"></i>
               </a>
             )}
           </div>
@@ -301,11 +319,8 @@ export default function Home() {
               const content = document.getElementById("content");
               if (content) content.scrollIntoView({ behavior: "smooth" });
             }}
-            className={`p-2 rounded-full transition-all duration-300 ${
-              theme === "dark" 
-                ? "text-white/60 hover:text-white hover:bg-white/10" 
-                : "text-gray-500 hover:text-gray-700 hover:bg-gray-200"
-            }`}
+            className="p-2 rounded-full transition-all duration-300"
+            style={{ color: getTextSecondaryColor() }}
             aria-label="Scroll down"
           >
             <i className="fas fa-chevron-down text-2xl"></i>

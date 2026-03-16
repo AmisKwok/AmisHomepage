@@ -19,6 +19,14 @@ interface SiteContent {
 			dark?: string
 			light?: string
 		}
+		textColor?: {
+			dark?: string
+			light?: string
+		}
+		textSecondaryColor?: {
+			dark?: string
+			light?: string
+		}
 	}
 }
 

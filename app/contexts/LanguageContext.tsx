@@ -77,6 +77,8 @@ type TranslationReturnType = {
   backgroundImage: string;
   darkTheme: string;
   lightTheme: string;
+  textColor: string;
+  textSecondaryColor: string;
   profile: string;
   name: string;
   avatar: string;

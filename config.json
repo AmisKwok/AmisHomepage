@@ -13,6 +13,14 @@
       "dark": "/images/index.jpg",
       "light": "/images/index4.jpg"
     },
+    "textColor": {
+      "dark": "#ffffff",
+      "light": "#1f2937"
+    },
+    "textSecondaryColor": {
+      "dark": "rgba(255, 255, 255, 0.9)",
+      "light": "rgba(31, 41, 55, 0.9)"
+    },
     "author": "AmisKwok",
     "description": {
       "zh": "后端开发者 | 移动端开发者。专注于 Java Spring Boot、Flutter 和 Next.js 开发。热爱编程，追求极致，永不止步。",

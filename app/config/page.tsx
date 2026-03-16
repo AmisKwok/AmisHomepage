@@ -728,6 +728,88 @@ export default function ConfigPage() {
                           </div>
                         </div>
                       </div>
+                      <div className="md:col-span-2">
+                        <label className={`block text-sm font-medium mb-2 ${colors.textSecondary}`}>{t('textColor')}</label>
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                          <div>
+                            <label className={`block text-xs font-medium mb-1 ${colors.textSecondary}`}>{t('darkTheme')}</label>
+                            <div className="flex gap-2">
+                              <input
+                                type="color"
+                                value={state.config.site?.textColor?.dark || '#ffffff'}
+                                onChange={(e) => handleInputChange('site.textColor.dark', e.target.value)}
+                                className="w-12 h-10 rounded-lg border cursor-pointer"
+                              />
+                              <input
+                                type="text"
+                                value={state.config.site?.textColor?.dark || '#ffffff'}
+                                onChange={(e) => handleInputChange('site.textColor.dark', e.target.value)}
+                                className={`flex-1 px-3 py-2 rounded-lg border ${colors.input} text-sm`}
+                                placeholder="#ffffff"
+                              />
+                            </div>
+                          </div>
+                          <div>
+                            <label className={`block text-xs font-medium mb-1 ${colors.textSecondary}`}>{t('lightTheme')}</label>
+                            <div className="flex gap-2">
+                              <input
+                                type="color"
+                                value={state.config.site?.textColor?.light || '#1f2937'}
+                                onChange={(e) => handleInputChange('site.textColor.light', e.target.value)}
+                                className="w-12 h-10 rounded-lg border cursor-pointer"
+                              />
+                              <input
+                                type="text"
+                                value={state.config.site?.textColor?.light || '#1f2937'}
+                                onChange={(e) => handleInputChange('site.textColor.light', e.target.value)}
+                                className={`flex-1 px-3 py-2 rounded-lg border ${colors.input} text-sm`}
+                                placeholder="#1f2937"
+                              />
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div className="md:col-span-2">
+                        <label className={`block text-sm font-medium mb-2 ${colors.textSecondary}`}>{t('textSecondaryColor')}</label>
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                          <div>
+                            <label className={`block text-xs font-medium mb-1 ${colors.textSecondary}`}>{t('darkTheme')}</label>
+                            <div className="flex gap-2">
+                              <input
+                                type="color"
+                                value={state.config.site?.textSecondaryColor?.dark?.startsWith('#') ? state.config.site?.textSecondaryColor?.dark : '#ffffff'}
+                                onChange={(e) => handleInputChange('site.textSecondaryColor.dark', e.target.value)}
+                                className="w-12 h-10 rounded-lg border cursor-pointer"
+                              />
+                              <input
+                                type="text"
+                                value={state.config.site?.textSecondaryColor?.dark || ''}
+                                onChange={(e) => handleInputChange('site.textSecondaryColor.dark', e.target.value)}
+                                className={`flex-1 px-3 py-2 rounded-lg border ${colors.input} text-sm`}
+                                placeholder="rgba(255, 255, 255, 0.9)"
+                              />
+                            </div>
+                          </div>
+                          <div>
+                            <label className={`block text-xs font-medium mb-1 ${colors.textSecondary}`}>{t('lightTheme')}</label>
+                            <div className="flex gap-2">
+                              <input
+                                type="color"
+                                value={state.config.site?.textSecondaryColor?.light?.startsWith('#') ? state.config.site?.textSecondaryColor?.light : '#1f2937'}
+                                onChange={(e) => handleInputChange('site.textSecondaryColor.light', e.target.value)}
+                                className="w-12 h-10 rounded-lg border cursor-pointer"
+                              />
+                              <input
+                                type="text"
+                                value={state.config.site?.textSecondaryColor?.light || ''}
+                                onChange={(e) => handleInputChange('site.textSecondaryColor.light', e.target.value)}
+                                className={`flex-1 px-3 py-2 rounded-lg border ${colors.input} text-sm`}
+                                placeholder="rgba(31, 41, 55, 0.9)"
+                              />
+                            </div>
+                          </div>
+                        </div>
+                      </div>
                     </div>
                     <div className="pt-2 border-t border-white/10">
                       <label className={`block text-sm font-medium mb-3 ${colors.text}`}>{t('typeWriterText1Label')}</label>
