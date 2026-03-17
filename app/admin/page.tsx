@@ -200,7 +200,19 @@ export default function ConfigPage() {
 
   const loadPrivateKey = async () => {
     const saved = localStorage.getItem('github_private_key');
-    if (saved) {
+    const savedTime = localStorage.getItem('github_private_key_time');
+    
+    if (saved && savedTime) {
+      const savedTimestamp = parseInt(savedTime, 10);
+      const now = Date.now();
+      const sixHours = 6 * 60 * 60 * 1000;
+      
+      if (now - savedTimestamp > sixHours) {
+        localStorage.removeItem('github_private_key');
+        localStorage.removeItem('github_private_key_time');
+        return;
+      }
+      
       try {
         const response = await fetch('/api/decrypt', {
           method: 'POST',
@@ -306,9 +318,11 @@ export default function ConfigPage() {
       const data = await response.json();
       if (data.success) {
         localStorage.setItem('github_private_key', data.encrypted);
+        localStorage.setItem('github_private_key_time', Date.now().toString());
       }
     } catch {
       localStorage.setItem('github_private_key', state.privateKey);
+      localStorage.setItem('github_private_key_time', Date.now().toString());
     }
   };
 
