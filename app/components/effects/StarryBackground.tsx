@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef } from "react";
-import { useThemeStore } from "../stores/theme-store";
+import { useThemeStore } from "../../stores/theme-store";
 
 interface Particle {
   x: number;

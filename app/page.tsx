@@ -3,29 +3,29 @@
 import { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { linksConfig } from "./config";
+import { linksConfig } from "./site-config";
 import { useLanguageStore } from "./stores/language-store";
 import { useThemeStore } from "./stores/theme-store";
 import { useSiteConfig } from "./hooks/useSiteConfig";
 import { useLanguageTransition } from "./hooks/useLanguageTransition";
 import { useBackToTop } from "./hooks/useBackToTop";
 import { useTextColors } from "./hooks/useTextColors";
-import TypeWriter from "./components/TypeWriter";
-import LanguageSwitcher from "./components/LanguageSwitcher";
-import ThemeSwitcher from "./components/ThemeSwitcher";
-import DrawnTitle from "./components/DrawnTitle";
-import Avatar from "./components/Avatar";
-import AboutCard from "./components/AboutCard";
-import FeaturedProjects from "./components/FeaturedProjects";
-import Skills from "./components/Skills";
-import StarryBackground from "./components/StarryBackground";
-import LightBackground from "./components/LightBackground";
-import LoadingScreen from "./components/LoadingScreen";
-import SectionNav from "./components/SectionNav";
-import MobileNav from "./components/MobileNav";
-import ThemeTransition from "./components/ThemeTransition";
-import LocalTime from "./components/LocalTime";
-import CustomCursor from "./components/CustomCursor";
+import TypeWriter from "./components/content/TypeWriter";
+import LanguageSwitcher from "./components/ui/LanguageSwitcher";
+import ThemeSwitcher from "./components/ui/ThemeSwitcher";
+import DrawnTitle from "./components/effects/DrawnTitle";
+import Avatar from "./components/media/Avatar";
+import AboutCard from "./components/content/AboutCard";
+import FeaturedProjects from "./components/content/FeaturedProjects";
+import Skills from "./components/content/Skills";
+import StarryBackground from "./components/effects/StarryBackground";
+import LightBackground from "./components/effects/LightBackground";
+import LoadingScreen from "./components/effects/LoadingScreen";
+import SectionNav from "./components/layout/SectionNav";
+import MobileNav from "./components/layout/MobileNav";
+import ThemeTransition from "./components/effects/ThemeTransition";
+import LocalTime from "./components/effects/LocalTime";
+import CustomCursor from "./components/ui/CustomCursor";
 
 export default function Home() {
   const { t, hydrated, hydrate } = useLanguageStore();
@@ -287,7 +287,7 @@ export default function Home() {
           </p>
           <div className="mt-2 hidden md:block">
             <Link
-              href="/config"
+              href="/admin"
               className={`text-xs transition-all duration-300 ${
                 theme === "dark"
                   ? "text-white/20 hover:text-white/40"

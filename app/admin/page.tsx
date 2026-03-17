@@ -5,9 +5,9 @@ import { useState, useEffect, useRef, useCallback, useMemo } from 'react';
 import Link from 'next/link';
 import { useThemeStore } from '../stores/theme-store';
 import { useLanguageStore } from '../stores/language-store';
-import { useConfigStore } from '../(home)/stores/config-store';
+import { useConfigStore } from '../stores/config-store';
 import { toast, Toaster } from 'sonner';
-import LoadingScreen from '../components/LoadingScreen';
+import LoadingScreen from '../components/effects/LoadingScreen';
 
 interface ConfigState {
   config: any;

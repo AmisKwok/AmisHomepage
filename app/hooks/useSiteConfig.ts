@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { useConfigStore } from '../(home)/stores/config-store'
+import { useConfigStore } from '../stores/config-store'
 
 interface SiteContent {
   showProjects?: boolean

@@ -2,7 +2,7 @@
 "use client";
 
 import { useEffect, useState, useRef } from "react";
-import { useThemeStore } from "../stores/theme-store";
+import { useThemeStore } from "../../stores/theme-store";
 
 interface DrawnTitleProps {
   text: string;

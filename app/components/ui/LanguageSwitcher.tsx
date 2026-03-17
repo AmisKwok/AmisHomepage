@@ -1,7 +1,7 @@
 "use client";
 
-import { useLanguageStore } from "../stores/language-store";
-import { useThemeStore } from "../stores/theme-store";
+import { useLanguageStore } from "../../stores/language-store";
+import { useThemeStore } from "../../stores/theme-store";
 
 export default function LanguageSwitcher() {
   const { language, toggleLanguage, t } = useLanguageStore();

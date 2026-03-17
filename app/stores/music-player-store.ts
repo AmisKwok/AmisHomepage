@@ -1,13 +1,5 @@
 import { create } from 'zustand'
-
-export type LoopMode = 'list-loop' | 'list-no-loop' | 'single-loop' | 'single-no-loop'
-
-export interface Music {
-	id: string
-	name: string
-	path: string
-	order: number
-}
+import type { Music, LoopMode } from '../../types'
 
 interface MusicPlayerStore {
 	musicList: Music[]

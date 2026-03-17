@@ -3,12 +3,12 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { useLanguageStore } from "../stores/language-store";
-import { useThemeStore } from "../stores/theme-store";
-import { skillsConfig } from "../config";
-import { getThemeColors } from "../config/themeConfig";
-import { useScrollAnimation } from "../hooks/useScrollAnimation";
-import { useConfigStore } from "../(home)/stores/config-store";
+import { useLanguageStore } from "../../stores/language-store";
+import { useThemeStore } from "../../stores/theme-store";
+import { skillsConfig } from "../../site-config";
+import { getThemeColors } from "../../themeConfig";
+import { useScrollAnimation } from "../../hooks/useScrollAnimation";
+import { useConfigStore } from "../../stores/config-store";
 
 export default function Skills() {
   const { t } = useLanguageStore();

@@ -2,7 +2,7 @@ import { Geist, Geist_Mono, ZCOOL_QingKe_HuangYou } from "next/font/google";
 import { Analytics } from "@vercel/analytics/react";
 import "./globals.css";
 import "@fortawesome/fontawesome-free/css/all.min.css";
-import MusicPlayer from "./components/MusicPlayer";
+import MusicPlayer from "./components/media/MusicPlayer";
 import { metadata, viewport } from "./metadata";
 import { initScript } from "./scripts/initScript";
 

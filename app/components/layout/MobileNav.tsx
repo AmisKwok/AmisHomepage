@@ -1,8 +1,8 @@
 "use client";
 
 import { useState, useEffect, useRef, useMemo } from "react";
-import { useThemeStore } from "../stores/theme-store";
-import { useConfigStore } from "../(home)/stores/config-store";
+import { useThemeStore } from "../../stores/theme-store";
+import { useConfigStore } from "../../stores/config-store";
 
 type Section = "about" | "projects" | "skills";
 

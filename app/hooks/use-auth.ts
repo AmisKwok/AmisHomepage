@@ -4,7 +4,7 @@
  */
 import { create } from 'zustand'
 import { clearAllAuthCache, getAuthToken as getToken, hasAuth as checkAuth, getPemFromCache, savePemToCache } from '@/lib/auth'
-import { useConfigStore } from '@/app/(home)/stores/config-store'
+import { useConfigStore } from '@/app/stores/config-store'
 
 /**
  * 认证状态接口

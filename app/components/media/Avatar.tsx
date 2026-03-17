@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { useThemeStore } from "../stores/theme-store";
+import { useThemeStore } from "../../stores/theme-store";
 
 interface AvatarProps {
   src: string;

@@ -1,5 +1,5 @@
 import { create } from 'zustand'
-import { translations, Language } from '../config'
+import { translations, Language } from '../site-config'
 
 type Translations = typeof translations
 type TranslationKey = keyof Translations['zh']

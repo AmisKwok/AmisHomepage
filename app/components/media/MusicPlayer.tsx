@@ -2,10 +2,11 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
-import { useMusicPlayerStore, LoopMode } from "../stores/music-player-store";
-import { useThemeStore } from "../stores/theme-store";
-import { useLanguageStore } from "../stores/language-store";
-import { useAudioPlayer } from "../hooks/useAudioPlayer";
+import { useMusicPlayerStore } from "../../stores/music-player-store";
+import type { LoopMode } from "../../../types";
+import { useThemeStore } from "../../stores/theme-store";
+import { useLanguageStore } from "../../stores/language-store";
+import { useAudioPlayer } from "../../hooks/useAudioPlayer";
 
 const LOOP_MODES: LoopMode[] = ['list-loop', 'list-no-loop', 'single-loop', 'single-no-loop']
 

@@ -3,8 +3,8 @@
 "use client";
 
 import { useState, useEffect, useRef, useCallback } from "react";
-import { useThemeStore } from "../stores/theme-store";
-import { useLanguageStore } from "../stores/language-store";
+import { useThemeStore } from "../../stores/theme-store";
+import { useLanguageStore } from "../../stores/language-store";
 
 function getChineseZodiac(year: number): string {
   const zodiacs = ["鼠", "牛", "虎", "兔", "龙", "蛇", "马", "羊", "猴", "鸡", "狗", "猪"];

@@ -1,6 +1,5 @@
 import { create } from 'zustand'
-
-type Theme = 'dark' | 'light'
+import type { Theme } from '../../types'
 
 interface ThemeStore {
 	theme: Theme

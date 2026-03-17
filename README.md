@@ -4,7 +4,7 @@
 
 ## 在线预览
 
-🌐 [https://www.amisweb.cn](https://www.amisweb.cn)
+🌐 <https://www.amisweb.cn>
 
 ## 功能特性
 
@@ -36,7 +36,7 @@
 - [Tailwind CSS](https://tailwindcss.com/) - 原子化 CSS
 - [Font Awesome](https://fontawesome.com/) - 图标库
 
----
+***
 
 ## 🚀 小白快速上手指南
 
@@ -165,13 +165,13 @@
 
 将以下图片放入 `public/images/` 目录：
 
-| 文件名 | 用途 | 建议尺寸 |
-|--------|------|----------|
-| `avatar.jpg` | 头像 | 512x512 |
-| `index.jpg` | 暗色背景图 | 1920x1080 |
-| `index4.jpg` | 亮色背景图 | 1920x1080 |
-| `icon.png` | 网站图标 | 512x512 |
-| `index2.jpg` ~ `index9.jpg` | 项目展示图 | 1200x630 |
+| 文件名                          | 用途    | 建议尺寸      |
+| ---------------------------- | ----- | --------- |
+| `avatar.jpg`                 | 头像    | 512x512   |
+| `index.jpg`                  | 暗色背景图 | 1920x1080 |
+| `index4.jpg`                 | 亮色背景图 | 1920x1080 |
+| `icon.png`                   | 网站图标  | 512x512   |
+| `index2.jpg` \~ `index9.jpg` | 项目展示图 | 1200x630  |
 
 ### 第五步：添加音乐（可选）
 
@@ -189,9 +189,9 @@ npm install
 npm run dev
 ```
 
-访问 http://localhost:9998 即可预览！
+访问 <http://localhost:9998> 即可预览！
 
----
+***
 
 ## 配置详解
 
@@ -233,35 +233,35 @@ config.json
 
 本项目使用 [Font Awesome](https://fontawesome.com/icons) 图标库，常用图标：
 
-| 用途 | 图标代码 |
-|------|----------|
-| 博客 | `fas fa-blog` |
-| GitHub | `fab fa-github` |
-| 邮箱 | `fas fa-envelope` |
-| 数据库 | `fas fa-database` |
-| 服务器 | `fas fa-server` |
-| 手机 | `fas fa-mobile-alt` |
-| 代码 | `fas fa-code` |
-| 音乐 | `fas fa-music` |
-| 首页 | `fas fa-home` |
-| Java | `fab fa-java` |
-| React | `fab fa-react` |
-| JS | `fab fa-js` |
-| Android | `fab fa-android` |
+| 用途      | 图标代码                |
+| ------- | ------------------- |
+| 博客      | `fas fa-blog`       |
+| GitHub  | `fab fa-github`     |
+| 邮箱      | `fas fa-envelope`   |
+| 数据库     | `fas fa-database`   |
+| 服务器     | `fas fa-server`     |
+| 手机      | `fas fa-mobile-alt` |
+| 代码      | `fas fa-code`       |
+| 音乐      | `fas fa-music`      |
+| 首页      | `fas fa-home`       |
+| Java    | `fab fa-java`       |
+| React   | `fab fa-react`      |
+| JS      | `fab fa-js`         |
+| Android | `fab fa-android`    |
 
 ### 渐变色说明
 
 项目卡片使用 Tailwind CSS 渐变色，常用组合：
 
-| 渐变色代码 | 效果 |
-|------------|------|
-| `from-blue-500 to-purple-600` | 蓝紫渐变 |
-| `from-pink-500 to-rose-600` | 粉红渐变 |
+| 渐变色代码                          | 效果   |
+| ------------------------------ | ---- |
+| `from-blue-500 to-purple-600`  | 蓝紫渐变 |
+| `from-pink-500 to-rose-600`    | 粉红渐变 |
 | `from-emerald-500 to-teal-600` | 绿青渐变 |
-| `from-orange-500 to-red-500` | 橙红渐变 |
-| `from-cyan-500 to-blue-600` | 青蓝渐变 |
+| `from-orange-500 to-red-500`   | 橙红渐变 |
+| `from-cyan-500 to-blue-600`    | 青蓝渐变 |
 
----
+***
 
 ## 项目结构
 
@@ -270,16 +270,31 @@ config.json
 ├── config.json             # 📝 主配置文件（用户编辑）
 ├── config.example.json     # 📋 配置示例模板
 ├── app/
-│   ├── components/         # 组件
-│   ├── contexts/           # React Context
+│   ├── admin/              # 管理后台页面
+│   ├── api/                # API 路由
+│   ├── components/         # 组件（按功能分类）
+│   │   ├── ui/             # UI 控件（开关、语言切换等）
+│   │   ├── layout/         # 布局组件（导航等）
+│   │   ├── content/        # 内容组件（项目、技能、关于等）
+│   │   ├── media/          # 媒体组件（音乐播放器、头像等）
+│   │   └── effects/        # 效果组件（背景、动画等）
 │   ├── hooks/              # 自定义 Hooks
-│   ├── config.ts           # 配置读取（自动）
+│   ├── stores/             # Zustand 状态管理
+│   ├── scripts/            # 脚本文件
+│   ├── site-config.ts      # 站点配置读取
+│   ├── themeConfig.ts      # 主题配置
 │   ├── globals.css         # 全局样式
 │   ├── layout.tsx          # 根布局
 │   ├── metadata.ts         # SEO 元数据
 │   └── page.tsx            # 首页
+├── types/                  # TypeScript 类型定义
+│   ├── config.ts           # 配置相关类型
+│   ├── theme.ts            # 主题相关类型
+│   ├── store.ts            # Store 相关类型
+│   └── api.ts              # API 相关类型
 ├── public/
 │   ├── images/             # 图片资源
+│   ├── music/              # 音乐文件
 │   ├── markdown/           # Markdown 文件
 │   └── robots.txt          # 爬虫规则
 ├── .env.example            # 环境变量示例
@@ -288,7 +303,7 @@ config.json
 └── package.json
 ```
 
----
+***
 
 ## 部署教程
 
@@ -298,43 +313,37 @@ config.json
 
 1. **Fork 本项目**
    - 点击右上角 `Fork` 按钮
-
 2. **登录 Vercel**
    - 访问 [vercel.com](https://vercel.com/)
    - 使用 GitHub 登录
-
 3. **配置环境变量（重要！）**
-   
+
    在 Vercel 部署前，需要先配置以下环境变量：
-   
    - 进入 Vercel 控制台
    - 选择你的项目 → **Settings** → **Environment Variables**
    - 添加以下变量：
-
-   | 变量名 | 说明 | 示例 |
-   |--------|------|------|
-   | `GITHUB_APP_ID` | GitHub App ID | `123456` |
-   | `GITHUB_REPO_OWNER` | 仓库所有者 | `yourusername` |
-   | `GITHUB_REPO_NAME` | 仓库名称 | `AmisHomepage` |
-   | `GITHUB_REPO_BRANCH` | 分支名称 | `main` |
-   | `ENCRYPTION_KEY` | 加密密钥（用于加密存储的私钥） | `随机生成的32字节十六进制字符串` |
-
+     \| 变量名                  | 说明              | 示例                 |
+     \| -------------------- | --------------- | ------------------ |
+     \| `GITHUB_APP_ID`      | GitHub App ID   | `123456`           |
+     \| `GITHUB_REPO_OWNER`  | 仓库所有者           | `yourusername`     |
+     \| `GITHUB_REPO_NAME`   | 仓库名称            | `AmisHomepage`     |
+     \| `GITHUB_REPO_BRANCH` | 分支名称            | `main`             |
+     \| `ENCRYPTION_KEY`     | 加密密钥（用于加密存储的私钥） | `随机生成的32字节十六进制字符串` |
    > ⚠️ **注意**：`.env` 文件不会被上传到 GitHub，所以必须在 Vercel 控制台手动配置这些环境变量！
-   > 
+   >
    > 💡 **生成加密密钥**：可以使用以下命令生成安全的随机密钥：
+   >
    > ```bash
    > node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"
    > ```
-
 4. **导入项目**
    - 点击 `New Project`
    - 选择你 Fork 的仓库
    - 点击 `Deploy`
-
 5. **绑定域名（可选）**
    - 在项目设置中添加自定义域名
 
----
+***
 
 ## 🔧 在线配置管理（推荐）
 
@@ -342,7 +351,7 @@ config.json
 
 ### 访问配置页面
 
-1. 部署完成后，访问 `https://your-domain.com/config`
+1. 部署完成后，访问 `https://your-domain.com/admin`
 2. 上传你的 GitHub App PEM 私钥文件
 3. 在线编辑所有配置项
 4. 点击保存，自动提交到 GitHub
@@ -435,7 +444,7 @@ npm run build
 # 将静态文件上传到任意静态托管服务
 ```
 
----
+***
 
 ## Nginx 反向代理配置
 
@@ -455,13 +464,14 @@ server {
 }
 ```
 
----
+***
 
 ## 常见问题
 
 ### Q: 修改配置后没有生效？
 
 A: 重启开发服务器：
+
 ```bash
 # 停止当前运行的服务（Ctrl+C）
 # 重新启动
@@ -471,12 +481,14 @@ npm run dev
 ### Q: 图片不显示？
 
 A: 检查图片路径是否正确：
+
 - 图片放在 `public/images/` 目录
 - 配置中使用 `/images/xxx.jpg`（注意开头的 `/`）
 
 ### Q: 如何修改端口？
 
 A: 编辑 `.env` 文件：
+
 ```
 PORT=8080
 ```
@@ -484,6 +496,7 @@ PORT=8080
 ### Q: 如何添加新的社交链接？
 
 A: 在 `config.json` 的 `links` 中添加：
+
 ```json
 {
   "links": {
@@ -496,7 +509,7 @@ A: 在 `config.json` 的 `links` 中添加：
 }
 ```
 
----
+***
 
 ## 🐛 问题反馈与建议
 
@@ -507,6 +520,7 @@ A: 在 `config.json` 的 `links` 中添加：
 标题格式：`BUG: xxx`
 
 示例：
+
 - `BUG: 暗色模式下日历显示异常`
 - `BUG: 移动端导航菜单无法关闭`
 
@@ -515,22 +529,24 @@ A: 在 `config.json` 的 `links` 中添加：
 标题格式：`需求: xxx`
 
 示例：
+
 - `需求: 支持更多社交平台链接`
 - `需求: 添加深色/浅色主题自动切换功能`
 
----
+***
 
 ## License
 
 本项目采用 [CC BY-NC-SA 4.0](LICENSE) 许可协议。
 
 **简单来说：**
+
 - ✅ 可以自由分享和修改
 - ❌ **禁止商业用途**
 - 📋 修改后必须使用相同协议
 
 详见 [LICENSE](LICENSE) 文件。
 
----
+***
 
 Made with ❤️ by Amis

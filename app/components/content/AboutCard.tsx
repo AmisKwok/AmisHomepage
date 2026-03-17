@@ -1,11 +1,11 @@
  
 "use client";
 
-import { useLanguageStore } from "../stores/language-store";
-import { useThemeStore } from "../stores/theme-store";
-import { techStackConfig, aboutMeConfig } from "../config";
-import { getThemeColors } from "../config/themeConfig";
-import { useScrollAnimation } from "../hooks/useScrollAnimation";
+import { useLanguageStore } from "../../stores/language-store";
+import { useThemeStore } from "../../stores/theme-store";
+import { techStackConfig, aboutMeConfig } from "../../site-config";
+import { getThemeColors } from "../../themeConfig";
+import { useScrollAnimation } from "../../hooks/useScrollAnimation";
 
 export default function AboutCard() {
   const { language, t } = useLanguageStore();

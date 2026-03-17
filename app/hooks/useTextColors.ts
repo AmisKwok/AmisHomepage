@@ -1,6 +1,6 @@
 import { useMemo } from 'react'
 import { useThemeStore } from '../stores/theme-store'
-import { useConfigStore } from '../(home)/stores/config-store'
+import { useConfigStore } from '../stores/config-store'
 
 export function useTextColors() {
   const { theme } = useThemeStore()
