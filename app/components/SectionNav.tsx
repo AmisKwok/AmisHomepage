@@ -1,27 +1,25 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
-import { useLanguage } from "../contexts/LanguageContext";
-import { useTheme } from "../contexts/ThemeContext";
-import { getThemeColors } from "../config/themeConfig";
+import { useState, useEffect, useRef, useMemo } from "react";
+import { useLanguageStore } from "../stores/language-store";
+import { useThemeStore } from "../stores/theme-store";
 import { useConfigStore } from "../(home)/stores/config-store";
 
 type Section = "about" | "projects" | "skills";
 
 export default function SectionNav() {
-  const { t } = useLanguage();
-  const { theme } = useTheme();
-  const colors = getThemeColors(theme);
+  const { t } = useLanguageStore();
+  const { theme } = useThemeStore();
   const { siteContent } = useConfigStore();
   const [currentSection, setCurrentSection] = useState<Section>("projects");
   const [isVisible, setIsVisible] = useState(false);
   const isScrollingRef = useRef(false);
 
-  const sections: { id: Section; label: string; icon: string }[] = [
+  const sections: { id: Section; label: string; icon: string }[] = useMemo(() => [
     ...(siteContent?.showProjects !== false ? [{ id: "projects" as Section, label: t("featuredProjects"), icon: "fas fa-star" }] : []),
     { id: "about" as Section, label: t("aboutMe"), icon: "fas fa-user" },
     ...(siteContent?.showSkills !== false ? [{ id: "skills" as Section, label: t("skills"), icon: "fas fa-chart-line" }] : []),
-  ];
+  ], [t, siteContent?.showProjects, siteContent?.showSkills]);
 
   const scrollToSection = (sectionId: Section) => {
     const section = document.getElementById(sectionId);
@@ -60,7 +58,7 @@ export default function SectionNav() {
     window.addEventListener("scroll", handleScroll);
     handleScroll();
     return () => window.removeEventListener("scroll", handleScroll);
-  }, [t, sections]);
+  }, [sections]);
 
   return (
     <div className={`fixed right-8 top-1/2 -translate-y-1/2 z-40 hidden md:block transition-all duration-300 ${

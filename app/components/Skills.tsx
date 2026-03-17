@@ -3,28 +3,24 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { useLanguage } from "../contexts/LanguageContext";
-import { useTheme } from "../contexts/ThemeContext";
+import { useLanguageStore } from "../stores/language-store";
+import { useThemeStore } from "../stores/theme-store";
 import { skillsConfig } from "../config";
 import { getThemeColors } from "../config/themeConfig";
 import { useScrollAnimation } from "../hooks/useScrollAnimation";
 import { useConfigStore } from "../(home)/stores/config-store";
 
 export default function Skills() {
-  const { t } = useLanguage();
-  const { theme } = useTheme();
+  const { t } = useLanguageStore();
+  const { theme } = useThemeStore();
   const colors = getThemeColors(theme);
   const { siteContent } = useConfigStore();
   const [animatedLevels, setAnimatedLevels] = useState<Record<string, number>>({});
 
-  const skillsSection = useScrollAnimation({ threshold: 0.1 });
-
-  if (siteContent?.showSkills === false) {
-    return null;
-  }
+  const { ref, isVisible } = useScrollAnimation({ threshold: 0.1 });
 
   useEffect(() => {
-    if (skillsSection.isVisible) {
+    if (isVisible) {
       skillsConfig.forEach((skill) => {
         let start = 0;
         const end = skill.level;
@@ -49,14 +45,18 @@ export default function Skills() {
         requestAnimationFrame(animate);
       });
     }
-  }, [skillsSection.isVisible]);
+  }, [isVisible]);
+
+  if (siteContent?.showSkills === false) {
+    return null;
+  }
 
   return (
     <div id="skills" className="w-full max-w-3xl mx-auto">
       <div 
-        ref={skillsSection.ref as React.RefObject<HTMLDivElement>}
+        ref={ref}
         className={`relative group transition-all duration-1000 ${
-          skillsSection.isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
+          isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
         }`}
       >
         <div className={`absolute -inset-1 rounded-2xl blur-lg opacity-50 group-hover:opacity-75 transition duration-500 ${

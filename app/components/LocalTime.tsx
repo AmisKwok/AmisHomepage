@@ -1,30 +1,10 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable react-hooks/set-state-in-effect */
 "use client";
 
-import { useState, useEffect, useRef } from "react";
-import { useTheme } from "../contexts/ThemeContext";
-import { useLanguage } from "../contexts/LanguageContext";
-
-interface Holiday {
-  name: string;
-  date: string;
-  type: "fixed" | "lunar" | "calculated";
-}
-
-const SOLAR_HOLIDAYS: Record<string, string> = {
-  "01-01": "元旦",
-  "05-01": "劳动节",
-  "10-01": "国庆节",
-};
-
-const LUNAR_HOLIDAYS: Record<string, string> = {
-  "01-01": "春节",
-  "01-15": "元宵节",
-  "04-04": "清明节",
-  "05-05": "端午节",
-  "08-15": "中秋节",
-  "09-09": "重阳节",
-};
+import { useState, useEffect, useRef, useCallback } from "react";
+import { useThemeStore } from "../stores/theme-store";
+import { useLanguageStore } from "../stores/language-store";
 
 function getChineseZodiac(year: number): string {
   const zodiacs = ["鼠", "牛", "虎", "兔", "龙", "蛇", "马", "羊", "猴", "鸡", "狗", "猪"];
@@ -138,7 +118,6 @@ function solarToLunar(year: number, month: number, day: number): { lunarYear: nu
 function getHoliday(date: Date, holidayData: any): { name: string; type: 'holiday' | 'workday' } | null {
   if (!holidayData) return null;
   
-  const year = date.getFullYear();
   const month = String(date.getMonth() + 1).padStart(2, "0");
   const day = String(date.getDate()).padStart(2, "0");
   const shortDateKey = `${month}-${day}`;
@@ -164,9 +143,24 @@ function isChinaTimezone(): boolean {
   return timezone === "Asia/Shanghai" || timezone === "Asia/Beijing" || timezone === "Asia/Chongqing";
 }
 
+function getCachedHolidayData(year: number): { data: any; year: number } | null {
+  if (typeof window === 'undefined') return null;
+  const storageKey = `holiday-data-${year}`;
+  const cachedData = localStorage.getItem(storageKey);
+  if (cachedData) {
+    try {
+      const parsed = JSON.parse(cachedData);
+      return { data: parsed, year };
+    } catch {
+      localStorage.removeItem(storageKey);
+    }
+  }
+  return null;
+}
+
 export default function LocalTime() {
-  const { theme } = useTheme();
-  const { language, t } = useLanguage();
+  const { theme } = useThemeStore();
+  const { language, t } = useLanguageStore();
   const [time, setTime] = useState<Date | null>(null);
   const [isExpanded, setIsExpanded] = useState(false);
   const [currentMonth, setCurrentMonth] = useState(new Date());
@@ -185,51 +179,46 @@ export default function LocalTime() {
     return () => clearInterval(interval);
   }, []);
 
+  const fetchHolidayData = useCallback(async (year: number) => {
+    try {
+      const response = await fetch(`/api/holiday?year=${year}`);
+      const data = await response.json();
+      if (data.success) {
+        setHolidayData(data);
+        setLastFetchedYear(year);
+        const storageKey = `holiday-data-${year}`;
+        localStorage.setItem(storageKey, JSON.stringify(data));
+        
+        for (let i = 0; i < localStorage.length; i++) {
+          const key = localStorage.key(i);
+          if (key && key.startsWith('holiday-data-')) {
+            const keyYear = parseInt(key.replace('holiday-data-', ''));
+            if (!isNaN(keyYear) && keyYear < year - 2) {
+              localStorage.removeItem(key);
+            }
+          }
+        }
+      }
+    } catch (error) {
+      console.error('Failed to fetch holiday data:', error);
+    }
+  }, []);
+
   useEffect(() => {
     if (language === "zh" && isChinaTimezone() && time) {
       const year = time.getFullYear();
-      const storageKey = `holiday-data-${year}`;
-      
-      const cachedData = localStorage.getItem(storageKey);
-      if (cachedData) {
-        try {
-          const parsed = JSON.parse(cachedData);
-          setHolidayData(parsed);
-          setLastFetchedYear(year);
-          return;
-        } catch (e) {
-          localStorage.removeItem(storageKey);
-        }
-      }
       
       if (year !== lastFetchedYear) {
-        const fetchHolidayData = async () => {
-          try {
-            const response = await fetch(`/api/holiday?year=${year}`);
-            const data = await response.json();
-            if (data.success) {
-              setHolidayData(data);
-              setLastFetchedYear(year);
-              localStorage.setItem(storageKey, JSON.stringify(data));
-              
-              for (let i = 0; i < localStorage.length; i++) {
-                const key = localStorage.key(i);
-                if (key && key.startsWith('holiday-data-')) {
-                  const keyYear = parseInt(key.replace('holiday-data-', ''));
-                  if (!isNaN(keyYear) && keyYear < year - 2) {
-                    localStorage.removeItem(key);
-                  }
-                }
-              }
-            }
-          } catch (error) {
-            console.error('Failed to fetch holiday data:', error);
-          }
-        };
-        fetchHolidayData();
+        const cached = getCachedHolidayData(year);
+        if (cached) {
+          setHolidayData(cached.data);
+          setLastFetchedYear(cached.year);
+        } else {
+          fetchHolidayData(year);
+        }
       }
     }
-  }, [language, time, lastFetchedYear]);
+  }, [language, time, lastFetchedYear, fetchHolidayData]);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {

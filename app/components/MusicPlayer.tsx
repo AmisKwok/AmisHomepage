@@ -2,9 +2,12 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
-import { useMusicPlayer, LoopMode, LOOP_MODES } from "../contexts/MusicPlayerContext";
-import { useTheme } from "../contexts/ThemeContext";
-import { useLanguage } from "../contexts/LanguageContext";
+import { useMusicPlayerStore, LoopMode } from "../stores/music-player-store";
+import { useThemeStore } from "../stores/theme-store";
+import { useLanguageStore } from "../stores/language-store";
+import { useAudioPlayer } from "../hooks/useAudioPlayer";
+
+const LOOP_MODES: LoopMode[] = ['list-loop', 'list-no-loop', 'single-loop', 'single-no-loop']
 
 const LOOP_MODE_LABELS: Record<LoopMode, { icon: string; titleKey: string }> = {
   "list-loop": { icon: "fa-repeat", titleKey: "listLoop" },
@@ -23,7 +26,6 @@ function formatTime(seconds: number): string {
 export default function MusicPlayer() {
   const {
     musicList,
-    currentMusic,
     currentIndex,
     isPlaying,
     loopMode,
@@ -38,19 +40,34 @@ export default function MusicPlayer() {
     playPrev,
     setLoopMode,
     setVolume,
-    seekTo,
     playMusic,
     toggleExpand,
     togglePlaylist,
-  } = useMusicPlayer();
+  } = useMusicPlayerStore();
 
-  const { theme } = useTheme();
-  const { t } = useLanguage();
+  const {
+    audioRef,
+    currentMusic,
+    handleTimeUpdate,
+    handleLoadedMetadata,
+    handleEnded,
+    handleCanPlay,
+    handleWaiting,
+    handlePlaying,
+    seekTo
+  } = useAudioPlayer();
+
+  const { theme } = useThemeStore();
+  const { t } = useLanguageStore();
   const isDark = theme === "dark";
   const [isMuted, setIsMuted] = useState(false);
   const [previousVolume, setPreviousVolume] = useState(volume);
   const [animateExpand, setAnimateExpand] = useState(false);
   const playerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    useMusicPlayerStore.getState().fetchMusicList()
+  }, [])
 
   useEffect(() => {
     if (isExpanded) {
@@ -433,6 +450,16 @@ export default function MusicPlayer() {
           </div>
         )}
       </div>
+
+      <audio
+        ref={audioRef}
+        onTimeUpdate={handleTimeUpdate}
+        onLoadedMetadata={handleLoadedMetadata}
+        onEnded={handleEnded}
+        onCanPlay={handleCanPlay}
+        onWaiting={handleWaiting}
+        onPlaying={handlePlaying}
+      />
 
       <style jsx>{`
         @keyframes pulse {

@@ -38,8 +38,6 @@ export default function TypeWriter({
   useEffect(() => { displayTextRef.current = displayText; }, [displayText]);
   useEffect(() => { currentIndexRef.current = currentIndex; }, [currentIndex]);
 
-  const currentText = texts[currentIndex];
-
   // 初始延迟
   useEffect(() => {
     const timeout = setTimeout(() => {

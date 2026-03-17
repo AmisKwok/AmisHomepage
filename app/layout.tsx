@@ -2,11 +2,9 @@ import { Geist, Geist_Mono, ZCOOL_QingKe_HuangYou } from "next/font/google";
 import { Analytics } from "@vercel/analytics/react";
 import "./globals.css";
 import "@fortawesome/fontawesome-free/css/all.min.css";
-import { LanguageProvider } from "./contexts/LanguageContext";
-import { ThemeProvider } from "./contexts/ThemeContext";
-import { MusicPlayerProvider } from "./contexts/MusicPlayerContext";
 import MusicPlayer from "./components/MusicPlayer";
 import { metadata, viewport } from "./metadata";
+import { initScript } from "./scripts/initScript";
 
 export { metadata, viewport };
 
@@ -26,14 +24,6 @@ const zcoolQingKeHuangYou = ZCOOL_QingKe_HuangYou({
   subsets: ["latin"],
 });
 
-const themeScript = `
-  (function() {
-    const savedTheme = localStorage.getItem('theme');
-    const theme = savedTheme || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
-    document.documentElement.classList.add(theme);
-  })();
-`;
-
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -42,19 +32,14 @@ export default function RootLayout({
   return (
     <html lang="zh-CN" suppressHydrationWarning>
       <head>
-        <script dangerouslySetInnerHTML={{ __html: themeScript }} />
+        <script dangerouslySetInnerHTML={{ __html: initScript }} />
       </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} ${zcoolQingKeHuangYou.variable} antialiased`}
+        suppressHydrationWarning
       >
-        <ThemeProvider>
-          <LanguageProvider>
-            <MusicPlayerProvider>
-              {children}
-              <MusicPlayer />
-            </MusicPlayerProvider>
-          </LanguageProvider>
-        </ThemeProvider>
+        {children}
+        <MusicPlayer />
         <Analytics />
       </body>
     </html>

@@ -2,7 +2,7 @@
 "use client";
 
 import { useEffect, useState, useRef } from "react";
-import { useTheme } from "../contexts/ThemeContext";
+import { useThemeStore } from "../stores/theme-store";
 
 interface DrawnTitleProps {
   text: string;
@@ -10,7 +10,7 @@ interface DrawnTitleProps {
 }
 
 function DrawnTitleInner({ text, className = "" }: DrawnTitleProps) {
-  const { theme } = useTheme();
+  const { theme } = useThemeStore();
   const [progress, setProgress] = useState(0);
   const [clipId] = useState(() => `clip-${Math.random().toString(36).slice(2)}`);
   const textRef = useRef<SVGTextElement>(null);

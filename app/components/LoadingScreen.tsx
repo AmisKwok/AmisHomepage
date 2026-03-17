@@ -1,21 +1,20 @@
+/* eslint-disable react-hooks/set-state-in-effect */
 "use client";
 
 import { useEffect, useState } from "react";
 
 export default function LoadingScreen() {
   const [isLoading, setIsLoading] = useState(true);
-
-  // 直接从 localStorage 读取主题
-  const getTheme = (): "dark" | "light" => {
-    if (typeof window === "undefined") return "dark";
-    const saved = localStorage.getItem("theme");
-    if (saved === "light" || saved === "dark") return saved;
-    return window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
-  };
-
-  const theme = getTheme();
+  const [theme, setTheme] = useState<"dark" | "light">("dark");
 
   useEffect(() => {
+    const saved = localStorage.getItem("theme");
+    if (saved === "light" || saved === "dark") {
+      setTheme(saved);
+    } else {
+      setTheme(window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+    }
+
     const timer = setTimeout(() => {
       setIsLoading(false);
     }, 800);

@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { signAppJwt, getInstallationId, createInstallationToken, readTextFileFromRepo, putFile } from '@/api/auth/github/github-client';
+import { signAppJwt, getInstallationId, createInstallationToken, readTextFileFromRepo, putFile } from '@/app/api/auth/github/github-client';
 
 export async function POST(request: NextRequest) {
   try {

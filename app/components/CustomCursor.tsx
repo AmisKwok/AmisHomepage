@@ -1,11 +1,11 @@
 "use client";
 
 import { useEffect, useState, useCallback } from "react";
-import { useTheme } from "../contexts/ThemeContext";
+import { useThemeStore } from "../stores/theme-store";
 import { useConfigStore } from "../(home)/stores/config-store";
 
 export default function CustomCursor() {
-	const { theme } = useTheme();
+	const { theme } = useThemeStore();
 	const { siteContent } = useConfigStore();
 	const [position, setPosition] = useState({ x: 0, y: 0 });
 	const [isVisible, setIsVisible] = useState(false);

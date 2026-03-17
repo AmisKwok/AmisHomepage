@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef } from "react";
-import { useTheme } from "../contexts/ThemeContext";
+import { useThemeStore } from "../stores/theme-store";
 
 interface Leaf {
   x: number;
@@ -19,7 +19,7 @@ interface Leaf {
 }
 
 export default function LightBackground() {
-  const { theme } = useTheme();
+  const { theme } = useThemeStore();
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
   useEffect(() => {

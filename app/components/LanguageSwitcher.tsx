@@ -1,11 +1,11 @@
 "use client";
 
-import { useLanguage } from "../contexts/LanguageContext";
-import { useTheme } from "../contexts/ThemeContext";
+import { useLanguageStore } from "../stores/language-store";
+import { useThemeStore } from "../stores/theme-store";
 
 export default function LanguageSwitcher() {
-  const { language, toggleLanguage, t } = useLanguage();
-  const { theme } = useTheme();
+  const { language, toggleLanguage, t } = useLanguageStore();
+  const { theme } = useThemeStore();
 
   return (
     <button

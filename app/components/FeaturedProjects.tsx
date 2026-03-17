@@ -2,16 +2,16 @@
 "use client";
 
 import Image from "next/image";
-import { useLanguage } from "../contexts/LanguageContext";
-import { useTheme } from "../contexts/ThemeContext";
+import { useLanguageStore } from "../stores/language-store";
+import { useThemeStore } from "../stores/theme-store";
 import { projectsConfig, moreProjectsConfig } from "../config";
 import { getThemeColors } from "../config/themeConfig";
 import { useScrollAnimation } from "../hooks/useScrollAnimation";
 import { useConfigStore } from "../(home)/stores/config-store";
 
 export default function FeaturedProjects() {
-  const { language, t } = useLanguage();
-  const { theme } = useTheme();
+  const { language, t } = useLanguageStore();
+  const { theme } = useThemeStore();
   const colors = getThemeColors(theme);
   const { siteContent } = useConfigStore();
 

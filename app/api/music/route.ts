@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { NextRequest, NextResponse } from 'next/server';
-import { signAppJwt, getInstallationId, createInstallationToken, deleteFile } from '@/api/auth/github/github-client';
+import { signAppJwt, getInstallationId, createInstallationToken, deleteFile } from '@/app/api/auth/github/github-client';
 import fs from 'fs';
 import path from 'path';
 

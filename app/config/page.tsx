@@ -3,8 +3,8 @@
 
 import { useState, useEffect, useRef, useCallback, useMemo } from 'react';
 import Link from 'next/link';
-import { useTheme } from '../contexts/ThemeContext';
-import { useLanguage } from '../contexts/LanguageContext';
+import { useThemeStore } from '../stores/theme-store';
+import { useLanguageStore } from '../stores/language-store';
 import { useConfigStore } from '../(home)/stores/config-store';
 import { toast, Toaster } from 'sonner';
 import LoadingScreen from '../components/LoadingScreen';
@@ -123,8 +123,8 @@ const BilingualInput = ({ label, valueZh, valueEn, onChangeZh, onChangeEn, color
 );
 
 export default function ConfigPage() {
-  const { theme } = useTheme();
-  const { t } = useLanguage();
+  const { theme } = useThemeStore();
+  const { t } = useLanguageStore();
   const { setSiteContent } = useConfigStore();
   const [state, setState] = useState<ConfigState>({
     config: null,

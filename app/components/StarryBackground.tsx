@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef } from "react";
-import { useTheme } from "../contexts/ThemeContext";
+import { useThemeStore } from "../stores/theme-store";
 
 interface Particle {
   x: number;
@@ -13,7 +13,7 @@ interface Particle {
 }
 
 export default function StarryBackground() {
-  const { theme } = useTheme();
+  const { theme } = useThemeStore();
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
   useEffect(() => {

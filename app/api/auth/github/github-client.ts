@@ -4,7 +4,7 @@
  */
 'use client'
 
-import { useAuthStore } from '@/hooks/use-auth'
+import { useAuthStore } from '@/app/hooks/use-auth'
 import { KJUR, KEYUTIL } from 'jsrsasign'
 import { toast } from 'sonner'
 
@@ -375,4 +375,24 @@ export async function createBlob(
 	if (!res.ok) throw new Error(`create blob failed: ${res.status}`)
 	const data = await res.json()
 	return { sha: data.sha }
+}
+
+export async function deleteFile(token: string, owner: string, repo: string, path: string, message: string, branch: string) {
+	const sha = await getFileSha(token, owner, repo, path, branch)
+	if (!sha) return
+	
+	const res = await fetch(`${GH_API}/repos/${owner}/${repo}/contents/${encodeURIComponent(path)}`, {
+		method: 'DELETE',
+		headers: {
+			Authorization: `Bearer ${token}`,
+			Accept: 'application/vnd.github+json',
+			'X-GitHub-Api-Version': '2022-11-28',
+			'Content-Type': 'application/json'
+		},
+		body: JSON.stringify({ message, sha, branch })
+	})
+	if (res.status === 401) handle401Error()
+	if (res.status === 422) handle422Error()
+	if (!res.ok) throw new Error(`delete file failed: ${res.status}`)
+	return res.json()
 }

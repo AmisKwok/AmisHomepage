@@ -1,12 +1,12 @@
 "use client";
 
-import { useTheme } from "../contexts/ThemeContext";
+import { useThemeStore } from "../stores/theme-store";
 
 const BLUR_FADE_ANIMATION_NAME = "blurFade";
 const MAX_BLUR = 8;
 
 export default function ThemeTransition() {
-  const { isTransitioning } = useTheme();
+  const { isTransitioning } = useThemeStore();
 
   if (!isTransitioning) return null;
 

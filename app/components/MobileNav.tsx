@@ -1,27 +1,23 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
-import { useLanguage } from "../contexts/LanguageContext";
-import { useTheme } from "../contexts/ThemeContext";
-import { getThemeColors } from "../config/themeConfig";
+import { useState, useEffect, useRef, useMemo } from "react";
+import { useThemeStore } from "../stores/theme-store";
 import { useConfigStore } from "../(home)/stores/config-store";
 
 type Section = "about" | "projects" | "skills";
 
 export default function MobileNav() {
-  const { t } = useLanguage();
-  const { theme } = useTheme();
-  const colors = getThemeColors(theme);
+  const { theme } = useThemeStore();
   const { siteContent } = useConfigStore();
   const [currentSection, setCurrentSection] = useState<Section>("projects");
   const [isVisible, setIsVisible] = useState(false);
   const isScrollingRef = useRef(false);
 
-  const sections: { id: Section; icon: string }[] = [
+  const sections: { id: Section; icon: string }[] = useMemo(() => [
     ...(siteContent?.showProjects !== false ? [{ id: "projects" as Section, icon: "fas fa-star" }] : []),
     { id: "about" as Section, icon: "fas fa-user" },
     ...(siteContent?.showSkills !== false ? [{ id: "skills" as Section, icon: "fas fa-chart-line" }] : []),
-  ];
+  ], [siteContent?.showProjects, siteContent?.showSkills]);
 
   const scrollToSection = (sectionId: Section) => {
     const section = document.getElementById(sectionId);
@@ -60,7 +56,7 @@ export default function MobileNav() {
     window.addEventListener("scroll", handleScroll);
     handleScroll();
     return () => window.removeEventListener("scroll", handleScroll);
-  }, [t, sections]);
+  }, [sections]);
 
   return (
     <div className={`fixed bottom-4 left-4 z-40 md:hidden transition-all duration-300 ${

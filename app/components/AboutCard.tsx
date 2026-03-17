@@ -1,29 +1,29 @@
-/* eslint-disable react-hooks/refs */
+ 
 "use client";
 
-import { useLanguage } from "../contexts/LanguageContext";
-import { useTheme } from "../contexts/ThemeContext";
+import { useLanguageStore } from "../stores/language-store";
+import { useThemeStore } from "../stores/theme-store";
 import { techStackConfig, aboutMeConfig } from "../config";
 import { getThemeColors } from "../config/themeConfig";
 import { useScrollAnimation } from "../hooks/useScrollAnimation";
 
 export default function AboutCard() {
-  const { language, t } = useLanguage();
-  const { theme } = useTheme();
+  const { language, t } = useLanguageStore();
+  const { theme } = useThemeStore();
   const colors = getThemeColors(theme);
 
-  const aboutSection = useScrollAnimation({ threshold: 0.1 });
-  const techSection = useScrollAnimation({ threshold: 0.1 });
-  const focusSection = useScrollAnimation({ threshold: 0.1 });
-  const mottoSection = useScrollAnimation({ threshold: 0.1 });
+  const { ref: aboutRef, isVisible: aboutVisible } = useScrollAnimation({ threshold: 0.1 });
+  const { ref: techRef, isVisible: techVisible } = useScrollAnimation({ threshold: 0.1 });
+  const { ref: focusRef, isVisible: focusVisible } = useScrollAnimation({ threshold: 0.1 });
+  const { ref: mottoRef, isVisible: mottoVisible } = useScrollAnimation({ threshold: 0.1 });
 
   return (
     <div id="about" className="w-full max-w-3xl mx-auto space-y-8">
       {/* 关于我 */}
       <div 
-        ref={aboutSection.ref as React.RefObject<HTMLDivElement>}
+        ref={aboutRef}
         className={`relative group transition-all duration-1000 ${
-          aboutSection.isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
+          aboutVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
         }`}
       >
         <div className={`absolute -inset-1 rounded-2xl blur-lg opacity-50 group-hover:opacity-75 transition duration-500 ${
@@ -45,9 +45,9 @@ export default function AboutCard() {
               { icon: "fas fa-map-marker-alt", color: "from-red-400 to-red-600", value: aboutMeConfig.location[language] },
               { icon: "fas fa-briefcase", color: "from-green-400 to-green-600", value: aboutMeConfig.focus[language] },
               { icon: "fas fa-heart", color: "from-pink-400 to-pink-600", value: aboutMeConfig.hobbies[language] },
-            ].map((item, index) => (
+            ].map((item) => (
               <div 
-                key={index}
+                key={item.icon}
                 className={`flex items-center gap-3 p-3 rounded-xl transition-all duration-300 hover:translate-x-1 ${
                   theme === "dark" 
                     ? "bg-white/5 hover:bg-white/10" 
@@ -66,9 +66,9 @@ export default function AboutCard() {
 
       {/* 技术栈 */}
       <div 
-        ref={techSection.ref as React.RefObject<HTMLDivElement>}
+        ref={techRef as React.RefObject<HTMLDivElement>}
         className={`relative group transition-all duration-1000 delay-200 ${
-          techSection.isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
+          techVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
         }`}
       >
         <div className={`absolute -inset-1 rounded-2xl blur-lg opacity-50 group-hover:opacity-75 transition duration-500 ${
@@ -96,7 +96,7 @@ export default function AboutCard() {
                   {t(category.key as "backend" | "mobile" | "frontend")}
                 </p>
                 <div className="flex flex-wrap gap-2">
-                  {category.data.map((tech, index) => (
+                  {category.data.map((tech) => (
                     <span
                       key={tech.name}
                       className="relative group/tag"
@@ -119,9 +119,9 @@ export default function AboutCard() {
 
       {/* 当前关注 */}
       <div 
-        ref={focusSection.ref as React.RefObject<HTMLDivElement>}
+        ref={focusRef as React.RefObject<HTMLDivElement>}
         className={`relative group transition-all duration-1000 delay-400 ${
-          focusSection.isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
+          focusVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
         }`}
       >
         <div className="absolute -inset-1 bg-gradient-to-r from-green-500/30 via-emerald-500/30 to-teal-500/30 rounded-2xl blur-lg opacity-50 group-hover:opacity-75 transition duration-500"></div>
@@ -155,9 +155,9 @@ export default function AboutCard() {
 
       {/* 座右铭 */}
       <div 
-        ref={mottoSection.ref as React.RefObject<HTMLDivElement>}
+        ref={mottoRef}
         className={`relative transition-all duration-1000 delay-600 ${
-          mottoSection.isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
+          mottoVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
         }`}
       >
         <div className="absolute inset-0 bg-gradient-to-r from-yellow-500/10 via-orange-500/10 to-red-500/10 blur-xl"></div>

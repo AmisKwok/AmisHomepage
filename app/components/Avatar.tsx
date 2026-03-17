@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { useTheme } from "../contexts/ThemeContext";
+import { useThemeStore } from "../stores/theme-store";
 
 interface AvatarProps {
   src: string;
@@ -11,7 +11,7 @@ interface AvatarProps {
 }
 
 export default function Avatar({ src, alt, size = 120, className = "" }: AvatarProps) {
-  const { theme } = useTheme();
+  const { theme } = useThemeStore();
   
   return (
     <div className={`relative group ${className}`}>
