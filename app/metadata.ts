@@ -58,9 +58,6 @@ export const metadata: Metadata = {
     images: [siteConfig.ogImage],
     creator: "@AmisKwok",
   },
-  verification: {
-    google: "your-google-verification-code",
-  },
 };
 
 export const viewport: Viewport = {

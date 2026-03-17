@@ -5,6 +5,8 @@ import "@fortawesome/fontawesome-free/css/all.min.css";
 import MusicPlayer from "./components/media/MusicPlayer";
 import { metadata, viewport } from "./metadata";
 import { initScript } from "./scripts/initScript";
+import { seoScripts } from "./scripts/seo-scripts";
+import SEOHead from "./components/seo/SEOHead";
 
 export { metadata, viewport };
 
@@ -32,7 +34,9 @@ export default function RootLayout({
   return (
     <html lang="zh-CN" suppressHydrationWarning>
       <head>
+        <SEOHead />
         <script dangerouslySetInnerHTML={{ __html: initScript }} />
+        <script dangerouslySetInnerHTML={{ __html: seoScripts }} />
       </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} ${zcoolQingKeHuangYou.variable} antialiased`}
