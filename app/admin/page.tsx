@@ -385,7 +385,9 @@ export default function ConfigPage() {
       const data = await response.json();
 
       if (!response.ok) {
-        throw new Error(data.error || '保存失败');
+        const errorMsg = data.details || data.error || '保存失败';
+        console.error('API Error:', data);
+        throw new Error(errorMsg);
       }
 
       savePrivateKey();
@@ -403,12 +405,13 @@ export default function ConfigPage() {
       }, 3000);
     } catch (error) {
       console.error('Save error:', error);
+      const errorMessage = error instanceof Error ? error.message : t('configSaveFailed');
       setState(prev => ({
         ...prev,
         isSaving: false,
-        error: t('configSaveFailed')
+        error: errorMessage
       }));
-      toast.error(t('configSaveFailed'));
+      toast.error(errorMessage);
     }
   };
 
@@ -534,7 +537,7 @@ export default function ConfigPage() {
       return;
     }
     
-    toast.loading(t('fetchingSiteInfo'));
+    const toastId = toast.loading(t('fetchingSiteInfo'));
     
     try {
       const response = await fetch(`/api/site-info?url=${encodeURIComponent(url)}`);
@@ -555,13 +558,13 @@ export default function ConfigPage() {
           }
           return { ...prev, config: newConfig };
         });
-        toast.success(t('fetchSiteInfoSuccess'));
+        toast.success(t('fetchSiteInfoSuccess'), { id: toastId });
       } else {
-        toast.error(t('fetchSiteInfoFailed'));
+        toast.error(t('fetchSiteInfoFailed'), { id: toastId });
       }
     } catch (error) {
       console.error('Failed to fetch site info:', error);
-      toast.error(t('fetchSiteInfoFailed'));
+      toast.error(t('fetchSiteInfoFailed'), { id: toastId });
     }
   };
 
