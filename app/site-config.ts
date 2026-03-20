@@ -223,6 +223,7 @@ export const translations = {
     enableFriendLinks: "启用友链",
     sidebarCollapse: "收起导航",
     sidebarExpand: "展开导航",
+    backToTop: "回到顶部",
   },
   en: {
     siteTitle: appConfig.translations.en.siteTitle || appConfig.site.title,
@@ -372,6 +373,7 @@ export const translations = {
     enableFriendLinks: "Enable Friend Links",
     sidebarCollapse: "Collapse Sidebar",
     sidebarExpand: "Expand Sidebar",
+    backToTop: "Back to Top",
   },
 };
 

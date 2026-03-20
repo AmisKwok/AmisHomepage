@@ -52,8 +52,6 @@ export default function WalineComments({ path = '/guestbook' }) {
           placeholder: t('walinePlaceholder'),
         },
         comment: true,
-        imageUploader: false,
-        anonymous: false,
         requiredMeta: ['nick', 'mail'],
         avatar: 'mp',
         meta: ['nick', 'mail'],

@@ -4,12 +4,62 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
+import { motion } from "framer-motion";
 import { useLanguageStore } from "../stores/language-store";
 import { useThemeStore } from "../stores/theme-store";
 import { friendLinksConfig } from "../site-config";
 import LoadingScreen from "../components/effects/LoadingScreen";
 import SEOHead from "../components/seo/SEOHead";
 import type { FriendLink } from "../../types";
+
+const containerVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.08,
+    },
+  },
+};
+
+const itemVariants = {
+  hidden: { opacity: 0, y: 20, scale: 0.95 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    scale: 1,
+    transition: {
+      type: "spring" as const,
+      stiffness: 100,
+      damping: 12,
+    },
+  },
+};
+
+const cardVariants = {
+  hidden: { opacity: 0, y: 30, scale: 0.9 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    scale: 1,
+    transition: {
+      type: "spring" as const,
+      stiffness: 80,
+      damping: 15,
+    },
+  },
+};
+
+const floatVariants = {
+  animate: {
+    y: [0, -10, 0],
+    transition: {
+      duration: 3,
+      repeat: Infinity,
+      ease: "easeInOut" as const,
+    },
+  },
+};
 
 export default function FriendLinksPage() {
   const { t, hydrated, hydrate, language } = useLanguageStore();
@@ -30,6 +80,7 @@ export default function FriendLinksPage() {
     card: theme === "dark" ? "bg-white/5 backdrop-blur-md border border-white/10 hover:border-white/20" : "bg-white/80 backdrop-blur-md border border-gray-200 hover:border-gray-300",
     text: theme === "dark" ? "text-white" : "text-gray-900",
     textSecondary: theme === "dark" ? "text-gray-400" : "text-gray-600",
+    glow: theme === "dark" ? "shadow-violet-500/20" : "shadow-violet-500/10",
   };
 
   const links: FriendLink[] = friendLinksConfig?.links || [];
@@ -52,40 +103,95 @@ export default function FriendLinksPage() {
         description={pageTitle}
         url={`${process.env.NEXT_PUBLIC_SITE_URL || ""}/friends`}
       />
-      <div className={`min-h-screen ${colors.background}`}>
-        <div className="max-w-6xl mx-auto px-4 py-8">
-          <header className="mb-8">
+      <motion.div 
+        className={`min-h-screen ${colors.background} relative overflow-hidden`}
+        initial="hidden"
+        animate="visible"
+        variants={containerVariants}
+      >
+        <div className="absolute inset-0 overflow-hidden pointer-events-none">
+          <motion.div 
+            className="absolute -top-40 -right-40 w-80 h-80 bg-gradient-to-br from-violet-500/20 to-purple-500/20 rounded-full blur-3xl"
+            animate={{ scale: [1, 1.2, 1], opacity: [0.3, 0.5, 0.3] }}
+            transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
+          />
+          <motion.div 
+            className="absolute -bottom-40 -left-40 w-80 h-80 bg-gradient-to-br from-indigo-500/20 to-blue-500/20 rounded-full blur-3xl"
+            animate={{ scale: [1.2, 1, 1.2], opacity: [0.3, 0.5, 0.3] }}
+            transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
+          />
+        </div>
+
+        <div className="max-w-6xl mx-auto px-4 py-8 relative z-10">
+          <motion.header className="mb-10" variants={itemVariants}>
             <Link
               href="/"
-              className={`inline-flex items-center gap-2 px-4 py-2 rounded-xl ${colors.card} ${colors.text} hover:bg-blue-500/10 transition-all mb-6`}
+              className={`inline-flex items-center gap-2 px-4 py-2 rounded-xl ${colors.card} ${colors.text} hover:bg-violet-500/10 transition-all mb-6 group`}
             >
-              <i className="fas fa-arrow-left"></i>
+              <i className="fas fa-arrow-left group-hover:-translate-x-1 transition-transform"></i>
               <span>{t("backToHome")}</span>
             </Link>
             
             <div className="text-center">
-              <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-gradient-to-br from-violet-500 to-purple-600 mb-4">
-                <i className="fas fa-link text-white text-2xl"></i>
-              </div>
-              <h1 className={`text-3xl font-bold ${colors.text} mb-2`}>{pageTitle}</h1>
-              <p className={colors.textSecondary}>
-                {language === "zh" ? "与优秀的人为伍，与有趣的灵魂相遇" : "Connect with interesting souls"}
-              </p>
+              <motion.div 
+                className="relative inline-block mb-6"
+                variants={floatVariants}
+                animate="animate"
+              >
+                <motion.div 
+                  className="absolute inset-0 bg-gradient-to-br from-violet-500 to-purple-600 rounded-2xl blur-xl opacity-50"
+                  animate={{ scale: [1, 1.1, 1] }}
+                  transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+                />
+                <div className="relative inline-flex items-center justify-center w-16 h-16 sm:w-20 sm:h-20 rounded-2xl bg-gradient-to-br from-violet-500 to-purple-600 shadow-lg">
+                  <i className="fas fa-link text-white text-2xl sm:text-3xl"></i>
+                </div>
+              </motion.div>
+              
+              <motion.h1 
+                className={`text-2xl sm:text-3xl lg:text-4xl font-bold ${colors.text} mb-3 bg-gradient-to-r from-violet-500 via-purple-500 to-indigo-500 bg-clip-text text-transparent`}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.2 }}
+              >
+                {pageTitle}
+              </motion.h1>
+              <motion.p 
+                className={`${colors.textSecondary} text-base sm:text-lg`}
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 0.3 }}
+              >
+                {language === "zh" ? "与优秀的人为伍，与有趣的灵魂相遇 ✨" : "Connect with interesting souls ✨"}
+              </motion.p>
             </div>
-          </header>
+          </motion.header>
 
           {links.length > 0 ? (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-              {links.map((link) => (
-                <a
+            <motion.div 
+              className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"
+              variants={containerVariants}
+            >
+              {links.map((link, index) => (
+                <motion.a
                   key={link.id}
                   href={link.url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className={`group ${colors.card} rounded-2xl p-6 transition-all duration-300 hover:scale-[1.02] hover:shadow-xl`}
+                  className={`group ${colors.card} rounded-2xl p-4 sm:p-6 transition-all duration-300 shadow-lg ${colors.glow} relative overflow-hidden`}
+                  variants={cardVariants}
+                  custom={index}
+                  whileHover={{ y: -8, scale: 1.02 }}
                 >
-                  <div className="flex items-start gap-4">
-                    <div className="relative w-14 h-14 rounded-xl overflow-hidden bg-gradient-to-br from-blue-500/20 to-purple-500/20 flex-shrink-0">
+                  <motion.div 
+                    className="absolute inset-0 bg-gradient-to-br from-violet-500/0 to-purple-500/0 group-hover:from-violet-500/5 group-hover:to-purple-500/5 transition-all duration-300"
+                  />
+                  
+                  <div className="relative flex items-start gap-3 sm:gap-4">
+                    <motion.div 
+                      className="relative w-12 h-12 sm:w-14 sm:h-14 lg:w-16 lg:h-16 rounded-xl overflow-hidden bg-gradient-to-br from-violet-500/20 to-purple-500/20 flex-shrink-0 shadow-lg"
+                      whileHover={{ scale: 1.1, rotate: 5 }}
+                    >
                       {getFaviconUrl(link.url, link.avatar) ? (
                         <Image
                           src={getFaviconUrl(link.url, link.avatar) || ""}
@@ -99,18 +205,20 @@ export default function FriendLinksPage() {
                           <i className="fas fa-globe text-2xl text-gray-400"></i>
                         </div>
                       )}
-                    </div>
+                    </motion.div>
                     <div className="flex-1 min-w-0">
-                      <h3 className={`font-semibold ${colors.text} group-hover:text-blue-500 transition-colors truncate`}>
+                      <h3 className={`font-semibold text-lg ${colors.text} group-hover:text-violet-500 transition-colors truncate`}>
                         {link.name}
                       </h3>
-                      <p className={`text-sm ${colors.textSecondary} mt-1 line-clamp-2`}>
+                      <p className={`text-sm ${colors.textSecondary} mt-2 line-clamp-2 leading-relaxed`}>
                         {link.description?.[language] || link.description?.zh || ""}
                       </p>
                     </div>
                   </div>
-                  <div className="mt-4 flex items-center justify-between">
-                    <span className={`text-xs ${colors.textSecondary} truncate max-w-[70%]`}>
+                  
+                  <div className="relative mt-4 pt-4 border-t border-white/5 flex items-center justify-between">
+                    <span className={`text-xs ${colors.textSecondary} truncate max-w-[70%] flex items-center gap-1`}>
+                      <i className="fas fa-globe text-[10px]"></i>
                       {(() => {
                         try {
                           return new URL(link.url).hostname;
@@ -119,42 +227,64 @@ export default function FriendLinksPage() {
                         }
                       })()}
                     </span>
-                    <span className="text-xs text-blue-500 flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                    <motion.span 
+                      className="text-xs text-violet-500 flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity font-medium"
+                      initial={{ x: -10 }}
+                      whileHover={{ x: 0 }}
+                    >
                       {t("visitSite")}
-                      <i className="fas fa-external-link-alt text-[10px]"></i>
-                    </span>
+                      <i className="fas fa-arrow-right text-[10px]"></i>
+                    </motion.span>
                   </div>
-                </a>
+                </motion.a>
               ))}
-            </div>
+            </motion.div>
           ) : (
-            <div className={`${colors.card} rounded-2xl p-12 text-center`}>
-              <div className="w-20 h-20 rounded-full bg-gradient-to-br from-gray-400 to-gray-500 flex items-center justify-center mx-auto mb-4">
-                <i className="fas fa-user-friends text-white text-3xl"></i>
-              </div>
-              <h3 className={`text-xl font-semibold ${colors.text} mb-2`}>
+            <motion.div 
+              className={`${colors.card} rounded-3xl p-12 text-center shadow-xl`}
+              variants={cardVariants}
+            >
+              <motion.div 
+                className="w-24 h-24 rounded-2xl bg-gradient-to-br from-gray-400 to-gray-500 flex items-center justify-center mx-auto mb-6 shadow-lg"
+                whileHover={{ scale: 1.05, rotate: 5 }}
+              >
+                <i className="fas fa-user-friends text-white text-4xl"></i>
+              </motion.div>
+              <h3 className={`text-2xl font-semibold ${colors.text} mb-3`}>
                 {t("noFriendLinks")}
               </h3>
-              <p className={colors.textSecondary}>
+              <p className={`${colors.textSecondary} max-w-md mx-auto`}>
                 {language === "zh" 
                   ? "暂无友链，请在配置页面添加" 
                   : "No friend links yet, please add in the admin page"}
               </p>
-            </div>
+            </motion.div>
           )}
 
-          <div className={`mt-12 ${colors.card} rounded-2xl p-6 text-center`}>
-            <h3 className={`font-semibold ${colors.text} mb-2`}>
-              {language === "zh" ? "申请友链" : "Apply for Friend Link"}
-            </h3>
-            <p className={`text-sm ${colors.textSecondary}`}>
-              {language === "zh" 
-                ? "欢迎交换友链，请通过邮件或留言板联系我" 
-                : "Welcome to exchange friend links, please contact me via email or guestbook"}
-            </p>
-          </div>
+          <motion.div 
+            className={`mt-8 sm:mt-10 ${colors.card} rounded-2xl p-6 sm:p-8 text-center shadow-lg relative overflow-hidden`}
+            variants={itemVariants}
+          >
+            <div className="absolute inset-0 bg-gradient-to-r from-violet-500/5 via-purple-500/5 to-indigo-500/5" />
+            <div className="relative">
+              <motion.div 
+                className="inline-flex items-center justify-center w-12 h-12 rounded-xl bg-gradient-to-br from-violet-500 to-purple-600 mb-4 shadow-lg"
+                whileHover={{ scale: 1.1, rotate: 5 }}
+              >
+                <i className="fas fa-handshake text-white text-xl"></i>
+              </motion.div>
+              <h3 className={`font-semibold text-lg ${colors.text} mb-2`}>
+                {language === "zh" ? "申请友链" : "Apply for Friend Link"}
+              </h3>
+              <p className={`text-sm ${colors.textSecondary} max-w-md mx-auto`}>
+                {language === "zh" 
+                  ? "欢迎交换友链，请通过邮件或留言板联系我" 
+                  : "Welcome to exchange friend links, please contact me via email or guestbook"}
+              </p>
+            </div>
+          </motion.div>
         </div>
-      </div>
+      </motion.div>
     </>
   );
 }

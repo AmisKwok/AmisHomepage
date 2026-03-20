@@ -683,6 +683,15 @@ export default function ConfigPage() {
           )}
         </button>
         <span className={`text-xs ${colors.textSecondary} writing-mode-vertical`}>{t('saveToGithub')}</span>
+        
+        <button
+          onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+          className={`w-14 h-14 rounded-2xl font-medium transition-all hover:scale-110 shadow-lg ${colors.card} ${colors.text} border border-white/10`}
+          title={t('backToTop')}
+        >
+          <i className="fas fa-arrow-up text-lg"></i>
+        </button>
+        <span className={`text-xs ${colors.textSecondary} writing-mode-vertical`}>{t('backToTop')}</span>
       </div>
 
       <div className="max-w-6xl mx-auto px-4 py-8 lg:px-28 xl:px-36">

@@ -147,6 +147,7 @@ type TranslationReturnType = {
 	friendLinksSettings: string
 	enableFriendLinks: string
 	sidebarCollapse: string
+	backToTop: string
 	sidebarExpand: string
 }
 
