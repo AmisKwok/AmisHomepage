@@ -2,14 +2,14 @@
 import { useEffect, useRef } from 'react';
 import { init } from '@waline/client';
 import { useLanguageStore } from '../../stores/language-store';
+import { useThemeStore } from '../../stores/theme-store';
 import { guestbookConfig } from '../../site-config';
-
-import '@waline/client/style';
 
 export default function WalineComments({ path = '/guestbook' }) {
   const walineInstanceRef = useRef(null);
   const containerRef = useRef(null);
   const { language, t } = useLanguageStore();
+  const { theme } = useThemeStore();
 
   useEffect(() => {
     console.log('WalineComments useEffect triggered');
@@ -33,6 +33,7 @@ export default function WalineComments({ path = '/guestbook' }) {
       serverURL,
       path,
       lang: language === 'zh' ? 'zh-CN' : 'en',
+      dark: theme === 'dark',
     });
 
     try {
@@ -41,7 +42,7 @@ export default function WalineComments({ path = '/guestbook' }) {
         serverURL: serverURL,
         path: path,
         lang: language === 'zh' ? 'zh-CN' : 'en',
-        dark: 'auto',
+        dark: theme === 'dark',
         reaction: false,
         search: false,
         pageview: true,
@@ -95,7 +96,7 @@ export default function WalineComments({ path = '/guestbook' }) {
       }
       observer.disconnect();
     };
-  }, [path, language, t]);
+  }, [path, language, theme, t]);
 
   return (
     <div className="waline-comments">
