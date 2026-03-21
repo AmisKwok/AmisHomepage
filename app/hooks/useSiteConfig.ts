@@ -1,28 +1,6 @@
 import { useState, useEffect } from 'react'
 import { useConfigStore } from '../stores/config-store'
 
-interface SiteContent {
-  showProjects?: boolean
-  showSkills?: boolean
-  showLocalTime?: boolean
-  showCustomCursor?: boolean
-  customCursorPath?: string
-  site?: {
-    backgroundImage?: {
-      dark?: string
-      light?: string
-    }
-    textColor?: {
-      dark?: string
-      light?: string
-    }
-    textSecondaryColor?: {
-      dark?: string
-      light?: string
-    }
-  }
-}
-
 export function useSiteConfig() {
   const { siteContent, setSiteContent } = useConfigStore()
   const [isLoading, setIsLoading] = useState(true)

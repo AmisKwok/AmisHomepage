@@ -1,8 +1,8 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { NextResponse } from 'next/server';
 import fs from 'fs/promises';
 import path from 'path';
 
-export async function GET(request: NextRequest) {
+export async function GET() {
   try {
     const configPath = path.join(process.cwd(), 'config.json');
     const configContent = await fs.readFile(configPath, 'utf8');

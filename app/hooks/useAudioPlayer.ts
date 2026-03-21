@@ -32,7 +32,7 @@ export function useAudioPlayer() {
 				audioRef.current.play().catch(console.error)
 			}
 		}
-	}, [currentMusic?.id, currentMusic?.path, isPlaying, setIsLoading])
+	}, [currentMusic, isPlaying, setIsLoading])
 
 	const handleTimeUpdate = useCallback(() => {
 		if (audioRef.current) {

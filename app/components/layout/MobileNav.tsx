@@ -71,7 +71,7 @@ export default function MobileNav() {
             onClick={() => scrollToSection(section.id)}
             className={`w-10 h-10 rounded-full flex items-center justify-center transition-all duration-300 hover:scale-110 shadow-md ${
               currentSection === section.id
-                ? "bg-gradient-to-br from-blue-500 to-purple-600 shadow-lg scale-110"
+                ? "bg-linear-to-br from-blue-500 to-purple-600 shadow-lg scale-110"
                 : theme === "dark"
                   ? "bg-white/10 hover:bg-white/20 backdrop-blur-sm"
                   : "bg-white hover:bg-gray-50 border border-gray-200 shadow-lg"

@@ -61,12 +61,12 @@ export default function Skills() {
       >
         <div className={`absolute -inset-1 rounded-2xl blur-lg opacity-50 group-hover:opacity-75 transition duration-500 ${
           theme === "dark"
-            ? "bg-gradient-to-r from-emerald-500/30 via-teal-500/30 to-cyan-500/30"
-            : "bg-gradient-to-r from-amber-400/20 via-orange-400/20 to-yellow-400/20"
+            ? "bg-linear-to-r from-emerald-500/30 via-teal-500/30 to-cyan-500/30"
+            : "bg-linear-to-r from-amber-400/20 via-orange-400/20 to-yellow-400/20"
         }`}></div>
         <div className={`relative ${colors.cardBackground}/80 backdrop-blur-md rounded-2xl p-6 shadow-xl border ${colors.border} hover:${colors.borderHover} transition-all duration-300`}>
           <h3 className={`text-lg font-semibold mb-6 flex items-center gap-2 ${colors.text}`}>
-            <span className="w-8 h-8 rounded-lg bg-gradient-to-br from-emerald-400 to-cyan-600 flex items-center justify-center">
+            <span className="w-8 h-8 rounded-lg bg-linear-to-br from-emerald-400 to-cyan-600 flex items-center justify-center">
               <i className="fas fa-chart-line text-white text-sm"></i>
             </span>
             {t("skills")}
@@ -77,7 +77,7 @@ export default function Skills() {
               <div key={skill.name} className="group/skill">
                 <div className="flex items-center justify-between mb-2">
                   <div className="flex items-center gap-3">
-                    <span className={`w-8 h-8 rounded-lg bg-gradient-to-br ${skill.color} flex items-center justify-center`}>
+                    <span className={`w-8 h-8 rounded-lg bg-linear-to-br ${skill.color} flex items-center justify-center`}>
                       <i className={`${skill.icon} text-white text-xs`}></i>
                     </span>
                     <span className={`font-medium ${colors.text}`}>{skill.name}</span>
@@ -92,7 +92,7 @@ export default function Skills() {
                     : "bg-gray-200 border border-gray-100"
                 }`}>
                   <div
-                    className={`h-full bg-gradient-to-r ${skill.color} rounded-full transition-all duration-1000 ease-out group-hover/skill:brightness-110`}
+                    className={`h-full bg-linear-to-r ${skill.color} rounded-full transition-all duration-1000 ease-out group-hover/skill:brightness-110`}
                     style={{ 
                       width: `${animatedLevels[skill.name] || 0}%`,
                       transitionDelay: `${index * 100}ms`

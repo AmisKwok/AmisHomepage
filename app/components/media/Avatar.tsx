@@ -19,8 +19,8 @@ export default function Avatar({ src, alt, size = 120, className = "" }: AvatarP
       <div 
         className={`absolute inset-0 rounded-full animate-pulse-slow ${
           theme === "dark" 
-            ? "bg-gradient-to-r from-white/40 via-white/20 to-white/40" 
-            : "bg-gradient-to-r from-gray-400/40 via-gray-200/20 to-gray-400/40"
+            ? "bg-linear-to-r from-white/40 via-white/20 to-white/40" 
+            : "bg-linear-to-r from-gray-400/40 via-gray-200/20 to-gray-400/40"
         }`}
         style={{ 
           width: size + 16, 

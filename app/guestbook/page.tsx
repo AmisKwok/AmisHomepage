@@ -61,7 +61,7 @@ export default function GuestbookPage() {
   }
 
   const colors = {
-    background: theme === "dark" ? "bg-gradient-to-br from-[#0a0a0a] via-[#0f0f23] to-[#1a1a2e]" : "bg-gradient-to-br from-gray-50 via-white to-gray-100",
+    background: theme === "dark" ? "bg-linear-to-br from-[#0a0a0a] via-[#0f0f23] to-[#1a1a2e]" : "bg-linear-to-br from-gray-50 via-white to-gray-100",
     card: theme === "dark" ? "bg-white/5 backdrop-blur-md border border-white/10" : "bg-white/80 backdrop-blur-md border border-gray-200",
     text: theme === "dark" ? "text-white" : "text-gray-900",
     textSecondary: theme === "dark" ? "text-gray-400" : "text-gray-600",
@@ -86,12 +86,12 @@ export default function GuestbookPage() {
       >
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
           <motion.div 
-            className="absolute -top-40 -right-40 w-80 h-80 bg-gradient-to-br from-pink-500/20 to-purple-500/20 rounded-full blur-3xl"
+            className="absolute -top-40 -right-40 w-80 h-80 bg-linear-to-br from-pink-500/20 to-purple-500/20 rounded-full blur-3xl"
             animate={{ scale: [1, 1.2, 1], opacity: [0.3, 0.5, 0.3] }}
             transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
           />
           <motion.div 
-            className="absolute -bottom-40 -left-40 w-80 h-80 bg-gradient-to-br from-blue-500/20 to-cyan-500/20 rounded-full blur-3xl"
+            className="absolute -bottom-40 -left-40 w-80 h-80 bg-linear-to-br from-blue-500/20 to-cyan-500/20 rounded-full blur-3xl"
             animate={{ scale: [1.2, 1, 1.2], opacity: [0.3, 0.5, 0.3] }}
             transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
           />
@@ -114,17 +114,17 @@ export default function GuestbookPage() {
                 animate="animate"
               >
                 <motion.div 
-                  className="absolute inset-0 bg-gradient-to-br from-pink-500 to-rose-600 rounded-2xl blur-xl opacity-50"
+                  className="absolute inset-0 bg-linear-to-br from-pink-500 to-rose-600 rounded-2xl blur-xl opacity-50"
                   animate={{ scale: [1, 1.1, 1] }}
                   transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
                 />
-                <div className="relative inline-flex items-center justify-center w-16 h-16 sm:w-20 sm:h-20 rounded-2xl bg-gradient-to-br from-pink-500 to-rose-600 shadow-lg">
+                <div className="relative inline-flex items-center justify-center w-16 h-16 sm:w-20 sm:h-20 rounded-2xl bg-linear-to-br from-pink-500 to-rose-600 shadow-lg">
                   <i className="fas fa-comments text-white text-2xl sm:text-3xl"></i>
                 </div>
               </motion.div>
               
               <motion.h1 
-                className={`text-2xl sm:text-3xl lg:text-4xl font-bold ${colors.text} mb-3 bg-gradient-to-r from-pink-500 via-rose-500 to-purple-500 bg-clip-text text-transparent`}
+                className={`text-2xl sm:text-3xl lg:text-4xl font-bold ${colors.text} mb-3 bg-linear-to-r from-pink-500 via-rose-500 to-purple-500 bg-clip-text text-transparent`}
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.2 }}
@@ -152,7 +152,7 @@ export default function GuestbookPage() {
             ) : (
               <div className="flex flex-col items-center justify-center h-[400px] text-center">
                 <motion.div 
-                  className="w-24 h-24 rounded-2xl bg-gradient-to-br from-gray-400 to-gray-500 flex items-center justify-center mb-6 shadow-lg"
+                  className="w-24 h-24 rounded-2xl bg-linear-to-br from-gray-400 to-gray-500 flex items-center justify-center mb-6 shadow-lg"
                   whileHover={{ scale: 1.05, rotate: 5 }}
                 >
                   <i className="fas fa-cog text-white text-4xl"></i>
@@ -183,7 +183,7 @@ export default function GuestbookPage() {
                 className="flex flex-col items-center gap-2 text-center"
                 whileHover={{ scale: 1.05 }}
               >
-                <div className={`w-10 h-10 rounded-xl bg-gradient-to-br ${item.color} flex items-center justify-center shadow-lg`}>
+                <div className={`w-10 h-10 rounded-xl bg-linear-to-br ${item.color} flex items-center justify-center shadow-lg`}>
                   <i className={`fas ${item.icon} text-white`}></i>
                 </div>
                 <span className={`text-sm ${colors.textSecondary}`}>{item.label}</span>

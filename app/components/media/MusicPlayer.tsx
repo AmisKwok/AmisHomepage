@@ -229,7 +229,7 @@ export default function MusicPlayer() {
                 <i className={`fas fa-music text-lg ${isDark ? "text-white/80" : "text-gray-700"}`}></i>
               )}
               {isPlaying && (
-                <span className={`absolute -top-0.5 -right-0.5 w-1.5 h-1.5 rounded-full animate-pulse md:hidden bg-gradient-to-r ${colors.gradient}`}></span>
+                <span className={`absolute -top-0.5 -right-0.5 w-1.5 h-1.5 rounded-full animate-pulse md:hidden bg-linear-to-r ${colors.gradient}`}></span>
               )}
             </div>
           </button>
@@ -246,7 +246,7 @@ export default function MusicPlayer() {
             <div className="p-4 md:p-5 min-w-[280px] md:min-w-[320px]">
               <div className="flex items-center justify-between mb-3">
                 <div className="flex items-center gap-2 flex-1 min-w-0">
-                  <div className={`w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0 bg-gradient-to-br ${colors.gradient}`}>
+                  <div className={`w-8 h-8 rounded-lg flex items-center justify-center shrink-0 bg-linear-to-br ${colors.gradient}`}>
                     <i className="fas fa-music text-white text-sm"></i>
                   </div>
                   <div className="flex-1 min-w-0">
@@ -273,7 +273,7 @@ export default function MusicPlayer() {
                   onClick={handleProgressClick}
                 >
                   <div
-                    className={`h-full rounded-full transition-all bg-gradient-to-r ${colors.gradient}`}
+                    className={`h-full rounded-full transition-all bg-linear-to-r ${colors.gradient}`}
                     style={{ width: duration > 0 ? `${(progress / duration) * 100}%` : "0%" }}
                   ></div>
                 </div>
@@ -334,8 +334,8 @@ export default function MusicPlayer() {
                       isDark ? "bg-white/20" : "bg-gray-200"
                     } [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-3 [&::-webkit-slider-thumb]:h-3 [&::-webkit-slider-thumb]:rounded-full ${
                       isDark 
-                        ? '[&::-webkit-slider-thumb]:bg-gradient-to-r [&::-webkit-slider-thumb]:from-violet-500 [&::-webkit-slider-thumb]:to-indigo-500'
-                        : '[&::-webkit-slider-thumb]:bg-gradient-to-r [&::-webkit-slider-thumb]:from-stone-500 [&::-webkit-slider-thumb]:to-orange-500'
+                        ? '[&::-webkit-slider-thumb]:bg-linear-to-r [&::-webkit-slider-thumb]:from-violet-500 [&::-webkit-slider-thumb]:to-indigo-500'
+                        : '[&::-webkit-slider-thumb]:bg-linear-to-r [&::-webkit-slider-thumb]:from-stone-500 [&::-webkit-slider-thumb]:to-orange-500'
                     }`}
                   />
                 </div>
@@ -371,8 +371,8 @@ export default function MusicPlayer() {
                   disabled={musicList.length === 0}
                   className={`w-12 h-12 md:w-14 md:h-14 rounded-full flex items-center justify-center transition-all shadow-lg text-white disabled:opacity-50 ${
                     isDark 
-                      ? 'bg-gradient-to-r from-violet-500 to-indigo-500 hover:from-violet-600 hover:to-indigo-600'
-                      : 'bg-gradient-to-r from-stone-500 to-orange-500 hover:from-stone-600 hover:to-orange-600'
+                      ? 'bg-linear-to-r from-violet-500 to-indigo-500 hover:from-violet-600 hover:to-indigo-600'
+                      : 'bg-linear-to-r from-stone-500 to-orange-500 hover:from-stone-600 hover:to-orange-600'
                   }`}
                 >
                   {isLoading ? (

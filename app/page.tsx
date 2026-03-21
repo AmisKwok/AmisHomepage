@@ -298,8 +298,8 @@ export default function Home() {
       <section id="content" className="py-16 px-6 md:px-12 relative">
         <div className={`absolute inset-0 ${
           theme === "dark" 
-            ? "bg-gradient-to-b from-[#0a0a0a]/60 via-[#0f0f23]/80 to-[#1a1a2e]/90" 
-            : "bg-gradient-to-b from-white/70 via-white/90 to-gray-50/95"
+            ? "bg-linear-to-b from-[#0a0a0a]/60 via-[#0f0f23]/80 to-[#1a1a2e]/90" 
+            : "bg-linear-to-b from-white/70 via-white/90 to-gray-50/95"
         }`}></div>
         <div className="max-w-6xl mx-auto relative z-10 space-y-12">
           <FeaturedProjects />
@@ -310,8 +310,8 @@ export default function Home() {
       
       <footer className={`py-8 px-6 border-t backdrop-blur-sm ${
         theme === "dark"
-          ? "bg-gradient-to-b from-[#1a1a2e]/90 to-[#0f0f23]/95 text-white border-white/10"
-          : "bg-gradient-to-b from-white/90 to-gray-50/95 text-gray-900 border-gray-200"
+          ? "bg-linear-to-b from-[#1a1a2e]/90 to-[#0f0f23]/95 text-white border-white/10"
+          : "bg-linear-to-b from-white/90 to-gray-50/95 text-gray-900 border-gray-200"
       }`}>
         <div className="max-w-6xl mx-auto text-center">
           <p className={theme === "dark" ? "text-white/60" : "text-gray-600"}>

@@ -25,14 +25,14 @@ export default function LoadingScreen() {
   if (!isLoading) return null;
 
   return (
-    <div className={`fixed inset-0 z-[100] flex items-center justify-center ${
+    <div className={`fixed inset-0 z-100 flex items-center justify-center ${
       theme === "dark" ? "bg-[#0a0a0a]" : "bg-[#faf5eb]"
     }`}>
       <div className="relative">
         <div className={`absolute inset-0 blur-xl opacity-50 animate-pulse ${
           theme === "dark"
-            ? "bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500"
-            : "bg-gradient-to-r from-blue-400 via-cyan-400 to-teal-400"
+            ? "bg-linear-to-r from-blue-500 via-purple-500 to-pink-500"
+            : "bg-linear-to-r from-blue-400 via-cyan-400 to-teal-400"
         }`}></div>
         <div className="relative flex flex-col items-center gap-6">
           <div className="relative">

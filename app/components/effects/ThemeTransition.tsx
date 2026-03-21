@@ -13,7 +13,7 @@ export default function ThemeTransition() {
   return (
     <>
       <div
-        className="fixed inset-0 z-[9999] pointer-events-none bg-black/30 backdrop-blur-md"
+        className="fixed inset-0 z-9999 pointer-events-none bg-black/30 backdrop-blur-md"
         style={{
           animation: `${BLUR_FADE_ANIMATION_NAME} 0.5s ease-in-out forwards`,
         }}

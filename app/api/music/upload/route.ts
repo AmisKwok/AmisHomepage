@@ -15,7 +15,6 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'Private key is required' }, { status: 400 });
     }
 
-    const allowedTypes = ['audio/mpeg', 'audio/wav', 'audio/ogg', 'audio/mp4', 'audio/flac', 'audio/x-m4a'];
     const ext = file.name.split('.').pop()?.toLowerCase();
     if (!['mp3', 'wav', 'ogg', 'm4a', 'flac'].includes(ext || '')) {
       return NextResponse.json({ error: 'Invalid file type. Only audio files are allowed.' }, { status: 400 });

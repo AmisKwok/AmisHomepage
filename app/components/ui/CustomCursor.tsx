@@ -73,7 +73,7 @@ export default function CustomCursor() {
 
 	return (
 		<div
-			className="pointer-events-none fixed z-[99999] rounded-full"
+			className="pointer-events-none fixed z-99999 rounded-full"
 			style={{
 				left: `${position.x}px`,
 				top: `${position.y}px`,

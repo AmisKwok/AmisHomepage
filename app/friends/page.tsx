@@ -76,7 +76,7 @@ export default function FriendLinksPage() {
   }
 
   const colors = {
-    background: theme === "dark" ? "bg-gradient-to-br from-[#0a0a0a] via-[#0f0f23] to-[#1a1a2e]" : "bg-gradient-to-br from-gray-50 via-white to-gray-100",
+    background: theme === "dark" ? "bg-linear-to-br from-[#0a0a0a] via-[#0f0f23] to-[#1a1a2e]" : "bg-linear-to-br from-gray-50 via-white to-gray-100",
     card: theme === "dark" ? "bg-white/5 backdrop-blur-md border border-white/10 hover:border-white/20" : "bg-white/80 backdrop-blur-md border border-gray-200 hover:border-gray-300",
     text: theme === "dark" ? "text-white" : "text-gray-900",
     textSecondary: theme === "dark" ? "text-gray-400" : "text-gray-600",
@@ -111,12 +111,12 @@ export default function FriendLinksPage() {
       >
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
           <motion.div 
-            className="absolute -top-40 -right-40 w-80 h-80 bg-gradient-to-br from-violet-500/20 to-purple-500/20 rounded-full blur-3xl"
+            className="absolute -top-40 -right-40 w-80 h-80 bg-linear-to-br from-violet-500/20 to-purple-500/20 rounded-full blur-3xl"
             animate={{ scale: [1, 1.2, 1], opacity: [0.3, 0.5, 0.3] }}
             transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
           />
           <motion.div 
-            className="absolute -bottom-40 -left-40 w-80 h-80 bg-gradient-to-br from-indigo-500/20 to-blue-500/20 rounded-full blur-3xl"
+            className="absolute -bottom-40 -left-40 w-80 h-80 bg-linear-to-br from-indigo-500/20 to-blue-500/20 rounded-full blur-3xl"
             animate={{ scale: [1.2, 1, 1.2], opacity: [0.3, 0.5, 0.3] }}
             transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
           />
@@ -139,17 +139,17 @@ export default function FriendLinksPage() {
                 animate="animate"
               >
                 <motion.div 
-                  className="absolute inset-0 bg-gradient-to-br from-violet-500 to-purple-600 rounded-2xl blur-xl opacity-50"
+                  className="absolute inset-0 bg-linear-to-br from-violet-500 to-purple-600 rounded-2xl blur-xl opacity-50"
                   animate={{ scale: [1, 1.1, 1] }}
                   transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
                 />
-                <div className="relative inline-flex items-center justify-center w-16 h-16 sm:w-20 sm:h-20 rounded-2xl bg-gradient-to-br from-violet-500 to-purple-600 shadow-lg">
+                <div className="relative inline-flex items-center justify-center w-16 h-16 sm:w-20 sm:h-20 rounded-2xl bg-linear-to-br from-violet-500 to-purple-600 shadow-lg">
                   <i className="fas fa-link text-white text-2xl sm:text-3xl"></i>
                 </div>
               </motion.div>
               
               <motion.h1 
-                className={`text-2xl sm:text-3xl lg:text-4xl font-bold ${colors.text} mb-3 bg-gradient-to-r from-violet-500 via-purple-500 to-indigo-500 bg-clip-text text-transparent`}
+                className={`text-2xl sm:text-3xl lg:text-4xl font-bold ${colors.text} mb-3 bg-linear-to-r from-violet-500 via-purple-500 to-indigo-500 bg-clip-text text-transparent`}
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.2 }}
@@ -184,12 +184,12 @@ export default function FriendLinksPage() {
                   whileHover={{ y: -8, scale: 1.02 }}
                 >
                   <motion.div 
-                    className="absolute inset-0 bg-gradient-to-br from-violet-500/0 to-purple-500/0 group-hover:from-violet-500/5 group-hover:to-purple-500/5 transition-all duration-300"
+                    className="absolute inset-0 bg-linear-to-br from-violet-500/0 to-purple-500/0 group-hover:from-violet-500/5 group-hover:to-purple-500/5 transition-all duration-300"
                   />
                   
                   <div className="relative flex items-start gap-3 sm:gap-4">
                     <motion.div 
-                      className="relative w-12 h-12 sm:w-14 sm:h-14 lg:w-16 lg:h-16 rounded-xl overflow-hidden bg-gradient-to-br from-violet-500/20 to-purple-500/20 flex-shrink-0 shadow-lg"
+                      className="relative w-12 h-12 sm:w-14 sm:h-14 lg:w-16 lg:h-16 rounded-xl overflow-hidden bg-linear-to-br from-violet-500/20 to-purple-500/20 shrink-0 shadow-lg"
                       whileHover={{ scale: 1.1, rotate: 5 }}
                     >
                       {getFaviconUrl(link.url, link.avatar) ? (
@@ -245,7 +245,7 @@ export default function FriendLinksPage() {
               variants={cardVariants}
             >
               <motion.div 
-                className="w-24 h-24 rounded-2xl bg-gradient-to-br from-gray-400 to-gray-500 flex items-center justify-center mx-auto mb-6 shadow-lg"
+                className="w-24 h-24 rounded-2xl bg-linear-to-br from-gray-400 to-gray-500 flex items-center justify-center mx-auto mb-6 shadow-lg"
                 whileHover={{ scale: 1.05, rotate: 5 }}
               >
                 <i className="fas fa-user-friends text-white text-4xl"></i>
@@ -265,10 +265,10 @@ export default function FriendLinksPage() {
             className={`mt-8 sm:mt-10 ${colors.card} rounded-2xl p-6 sm:p-8 text-center shadow-lg relative overflow-hidden`}
             variants={itemVariants}
           >
-            <div className="absolute inset-0 bg-gradient-to-r from-violet-500/5 via-purple-500/5 to-indigo-500/5" />
+            <div className="absolute inset-0 bg-linear-to-r from-violet-500/5 via-purple-500/5 to-indigo-500/5" />
             <div className="relative">
               <motion.div 
-                className="inline-flex items-center justify-center w-12 h-12 rounded-xl bg-gradient-to-br from-violet-500 to-purple-600 mb-4 shadow-lg"
+                className="inline-flex items-center justify-center w-12 h-12 rounded-xl bg-linear-to-br from-violet-500 to-purple-600 mb-4 shadow-lg"
                 whileHover={{ scale: 1.1, rotate: 5 }}
               >
                 <i className="fas fa-handshake text-white text-xl"></i>

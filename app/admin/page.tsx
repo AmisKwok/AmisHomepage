@@ -154,6 +154,27 @@ export default function ConfigPage() {
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
+  const fetchConfig = useCallback(async () => {
+    try {
+      const response = await fetch('/api/config');
+      const data = await response.json();
+      
+      if (data.config) {
+        setState(prev => ({
+          ...prev,
+          config: data.config,
+          loading: false
+        }));
+      }
+    } catch {
+      setState(prev => ({
+        ...prev,
+        loading: false,
+        error: t('loadConfigFailed')
+      }));
+    }
+  }, [t]);
+
   useEffect(() => {
     // Hydrate language store from localStorage
     useLanguageStore.getState().hydrate();
@@ -164,7 +185,7 @@ export default function ConfigPage() {
     };
     init();
     fetchMusicList();
-  }, []);
+  }, [fetchConfig]);
 
   const scrollToSection = useCallback((sectionId: string) => {
     setActiveSection(sectionId);
@@ -184,27 +205,6 @@ export default function ConfigPage() {
   const collapseAll = useCallback(() => {
     setSections(prev => prev.map(s => ({ ...s, expanded: false })));
   }, []);
-
-  const fetchConfig = async () => {
-    try {
-      const response = await fetch('/api/config');
-      const data = await response.json();
-      
-      if (data.config) {
-        setState(prev => ({
-          ...prev,
-          config: data.config,
-          loading: false
-        }));
-      }
-    } catch (error) {
-      setState(prev => ({
-        ...prev,
-        loading: false,
-        error: t('loadConfigFailed')
-      }));
-    }
-  };
 
   const loadPrivateKey = async () => {
     const saved = localStorage.getItem('github_private_key');
@@ -573,12 +573,12 @@ export default function ConfigPage() {
   };
 
   const colors = useMemo(() => ({
-    background: theme === 'dark' ? 'bg-gradient-to-br from-[#0a0a0a] via-[#0f0f23] to-[#1a1a2e]' : 'bg-gradient-to-br from-gray-50 via-white to-gray-100',
+    background: theme === 'dark' ? 'bg-linear-to-br from-[#0a0a0a] via-[#0f0f23] to-[#1a1a2e]' : 'bg-linear-to-br from-gray-50 via-white to-gray-100',
     card: theme === 'dark' ? 'bg-white/5 backdrop-blur-md border border-white/10' : 'bg-white/80 backdrop-blur-md border border-gray-200',
     text: theme === 'dark' ? 'text-white' : 'text-gray-900',
     textSecondary: theme === 'dark' ? 'text-gray-400' : 'text-gray-600',
     input: theme === 'dark' ? 'bg-white/5 border-white/10 text-white placeholder-gray-500' : 'bg-white border-gray-200 text-gray-900 placeholder-gray-400',
-    button: theme === 'dark' ? 'bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700' : 'bg-gradient-to-r from-blue-500 to-cyan-600 hover:from-blue-600 hover:to-cyan-700',
+    button: theme === 'dark' ? 'bg-linear-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700' : 'bg-linear-to-r from-blue-500 to-cyan-600 hover:from-blue-600 hover:to-cyan-700',
     buttonDelete: theme === 'dark' ? 'bg-red-500/20 hover:bg-red-500/30 text-red-400' : 'bg-red-50 hover:bg-red-100 text-red-600',
     checkbox: theme === 'dark' ? 'border-white/20' : 'border-gray-300',
     sidebar: theme === 'dark' ? 'bg-white/5 border-white/10' : 'bg-white/80 border-gray-200',
@@ -611,7 +611,7 @@ export default function ConfigPage() {
       onClick={() => toggleSection(section.id)}
     >
       <div className="flex items-center gap-2 sm:gap-3">
-        <div className={`w-8 h-8 sm:w-10 sm:h-10 rounded-lg bg-gradient-to-br ${section.gradient} flex items-center justify-center flex-shrink-0`}>
+        <div className={`w-8 h-8 sm:w-10 sm:h-10 rounded-lg bg-linear-to-br ${section.gradient} flex items-center justify-center shrink-0`}>
           <i className={`${section.icon} text-white text-sm sm:text-base`}></i>
         </div>
         <h3 className={`text-lg sm:text-xl font-semibold ${colors.text}`}>{t(section.title as any)}</h3>
@@ -785,10 +785,10 @@ export default function ConfigPage() {
               <span className="hidden sm:inline">{t('backToHome')}</span>
             </Link>
             <div className="inline-flex items-center gap-2 sm:gap-3">
-              <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center">
+              <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-linear-to-br from-blue-500 to-purple-600 flex items-center justify-center">
                 <i className="fas fa-cog text-white text-lg sm:text-xl"></i>
               </div>
-              <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold bg-gradient-to-r from-blue-500 to-purple-600 bg-clip-text text-transparent">
+              <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold bg-linear-to-r from-blue-500 to-purple-600 bg-clip-text text-transparent">
                 {t('configManagement')}
               </h1>
             </div>
@@ -833,7 +833,7 @@ export default function ConfigPage() {
                             type="file"
                             accept=".pem"
                             onChange={handlePemUpload}
-                            className={`w-full px-4 py-3 rounded-xl border ${colors.input} file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:bg-gradient-to-r file:from-blue-500 file:to-purple-600 file:text-white file:cursor-pointer`}
+                            className={`w-full px-4 py-3 rounded-xl border ${colors.input} file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:bg-linear-to-r file:from-blue-500 file:to-purple-600 file:text-white file:cursor-pointer`}
                           />
                           <p className={`text-xs mt-2 ${colors.textSecondary}`}>
                             {t('pemKeyHint')}
@@ -856,7 +856,7 @@ export default function ConfigPage() {
                     <div className={`p-4 rounded-xl ${theme === 'dark' ? 'bg-white/5' : 'bg-gray-50'}`}>
                       <div className="flex items-center justify-between">
                         <div className="flex items-center gap-3">
-                          <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-purple-500 to-pink-600 flex items-center justify-center">
+                          <div className="w-8 h-8 rounded-lg bg-linear-to-br from-purple-500 to-pink-600 flex items-center justify-center">
                             <i className="fas fa-clock text-white text-sm"></i>
                           </div>
                           <div>
@@ -868,7 +868,7 @@ export default function ConfigPage() {
                           onClick={() => handleInputChange('showLocalTime', !state.config.showLocalTime)}
                           className={`relative w-14 h-7 rounded-full transition-all duration-300 ${
                             state.config.showLocalTime 
-                              ? 'bg-gradient-to-r from-purple-500 to-pink-600' 
+                              ? 'bg-linear-to-r from-purple-500 to-pink-600' 
                               : theme === 'dark' ? 'bg-white/20' : 'bg-gray-300'
                           }`}
                         >
@@ -880,7 +880,7 @@ export default function ConfigPage() {
                     <div className={`p-4 rounded-xl ${theme === 'dark' ? 'bg-white/5' : 'bg-gray-50'}`}>
                       <div className="flex items-center justify-between mb-4">
                         <div className="flex items-center gap-3">
-                          <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-cyan-500 to-blue-600 flex items-center justify-center">
+                          <div className="w-8 h-8 rounded-lg bg-linear-to-br from-cyan-500 to-blue-600 flex items-center justify-center">
                             <i className="fas fa-mouse-pointer text-white text-sm"></i>
                           </div>
                           <div>
@@ -892,7 +892,7 @@ export default function ConfigPage() {
                           onClick={() => handleInputChange('showCustomCursor', !state.config.showCustomCursor)}
                           className={`relative w-14 h-7 rounded-full transition-all duration-300 ${
                             state.config.showCustomCursor 
-                              ? 'bg-gradient-to-r from-cyan-500 to-blue-600' 
+                              ? 'bg-linear-to-r from-cyan-500 to-blue-600' 
                               : theme === 'dark' ? 'bg-white/20' : 'bg-gray-300'
                           }`}
                         >
@@ -940,7 +940,7 @@ export default function ConfigPage() {
                                     toast.error(t('cursorUploadError'));
                                   }
                                 }}
-                                className={`w-full sm:w-auto px-3 py-2 rounded-lg border ${colors.input} file:mr-2 file:py-1 file:px-3 file:rounded-lg file:border-0 file:bg-gradient-to-r file:from-cyan-500 file:to-blue-600 file:text-white file:cursor-pointer text-sm`}
+                                className={`w-full sm:w-auto px-3 py-2 rounded-lg border ${colors.input} file:mr-2 file:py-1 file:px-3 file:rounded-lg file:border-0 file:bg-linear-to-r file:from-cyan-500 file:to-blue-600 file:text-white file:cursor-pointer text-sm`}
                               />
                             </div>
                           </div>
@@ -1173,7 +1173,7 @@ export default function ConfigPage() {
                                 if (path) handleInputChange('profile.avatar', path);
                               }
                             }}
-                            className={`w-full px-4 py-3 rounded-xl border ${colors.input} file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:bg-gradient-to-r file:from-blue-500 file:to-purple-600 file:text-white file:cursor-pointer`}
+                            className={`w-full px-4 py-3 rounded-xl border ${colors.input} file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:bg-linear-to-r file:from-blue-500 file:to-purple-600 file:text-white file:cursor-pointer`}
                           />
                         </div>
                       </div>
@@ -1532,7 +1532,7 @@ export default function ConfigPage() {
                     <div className={`p-4 rounded-xl ${theme === 'dark' ? 'bg-white/5' : 'bg-gray-50'}`}>
                       <div className="flex items-center justify-between">
                         <div className="flex items-center gap-3">
-                          <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-pink-500 to-rose-600 flex items-center justify-center">
+                          <div className="w-8 h-8 rounded-lg bg-linear-to-br from-pink-500 to-rose-600 flex items-center justify-center">
                             <i className="fas fa-comments text-white text-sm"></i>
                           </div>
                           <div>
@@ -1544,7 +1544,7 @@ export default function ConfigPage() {
                           onClick={() => handleInputChange('guestbook.enabled', !state.config.guestbook?.enabled)}
                           className={`relative w-14 h-7 rounded-full transition-all duration-300 ${
                             state.config.guestbook?.enabled 
-                              ? 'bg-gradient-to-r from-pink-500 to-rose-600' 
+                              ? 'bg-linear-to-r from-pink-500 to-rose-600' 
                               : theme === 'dark' ? 'bg-white/20' : 'bg-gray-300'
                           }`}
                         >
@@ -1593,7 +1593,7 @@ export default function ConfigPage() {
                     <div className={`p-4 rounded-xl ${theme === 'dark' ? 'bg-white/5' : 'bg-gray-50'}`}>
                       <div className="flex items-center justify-between">
                         <div className="flex items-center gap-3">
-                          <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-violet-500 to-purple-600 flex items-center justify-center">
+                          <div className="w-8 h-8 rounded-lg bg-linear-to-br from-violet-500 to-purple-600 flex items-center justify-center">
                             <i className="fas fa-user-friends text-white text-sm"></i>
                           </div>
                           <div>
@@ -1605,7 +1605,7 @@ export default function ConfigPage() {
                           onClick={() => handleInputChange('friendLinks.enabled', !state.config.friendLinks?.enabled)}
                           className={`relative w-14 h-7 rounded-full transition-all duration-300 ${
                             state.config.friendLinks?.enabled 
-                              ? 'bg-gradient-to-r from-violet-500 to-purple-600' 
+                              ? 'bg-linear-to-r from-violet-500 to-purple-600' 
                               : theme === 'dark' ? 'bg-white/20' : 'bg-gray-300'
                           }`}
                         >
@@ -1733,7 +1733,7 @@ export default function ConfigPage() {
                         }
                         fetchMusicList();
                       }}
-                      className={`w-full px-4 py-3 rounded-xl border ${colors.input} file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:bg-gradient-to-r file:from-pink-500 file:to-purple-600 file:text-white file:cursor-pointer`}
+                      className={`w-full px-4 py-3 rounded-xl border ${colors.input} file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:bg-linear-to-r file:from-pink-500 file:to-purple-600 file:text-white file:cursor-pointer`}
                     />
                     {musicList.length === 0 ? (
                       <p className={`text-center py-8 ${colors.textSecondary}`}>{t('noMusic')}</p>
@@ -1759,7 +1759,7 @@ export default function ConfigPage() {
                             </div>
                             <span className={`w-6 text-center text-sm ${colors.textSecondary}`}>{index + 1}</span>
                             <div className="flex-1 flex items-center gap-3 min-w-0">
-                              <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-pink-500/20 to-rose-500/20 flex items-center justify-center flex-shrink-0">
+                              <div className="w-10 h-10 rounded-lg bg-linear-to-br from-pink-500/20 to-rose-500/20 flex items-center justify-center shrink-0">
                                 <i className="fas fa-music text-pink-500"></i>
                               </div>
                               <span className={`truncate ${colors.text}`}>{music.name}</span>

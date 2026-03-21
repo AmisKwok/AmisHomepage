@@ -22,7 +22,7 @@ function encrypt(text: string): string {
   return `${iv.toString('base64')}:${encrypted}:${authTag}`;
 }
 
-function decrypt(encrypted: string): string {
+export function decrypt(encrypted: string): string {
   const [ivBase64, encryptedBase64, authTagBase64] = encrypted.split(':');
   
   if (!ivBase64 || !encryptedBase64 || !authTagBase64) {
