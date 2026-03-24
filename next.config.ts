@@ -38,7 +38,7 @@ const nextConfig: NextConfig = {
           },
           {
             key: 'Content-Security-Policy',
-            value: "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' va.vercel-scripts.com http://push.zhanzhang.baidu.com https://zz.bdstatic.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: https: blob:; font-src 'self' data:; connect-src 'self' https: http://unpkg.com https://unpkg.com; frame-ancestors 'none';",
+            value: "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' va.vercel-scripts.com http://push.zhanzhang.baidu.com https://zz.bdstatic.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: https: blob: http://unpkg.com https://unpkg.com http://api.share.baidu.com https://api.share.baidu.com; font-src 'self' data:; connect-src 'self' https: http://unpkg.com https://unpkg.com; frame-ancestors 'none';",
           },
         ],
       },

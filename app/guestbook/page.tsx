@@ -171,7 +171,7 @@ export default function GuestbookPage() {
           </motion.div>
 
           <motion.div 
-            className={`mt-6 sm:mt-8 grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4 ${colors.card} rounded-2xl p-4 sm:p-6`}
+            className={`mt-6 sm:mt-8 flex flex-row justify-center sm:grid sm:grid-cols-3 gap-3 sm:gap-4 ${colors.card} rounded-2xl p-4 sm:p-6 overflow-x-auto sm:overflow-visible`}
             variants={itemVariants}
           >
             {[
@@ -181,13 +181,13 @@ export default function GuestbookPage() {
             ].map((item, index) => (
               <motion.div 
                 key={index}
-                className="flex flex-col items-center gap-2 text-center"
+                className="flex flex-col items-center gap-2 text-center min-w-[80px] sm:min-w-0 shrink-0 sm:shrink"
                 whileHover={{ scale: 1.05 }}
               >
                 <div className={`w-10 h-10 rounded-xl bg-linear-to-br ${item.color} flex items-center justify-center shadow-lg`}>
                   <i className={`fas ${item.icon} text-white`}></i>
                 </div>
-                <span className={`text-sm ${colors.textSecondary}`}>{item.label}</span>
+                <span className={`text-xs sm:text-sm ${colors.textSecondary} whitespace-nowrap`}>{item.label}</span>
               </motion.div>
             ))}
           </motion.div>

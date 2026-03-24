@@ -263,21 +263,21 @@ export default function FriendLinksPage() {
           )}
 
           <motion.div 
-            className={`mt-8 sm:mt-10 ${colors.card} rounded-2xl p-6 sm:p-8 text-center shadow-lg relative overflow-hidden`}
+            className={`mt-8 sm:mt-10 ${colors.card} rounded-2xl p-4 sm:p-6 lg:p-8 text-center shadow-lg relative overflow-hidden`}
             variants={itemVariants}
           >
             <div className="absolute inset-0 bg-linear-to-r from-violet-500/5 via-purple-500/5 to-indigo-500/5" />
             <div className="relative">
               <motion.div 
-                className="inline-flex items-center justify-center w-12 h-12 rounded-xl bg-linear-to-br from-violet-500 to-purple-600 mb-4 shadow-lg"
+                className="inline-flex items-center justify-center w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-linear-to-br from-violet-500 to-purple-600 mb-3 sm:mb-4 shadow-lg"
                 whileHover={{ scale: 1.1, rotate: 5 }}
               >
-                <i className="fas fa-handshake text-white text-xl"></i>
+                <i className="fas fa-handshake text-white text-lg sm:text-xl"></i>
               </motion.div>
-              <h3 className={`font-semibold text-lg ${colors.text} mb-2`}>
+              <h3 className={`font-semibold text-base sm:text-lg ${colors.text} mb-2`}>
                 {language === "zh" ? "申请友链" : "Apply for Friend Link"}
               </h3>
-              <p className={`text-sm ${colors.textSecondary} max-w-md mx-auto`}>
+              <p className={`text-xs sm:text-sm ${colors.textSecondary} max-w-md mx-auto px-2`}>
                 {language === "zh" 
                   ? "欢迎交换友链，请通过邮件或留言板联系我" 
                   : "Welcome to exchange friend links, please contact me via email or guestbook"}
