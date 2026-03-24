@@ -1,3 +1,8 @@
+/**
+ * 留言簿页面
+ * 使用 Waline 评论系统实现留言功能
+ * 支持响应式布局和主题切换
+ */
 /* eslint-disable react-hooks/set-state-in-effect */
 "use client";
 
@@ -8,20 +13,23 @@ import { useLanguageStore, useTranslation } from "../stores/language-store";
 import { useThemeStore } from "../stores/theme-store";
 import { guestbookConfig } from "../site-config";
 import LoadingScreen from "../components/effects/LoadingScreen";
+import PageTransition from "../components/effects/PageTransition";
 import SEOHead from "../components/seo/SEOHead";
 import WalineComments from "../components/waline/WalineComments.jsx";
 import "../css/waline.css";
 
+// 容器动画配置
 const containerVariants = {
   hidden: { opacity: 0 },
   visible: {
     opacity: 1,
     transition: {
-      staggerChildren: 0.1,
+      staggerChildren: 0.1,  // 子元素交错出现
     },
   },
 };
 
+// 列表项动画配置
 const itemVariants = {
   hidden: { opacity: 0, y: 20 },
   visible: {
@@ -35,6 +43,7 @@ const itemVariants = {
   },
 };
 
+// 浮动动画配置
 const floatVariants = {
   animate: {
     y: [0, -10, 0],
@@ -52,15 +61,13 @@ export default function GuestbookPage() {
   const { theme } = useThemeStore();
   const [mounted, setMounted] = useState(false);
 
+  // 初始化语言状态
   useEffect(() => {
     hydrate();
     setMounted(true);
   }, [hydrate]);
 
-  if (!hydrated || !mounted) {
-    return <LoadingScreen />;
-  }
-
+  // 主题颜色配置
   const colors = {
     background: theme === "dark" ? "bg-linear-to-br from-[#0a0a0a] via-[#0f0f23] to-[#1a1a2e]" : "bg-linear-to-br from-gray-50 via-white to-gray-100",
     card: theme === "dark" ? "bg-white/5 backdrop-blur-md border border-white/10" : "bg-white/80 backdrop-blur-md border border-gray-200",
@@ -69,11 +76,14 @@ export default function GuestbookPage() {
     glow: theme === "dark" ? "shadow-pink-500/20" : "shadow-pink-500/10",
   };
 
+  // Waline 配置
   const walineUrl = guestbookConfig?.walineUrl || "";
   const pageTitle = guestbookConfig?.title?.[language] || t("guestbook");
 
   return (
     <>
+      <LoadingScreen />
+      <PageTransition hydrated={hydrated} mounted={mounted} />
       <SEOHead
         title={pageTitle}
         description={pageTitle}

@@ -1,3 +1,8 @@
+/**
+ * 管理配置页面
+ * 用于管理站点配置的后台页面
+ * 功能：站点信息编辑、项目展示控制、音乐管理、背景设置等
+ */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
@@ -8,31 +13,36 @@ import { useLanguageStore, useTranslation } from '../stores/language-store';
 import { useConfigStore } from '../stores/config-store';
 import { toast, Toaster } from 'sonner';
 import LoadingScreen from '../components/effects/LoadingScreen';
+import PageTransition from '../components/effects/PageTransition';
 
+// 配置状态接口
 interface ConfigState {
-  config: any;
-  loading: boolean;
-  error: string | null;
-  isSaving: boolean;
-  saveSuccess: boolean;
-  privateKey: string;
+  config: any;           // 配置数据
+  loading: boolean;      // 加载状态
+  error: string | null;  // 错误信息
+  isSaving: boolean;     // 保存中状态
+  saveSuccess: boolean;  // 保存成功状态
+  privateKey: string;    // 私钥（用于加密）
 }
 
+// 音乐文件接口
 interface MusicFile {
-  id: string;
-  name: string;
-  path: string;
-  order: number;
+  id: string;      // 文件 ID
+  name: string;    // 文件名
+  path: string;    // 文件路径
+  order: number;   // 排序
 }
 
+// 配置分区接口
 interface SectionConfig {
-  id: string;
-  title: string;
-  icon: string;
-  gradient: string;
-  expanded: boolean;
+  id: string;        // 分区 ID
+  title: string;     // 分区标题
+  icon: string;      // 图标
+  gradient: string;  // 渐变色
+  expanded: boolean; // 是否展开
 }
 
+// 颜色选择器属性接口
 interface ColorPickerProps {
   label: string;
   value: string;
@@ -42,6 +52,7 @@ interface ColorPickerProps {
   defaultColor?: string;
 }
 
+// 颜色选择器组件
 const ColorPicker = ({ label, value, onChange, placeholder, colors, defaultColor = '#ffffff' }: ColorPickerProps) => (
   <div>
     <label className={`block text-xs font-medium mb-1 ${colors.textSecondary}`}>{label}</label>
@@ -585,8 +596,20 @@ export default function ConfigPage() {
     activeNav: theme === 'dark' ? 'bg-blue-500/20 text-blue-400' : 'bg-blue-50 text-blue-600'
   }), [theme]);
 
+  const { hydrated } = useLanguageStore();
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
   if (state.loading) {
-    return <LoadingScreen />;
+    return (
+      <>
+        <LoadingScreen />
+        <PageTransition hydrated={hydrated} mounted={mounted} />
+      </>
+    );
   }
 
   if (state.error) {

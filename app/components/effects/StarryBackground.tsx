@@ -1,15 +1,21 @@
+/**
+ * 星空背景组件
+ * 在深色模式下显示动态星空粒子效果
+ * 使用 Canvas 绘制漂浮的星星粒子
+ */
 "use client";
 
 import { useEffect, useRef } from "react";
 import { useThemeStore } from "../../stores/theme-store";
 
+// 粒子接口
 interface Particle {
-  x: number;
-  y: number;
-  size: number;
-  speedX: number;
-  speedY: number;
-  opacity: number;
+  x: number;       // X 坐标
+  y: number;       // Y 坐标
+  size: number;    // 大小
+  speedX: number;  // X 方向速度
+  speedY: number;  // Y 方向速度
+  opacity: number; // 透明度
 }
 
 export default function StarryBackground() {
@@ -27,13 +33,15 @@ export default function StarryBackground() {
     if (!ctx) return;
 
     const particles: Particle[] = [];
-    const particleCount = 150;
+    const particleCount = 150;  // 粒子数量
 
+    // 调整画布大小
     const resizeCanvas = () => {
       canvas.width = window.innerWidth;
       canvas.height = window.innerHeight;
     };
 
+    // 创建粒子
     const createParticle = (): Particle => ({
       x: Math.random() * canvas.width,
       y: Math.random() * canvas.height,
@@ -43,6 +51,7 @@ export default function StarryBackground() {
       opacity: Math.random() * 0.5 + 0.3,
     });
 
+    // 初始化粒子
     const initParticles = () => {
       particles.length = 0;
       for (let i = 0; i < particleCount; i++) {

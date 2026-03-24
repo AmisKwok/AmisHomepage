@@ -1,3 +1,8 @@
+/**
+ * 技能展示组件
+ * 展示技能列表和熟练度进度条
+ * 支持滚动入场动画和进度条动画
+ */
 /* eslint-disable prefer-const */
 "use client";
 
@@ -14,21 +19,26 @@ export default function Skills() {
   const { theme } = useThemeStore();
   const colors = getThemeColors(theme);
   const { siteContent } = useConfigStore();
+  // 动画进度值
   const [animatedLevels, setAnimatedLevels] = useState<Record<string, number>>({});
 
+  // 滚动动画
   const { ref, isVisible } = useScrollAnimation({ threshold: 0.1 });
 
+  // 进度条动画：可见时启动
   useEffect(() => {
     if (isVisible) {
       skillsConfig.forEach((skill) => {
         let start = 0;
         const end = skill.level;
-        const duration = 1500;
+        const duration = 1500;  // 动画持续时间
         const startTime = performance.now();
 
+        // 缓动动画函数
         const animate = (currentTime: number) => {
           const elapsed = currentTime - startTime;
           const progress = Math.min(elapsed / duration, 1);
+          // easeOutQuart 缓动函数
           const easeOutQuart = 1 - Math.pow(1 - progress, 4);
           
           setAnimatedLevels((prev) => ({
@@ -46,6 +56,7 @@ export default function Skills() {
     }
   }, [isVisible]);
 
+  // 如果配置隐藏技能展示，则不渲染
   if (siteContent?.showSkills === false) {
     return null;
   }

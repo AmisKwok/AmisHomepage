@@ -1,3 +1,9 @@
+/**
+ * 本地时间组件
+ * 显示当前时间和日历
+ * 支持农历显示、节假日标记（仅中文环境）
+ * 点击可展开查看完整日历
+ */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable react-hooks/set-state-in-effect */
 "use client";
@@ -6,17 +12,34 @@ import { useState, useEffect, useRef, useCallback } from "react";
 import { useThemeStore } from "../../stores/theme-store";
 import { useLanguageStore, useTranslation } from "../../stores/language-store";
 
+/**
+ * 获取中国生肖
+ * @param year - 年份
+ * @returns 生肖名称
+ */
 function getChineseZodiac(year: number): string {
   const zodiacs = ["鼠", "牛", "虎", "兔", "龙", "蛇", "马", "羊", "猴", "鸡", "狗", "猪"];
   return zodiacs[(year - 4) % 12];
 }
 
+/**
+ * 获取干支纪年
+ * @param year - 年份
+ * @returns 干支年份
+ */
 function getGanZhi(year: number): string {
   const tiangan = ["甲", "乙", "丙", "丁", "戊", "己", "庚", "辛", "壬", "癸"];
   const dizhi = ["子", "丑", "寅", "卯", "辰", "巳", "午", "未", "申", "酉", "戌", "亥"];
   return tiangan[(year - 4) % 10] + dizhi[(year - 4) % 12];
 }
 
+/**
+ * 公历转农历
+ * @param year - 公历年
+ * @param month - 公历月
+ * @param day - 公历日
+ * @returns 农历日期信息
+ */
 function solarToLunar(year: number, month: number, day: number): { lunarYear: number; lunarMonth: number; lunarDay: number; isLeap: boolean } {
   const lunarInfo = [
     0x04bd8, 0x04ae0, 0x0a570, 0x054d5, 0x0d260, 0x0d950, 0x16554, 0x056a0, 0x09ad0, 0x055d2,

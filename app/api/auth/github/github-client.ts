@@ -1,9 +1,16 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 /**
- * GitHub 客户端工具
- * 用于与 GitHub API 交互，处理认证、文件操作和 Git 操作
+ * GitHub App 客户端工具
+ * 
+ * 提供 GitHub API 认证和文件操作功能：
+ * - JWT 签名和认证
+ * - 获取安装令牌
+ * - 文件读写删除
+ * - Git 操作（树、提交、引用）
+ * 
+ * 使用 jsrsasign 库进行 RSA 签名
+ * 支持通过 GitHub App 进行仓库操作
  */
-
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { KJUR, KEYUTIL } from 'jsrsasign'
 
 /**

@@ -1,4 +1,8 @@
- 
+ /**
+ * 关于我卡片组件
+ * 展示个人信息、技术栈、当前专注方向和座右铭
+ * 支持滚动入场动画
+ */
 "use client";
 
 import { useLanguageStore, useTranslation } from "../../stores/language-store";
@@ -13,6 +17,7 @@ export default function AboutCard() {
   const { theme } = useThemeStore();
   const colors = getThemeColors(theme);
 
+  // 滚动动画 refs
   const { ref: aboutRef, isVisible: aboutVisible } = useScrollAnimation({ threshold: 0.1 });
   const { ref: techRef, isVisible: techVisible } = useScrollAnimation({ threshold: 0.1 });
   const { ref: focusRef, isVisible: focusVisible } = useScrollAnimation({ threshold: 0.1 });
@@ -27,6 +32,7 @@ export default function AboutCard() {
           aboutVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
         }`}
       >
+        {/* 发光边框效果 */}
         <div className={`absolute -inset-1 rounded-2xl blur-lg opacity-50 group-hover:opacity-75 transition duration-500 ${
           theme === "dark"
             ? "bg-linear-to-r from-blue-500/30 via-purple-500/30 to-pink-500/30"
@@ -40,6 +46,7 @@ export default function AboutCard() {
             {t("aboutMe")}
           </h3>
           
+          {/* 个人信息网格 */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {[
               { icon: "fas fa-user", color: "from-blue-400 to-blue-600", value: aboutMeConfig.name },

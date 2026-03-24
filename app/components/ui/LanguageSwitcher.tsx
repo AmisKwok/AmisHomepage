@@ -1,3 +1,8 @@
+/**
+ * 语言切换器组件
+ * 用于切换中英文语言
+ * 支持主题适配
+ */
 "use client";
 
 import { useLanguageStore, useTranslation } from "../../stores/language-store";
@@ -18,7 +23,9 @@ export default function LanguageSwitcher() {
       }`}
       title={language === "zh" ? t("switchToEnglish") : t("switchToChinese")}
     >
+      {/* 语言图标 */}
       <i className="fas fa-language"></i>
+      {/* 显示切换后的语言 */}
       <span className="text-sm font-medium">
         {language === "zh" ? "EN" : "中"}
       </span>

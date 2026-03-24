@@ -1,21 +1,27 @@
+/**
+ * 浅色背景组件
+ * 在浅色模式下显示飘落的树叶效果
+ * 使用 Canvas 绘制动态树叶粒子
+ */
 "use client";
 
 import { useEffect, useRef } from "react";
 import { useThemeStore } from "../../stores/theme-store";
 
+// 树叶粒子接口
 interface Leaf {
-  x: number;
-  y: number;
-  size: number;
-  speedY: number;
-  speedX: number;
-  rotation: number;
-  rotationSpeed: number;
-  opacity: number;
-  color: string;
-  swayAmplitude: number;
-  swayFrequency: number;
-  time: number;
+  x: number;           // X 坐标
+  y: number;           // Y 坐标
+  size: number;        // 大小
+  speedY: number;      // Y 方向速度（下落）
+  speedX: number;      // X 方向速度
+  rotation: number;    // 旋转角度
+  rotationSpeed: number; // 旋转速度
+  opacity: number;     // 透明度
+  color: string;       // 颜色
+  swayAmplitude: number; // 摆动幅度
+  swayFrequency: number; // 摆动频率
+  time: number;        // 时间参数
 }
 
 export default function LightBackground() {
@@ -33,8 +39,9 @@ export default function LightBackground() {
     if (!ctx) return;
 
     const leaves: Leaf[] = [];
-    const leafCount = 15;
+    const leafCount = 15;  // 树叶数量
 
+    // 树叶颜色配置
     const colors = [
       "rgba(101, 67, 33, 0.8)",    // 深棕色
       "rgba(139, 90, 43, 0.75)",   // 赭色
@@ -43,6 +50,7 @@ export default function LightBackground() {
       "rgba(128, 70, 27, 0.8)",    // 红褐色
     ];
 
+    // 调整画布大小
     const resizeCanvas = () => {
       canvas.width = window.innerWidth;
       canvas.height = window.innerHeight;

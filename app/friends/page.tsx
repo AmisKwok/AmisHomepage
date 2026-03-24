@@ -1,3 +1,8 @@
+/**
+ * 友链页面
+ * 展示友情链接列表
+ * 支持响应式布局和主题切换
+ */
 /* eslint-disable react-hooks/set-state-in-effect */
 "use client";
 
@@ -9,19 +14,22 @@ import { useLanguageStore, useTranslation } from "../stores/language-store";
 import { useThemeStore } from "../stores/theme-store";
 import { friendLinksConfig } from "../site-config";
 import LoadingScreen from "../components/effects/LoadingScreen";
+import PageTransition from "../components/effects/PageTransition";
 import SEOHead from "../components/seo/SEOHead";
 import type { FriendLink } from "../../types";
 
+// 容器动画配置
 const containerVariants = {
   hidden: { opacity: 0 },
   visible: {
     opacity: 1,
     transition: {
-      staggerChildren: 0.08,
+      staggerChildren: 0.08,  // 子元素交错出现
     },
   },
 };
 
+// 列表项动画配置
 const itemVariants = {
   hidden: { opacity: 0, y: 20, scale: 0.95 },
   visible: {
@@ -36,6 +44,7 @@ const itemVariants = {
   },
 };
 
+// 卡片动画配置
 const cardVariants = {
   hidden: { opacity: 0, y: 30, scale: 0.9 },
   visible: {
@@ -50,6 +59,7 @@ const cardVariants = {
   },
 };
 
+// 浮动动画配置
 const floatVariants = {
   animate: {
     y: [0, -10, 0],
@@ -67,15 +77,13 @@ export default function FriendLinksPage() {
   const { theme } = useThemeStore();
   const [mounted, setMounted] = useState(false);
 
+  // 初始化语言状态
   useEffect(() => {
     hydrate();
     setMounted(true);
   }, [hydrate]);
 
-  if (!hydrated || !mounted) {
-    return <LoadingScreen />;
-  }
-
+  // 主题颜色配置
   const colors = {
     background: theme === "dark" ? "bg-linear-to-br from-[#0a0a0a] via-[#0f0f23] to-[#1a1a2e]" : "bg-linear-to-br from-gray-50 via-white to-gray-100",
     card: theme === "dark" ? "bg-white/5 backdrop-blur-md border border-white/10 hover:border-white/20" : "bg-white/80 backdrop-blur-md border border-gray-200 hover:border-gray-300",
@@ -99,6 +107,8 @@ export default function FriendLinksPage() {
 
   return (
     <>
+      <LoadingScreen />
+      <PageTransition hydrated={hydrated} mounted={mounted} />
       <SEOHead
         title={pageTitle}
         description={pageTitle}

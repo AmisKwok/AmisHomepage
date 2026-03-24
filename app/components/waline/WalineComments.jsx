@@ -15,29 +15,18 @@ export default function WalineComments({ path = '/guestbook' }) {
   const { theme } = useThemeStore();
 
   useEffect(() => {
-    console.log('WalineComments useEffect triggered');
-    console.log('guestbookConfig:', guestbookConfig);
-    console.log('walineUrl:', guestbookConfig?.walineUrl);
     
     if (walineInstanceRef.current) {
       walineInstanceRef.current.destroy();
     }
 
     const serverURL = guestbookConfig?.walineUrl?.replace(/\/$/, '') || '';
-    console.log('serverURL:', serverURL);
-    console.log('containerRef.current:', containerRef.current);
 
     if (!serverURL || !containerRef.current) {
       console.log('Early return: serverURL or containerRef is empty');
       return;
     }
 
-    console.log('Initializing Waline with config:', {
-      serverURL,
-      path,
-      lang: language === 'zh' ? 'zh-CN' : 'en',
-      dark: theme === 'dark',
-    });
 
     try {
       walineInstanceRef.current = init({

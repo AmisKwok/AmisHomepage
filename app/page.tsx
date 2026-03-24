@@ -1,3 +1,8 @@
+/**
+ * 首页组件
+ * 个人主页的主要展示页面
+ * 包含：头部背景、导航菜单、个人信息、项目展示、技能展示、页脚等
+ */
 "use client";
 
 import { useState, useEffect } from "react";
@@ -10,6 +15,7 @@ import { useSiteConfig } from "./hooks/useSiteConfig";
 import { useLanguageTransition } from "./hooks/useLanguageTransition";
 import { useBackToTop } from "./hooks/useBackToTop";
 import { useTextColors } from "./hooks/useTextColors";
+// 内容组件
 import TypeWriter from "./components/content/TypeWriter";
 import LanguageSwitcher from "./components/ui/LanguageSwitcher";
 import ThemeSwitcher from "./components/ui/ThemeSwitcher";
@@ -18,9 +24,11 @@ import Avatar from "./components/media/Avatar";
 import AboutCard from "./components/content/AboutCard";
 import FeaturedProjects from "./components/content/FeaturedProjects";
 import Skills from "./components/content/Skills";
+// 效果组件
 import StarryBackground from "./components/effects/StarryBackground";
 import LightBackground from "./components/effects/LightBackground";
 import LoadingScreen from "./components/effects/LoadingScreen";
+import PageTransition from "./components/effects/PageTransition";
 import SectionNav from "./components/layout/SectionNav";
 import MobileNav from "./components/layout/MobileNav";
 import ThemeTransition from "./components/effects/ThemeTransition";
@@ -28,34 +36,39 @@ import LocalTime from "./components/effects/LocalTime";
 import CustomCursor from "./components/ui/CustomCursor";
 
 export default function Home() {
+  // 翻译函数
   const { t } = useTranslation();
+  // 语言状态
   const { hydrated, hydrate } = useLanguageStore();
+  // 主题状态
   const { theme } = useThemeStore();
+  // 站点配置
   const { siteContent } = useSiteConfig();
+  // 语言切换过渡状态
   const { isLanguageChanging } = useLanguageTransition();
+  // 返回顶部功能
   const { showBackToTop, scrollToTop } = useBackToTop();
+  // 文字颜色
   const { textColor, textSecondaryColor } = useTextColors();
+  // 页面加载状态
   const [isLoaded, setIsLoaded] = useState(false);
+  const [mounted, setMounted] = useState(false);
 
+  // 初始化语言状态
   useEffect(() => {
     hydrate();
   }, [hydrate]);
 
+  // 页面加载完成
   useEffect(() => {
     setIsLoaded(true);
+    setMounted(true);
   }, []);
-
-  if (!hydrated) {
-    return (
-      <div className="min-h-screen bg-[#0a0a0a]">
-        <LoadingScreen />
-      </div>
-    );
-  }
 
   return (
     <>
       <LoadingScreen />
+      <PageTransition hydrated={hydrated} mounted={mounted} />
       <CustomCursor />
       <ThemeTransition />
       <div className={`min-h-screen font-sans transition-all duration-500 ease-in-out overflow-x-hidden ${isLoaded ? "opacity-100" : "opacity-0"}`}>

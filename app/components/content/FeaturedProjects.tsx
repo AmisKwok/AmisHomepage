@@ -1,3 +1,8 @@
+/**
+ * 精选项目展示组件
+ * 展示精选项目列表，支持图片预览和技术标签
+ * 支持滚动入场动画和响应式布局
+ */
 /* eslint-disable react-hooks/refs */
 "use client";
 
@@ -16,8 +21,10 @@ export default function FeaturedProjects() {
   const colors = getThemeColors(theme);
   const { siteContent } = useConfigStore();
 
+  // 滚动动画
   const projectsSection = useScrollAnimation({ threshold: 0.1 });
 
+  // 如果配置隐藏项目展示，则不渲染
   if (siteContent?.showProjects === false) {
     return null;
   }
@@ -30,6 +37,7 @@ export default function FeaturedProjects() {
           projectsSection.isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
         }`}
       >
+        {/* 发光边框效果 */}
         <div className={`absolute -inset-1 rounded-2xl blur-lg opacity-50 group-hover:opacity-75 transition duration-500 ${
           theme === "dark"
             ? "bg-linear-to-r from-violet-500/30 via-purple-500/30 to-fuchsia-500/30"
@@ -43,6 +51,7 @@ export default function FeaturedProjects() {
             {t("featuredProjects")}
           </h3>
 
+          {/* 项目网格 */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {projectsConfig.map((project) => (
               <a
@@ -56,6 +65,7 @@ export default function FeaturedProjects() {
                     : "bg-white shadow-md hover:shadow-xl border border-gray-200 hover:border-gray-300"
                 }`}
               >
+                {/* 项目封面图 */}
                 <div className="relative h-48 overflow-hidden">
                   <Image
                     src={project.image}

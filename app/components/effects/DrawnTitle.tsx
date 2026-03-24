@@ -1,23 +1,31 @@
+/**
+ * 手绘标题组件
+ * 使用 SVG 实现手绘描边动画效果
+ * 文字会逐渐被"绘制"出来
+ */
 /* eslint-disable react-hooks/set-state-in-effect */
 "use client";
 
 import { useEffect, useState, useRef } from "react";
 import { useThemeStore } from "../../stores/theme-store";
 
+// 组件属性接口
 interface DrawnTitleProps {
-  text: string;
-  className?: string;
+  text: string;       // 要显示的文字
+  className?: string; // 自定义样式类名
 }
 
 function DrawnTitleInner({ text, className = "" }: DrawnTitleProps) {
   const { theme } = useThemeStore();
   const [progress, setProgress] = useState(0);
+  // 生成唯一的 clip ID
   const [clipId] = useState(() => `clip-${Math.random().toString(36).slice(2)}`);
   const textRef = useRef<SVGTextElement>(null);
   const [viewBoxWidth, setViewBoxWidth] = useState(30000);
 
+  // 描边动画
   useEffect(() => {
-    const duration = 3000;
+    const duration = 3000;  // 动画持续时间 3 秒
     const startTime = Date.now();
     
     const animate = () => {
