@@ -47,6 +47,9 @@ export const useLanguageStore = create<LanguageStore>((set, get) => ({
 
 	// 客户端水合：从 localStorage 恢复语言设置
 	hydrate: () => {
+		// 避免重复水合
+		if (get().hydrated) return
+		
 		const savedLang = localStorage.getItem('language') as Language | null
 		const initialLang = savedLang && (savedLang === 'zh' || savedLang === 'en')
 			? savedLang

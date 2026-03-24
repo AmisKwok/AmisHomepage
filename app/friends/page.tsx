@@ -7,7 +7,6 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import Link from "next/link";
 import Image from "next/image";
 import { motion } from "framer-motion";
 import { useLanguageStore, useTranslation } from "../stores/language-store";
@@ -15,6 +14,7 @@ import { useThemeStore } from "../stores/theme-store";
 import { friendLinksConfig } from "../site-config";
 import LoadingScreen from "../components/effects/LoadingScreen";
 import PageTransition from "../components/effects/PageTransition";
+import PageNav from "../components/layout/PageNav";
 import SEOHead from "../components/seo/SEOHead";
 import type { FriendLink } from "../../types";
 
@@ -135,13 +135,11 @@ export default function FriendLinksPage() {
 
         <div className="max-w-6xl mx-auto px-4 py-8 relative z-10">
           <motion.header className="mb-10" variants={itemVariants}>
-            <Link
-              href="/"
-              className={`inline-flex items-center gap-2 px-4 py-2 rounded-xl ${colors.card} ${colors.text} hover:bg-violet-500/10 transition-all mb-6 group`}
-            >
-              <i className="fas fa-arrow-left group-hover:-translate-x-1 transition-transform"></i>
-              <span>{t("backToHome")}</span>
-            </Link>
+            <PageNav
+              cardClass={colors.card}
+              textClass={colors.text}
+              hoverClass="hover:bg-violet-500/10"
+            />
             
             <div className="text-center">
               <motion.div 

@@ -176,6 +176,13 @@ export default function ConfigPage() {
           config: data.config,
           loading: false
         }));
+      } else {
+        // 配置不存在时也要停止加载
+        setState(prev => ({
+          ...prev,
+          loading: false,
+          error: '配置数据为空'
+        }));
       }
     } catch {
       setState(prev => ({

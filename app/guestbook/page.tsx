@@ -7,13 +7,13 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import Link from "next/link";
 import { motion } from "framer-motion";
 import { useLanguageStore, useTranslation } from "../stores/language-store";
 import { useThemeStore } from "../stores/theme-store";
 import { guestbookConfig } from "../site-config";
 import LoadingScreen from "../components/effects/LoadingScreen";
 import PageTransition from "../components/effects/PageTransition";
+import PageNav from "../components/layout/PageNav";
 import SEOHead from "../components/seo/SEOHead";
 import WalineComments from "../components/waline/WalineComments.jsx";
 import "../css/waline.css";
@@ -110,13 +110,11 @@ export default function GuestbookPage() {
 
         <div className="max-w-4xl mx-auto px-4 py-8 relative z-10">
           <motion.header className="mb-8" variants={itemVariants}>
-            <Link
-              href="/"
-              className={`inline-flex items-center gap-2 px-4 py-2 rounded-xl ${colors.card} ${colors.text} hover:bg-blue-500/10 transition-all mb-6 group`}
-            >
-              <i className="fas fa-arrow-left group-hover:-translate-x-1 transition-transform"></i>
-              <span>{t("backToHome")}</span>
-            </Link>
+            <PageNav
+              cardClass={colors.card}
+              textClass={colors.text}
+              hoverClass="hover:bg-pink-500/10"
+            />
             
             <div className="text-center">
               <motion.div 
