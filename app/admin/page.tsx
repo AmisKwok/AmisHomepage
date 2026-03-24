@@ -14,6 +14,7 @@ import { useConfigStore } from '../stores/config-store';
 import { toast, Toaster } from 'sonner';
 import LoadingScreen from '../components/effects/LoadingScreen';
 import PageTransition from '../components/effects/PageTransition';
+import SEOHead from '../components/seo/SEOHead';
 
 // 配置状态接口
 interface ConfigState {
@@ -661,6 +662,7 @@ export default function ConfigPage() {
   return (
     <div className={`min-h-screen ${colors.background}`}>
       <Toaster position="top-center" richColors />
+      <SEOHead title={t("configManagement")} />
       
       {/* 移动端顶部导航栏 */}
       <div className="fixed top-0 left-0 right-0 z-50 lg:hidden bg-white/80 dark:bg-white/10 backdrop-blur-md border-b border-gray-200 dark:border-white/10 px-4 py-3">
