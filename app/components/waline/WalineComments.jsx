@@ -15,6 +15,12 @@ export default function WalineComments({ path = '/guestbook' }) {
   const { theme } = useThemeStore();
 
   useEffect(() => {
+    if (containerRef.current) {
+      containerRef.current.setAttribute('data-theme', theme);
+    }
+  }, [theme]);
+
+  useEffect(() => {
     
     if (walineInstanceRef.current) {
       walineInstanceRef.current.destroy();
@@ -91,7 +97,7 @@ export default function WalineComments({ path = '/guestbook' }) {
   }, [path, language, theme, t]);
 
   return (
-    <div className="waline-comments">
+    <div className="waline-comments" data-theme={theme}>
       <div ref={containerRef} />
     </div>
   );

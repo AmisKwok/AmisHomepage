@@ -3,136 +3,95 @@
 
 /* 自定义 Waline 样式以匹配主题 */
 
-/* ==================== 暗色主题样式（默认） ==================== */
-html.dark .waline-comments,
-html.dark .wl-container,
-html.dark .wl-panel,
-html.dark .wl-header,
-html.dark .wl-header input,
-html.dark .wl-editor,
-html.dark .wl-editor input,
-html.dark .wl-editor textarea,
-html.dark .wl-input,
-html.dark .wl-card,
-html.dark .wl-emoji-popup,
-html.dark .wl-gif-popup,
-html.dark .wl-quote,
-html.dark .wl-content,
-html.dark .wl-meta,
-html.dark .wl-recent-text,
-html.dark .wl-page-button {
-  --waline-color: #ffffff !important;
-  --waline-bg-color: rgba(255, 255, 255, 0.05) !important;
-  --waline-bg-color-light: rgba(255, 255, 255, 0.03) !important;
-  --waline-bg-color-hover: rgba(255, 255, 255, 0.08) !important;
-  --waline-border-color: rgba(255, 255, 255, 0.1) !important;
-  color: #ffffff !important;
-  background-color: rgba(255, 255, 255, 0.05) !important;
-  border-color: rgba(255, 255, 255, 0.1) !important;
-}
-
-html.dark .wl-panel {
-  background: rgba(255, 255, 255, 0.03) !important;
-  backdrop-filter: blur(15px) !important;
-}
-
-html.dark .wl-input,
-html.dark .wl-editor input,
-html.dark .wl-editor textarea {
-  background-color: rgba(255, 255, 255, 0.03) !important;
-  color: #ffffff !important;
-  border: 1px solid rgba(255, 255, 255, 0.1) !important;
-}
-
-html.dark .wl-header input {
-  background: rgba(255, 255, 255, 0.03) !important;
-  border: 1px solid rgba(255, 255, 255, 0.1) !important;
-  color: #ffffff !important;
-}
-
-html.dark .wl-content,
-html.dark .wl-nick,
-html.dark .wl-time {
-  color: #ffffff !important;
-}
-
-html.dark .wl-meta {
-  color: #9ca3af !important;
-}
-
-/* ==================== 亮色主题样式 ==================== */
-html.light .waline-comments,
-html.light .wl-container,
-html.light .wl-panel,
-html.light .wl-header,
-html.light .wl-header input,
-html.light .wl-editor,
-html.light .wl-editor input,
-html.light .wl-editor textarea,
-html.light .wl-input,
-html.light .wl-card,
-html.light .wl-emoji-popup,
-html.light .wl-gif-popup,
-html.light .wl-quote,
-html.light .wl-content,
-html.light .wl-meta,
-html.light .wl-recent-text,
-html.light .wl-page-button {
-  --waline-color: #1f2937 !important;
-  --waline-bg-color: rgba(0, 0, 0, 0.02) !important;
-  --waline-bg-color-light: rgba(0, 0, 0, 0.01) !important;
-  --waline-bg-color-hover: rgba(0, 0, 0, 0.04) !important;
-  --waline-border-color: rgba(0, 0, 0, 0.1) !important;
-  color: #1f2937 !important;
-  background-color: rgba(0, 0, 0, 0.02) !important;
-  border-color: rgba(0, 0, 0, 0.1) !important;
-}
-
-html.light .wl-panel {
-  background: rgba(0, 0, 0, 0.02) !important;
-  backdrop-filter: blur(15px) !important;
-}
-
-html.light .wl-input,
-html.light .wl-editor input,
-html.light .wl-editor textarea {
-  background-color: rgba(0, 0, 0, 0.02) !important;
-  color: #1f2937 !important;
-  border: 1px solid rgba(0, 0, 0, 0.1) !important;
-}
-
-html.light .wl-header input {
-  background: rgba(0, 0, 0, 0.02) !important;
-  border: 1px solid rgba(0, 0, 0, 0.1) !important;
-  color: #1f2937 !important;
-}
-
-html.light .wl-content,
-html.light .wl-nick,
-html.light .wl-time {
-  color: #1f2937 !important;
-}
-
-html.light .wl-meta {
-  color: #6b7280 !important;
-}
-
-/* ==================== 通用样式 ==================== */
-:root {
+/* 暗色主题 */
+:root,
+html.dark {
+  /* 字体大小 */
   --waline-font-size: 1rem;
+
+  /* 常规颜色 */
   --waline-white: #fff;
   --waline-light-grey: #999;
   --waline-dark-grey: #666;
+
+  /* 主题色 - 使用蓝色到紫色渐变 */
   --waline-theme-color: #3b82f6;
   --waline-active-color: #8b5cf6;
+
+  /* 布局颜色 - 暗色主题 */
+  --waline-color: #ffffff;
+  --waline-bg-color: rgba(255, 255, 255, 0.05);
+  --waline-bg-color-light: rgba(255, 255, 255, 0.03);
+  --waline-bg-color-hover: rgba(255, 255, 255, 0.08);
+  --waline-border-color: rgba(255, 255, 255, 0.1);
+  --waline-disable-bg-color: rgba(255, 255, 255, 0.05);
+  --waline-disable-color: #666;
+  --waline-code-bg-color: #1e1e2e;
+
+  /* 特殊颜色 */
+  --waline-bq-color: rgba(255, 255, 255, 0.05);
+
+  /* 头像 */
   --waline-avatar-size: 3.25rem;
   --waline-m-avatar-size: calc(var(--waline-avatar-size) * 9 / 13);
+
+  /* 徽章 */
   --waline-badge-color: #3b82f6;
   --waline-badge-font-size: 0.775em;
+
+  /* 信息 */
+  --waline-info-bg-color: rgba(59, 130, 246, 0.1);
+  --waline-info-color: #9ca3af;
   --waline-info-font-size: 0.625em;
+
+  /* 渲染选择 */
   --waline-border: 1px solid var(--waline-border-color);
   --waline-avatar-radius: 50%;
   --waline-box-shadow: none;
+}
+
+/* 亮色主题 */
+html.light {
+  --waline-color: #1f2937;
+  --waline-bg-color: rgba(0, 0, 0, 0.02);
+  --waline-bg-color-light: rgba(0, 0, 0, 0.01);
+  --waline-bg-color-hover: rgba(0, 0, 0, 0.04);
+  --waline-border-color: rgba(0, 0, 0, 0.1);
+  --waline-disable-bg-color: rgba(0, 0, 0, 0.02);
+  --waline-disable-color: #9ca3af;
+  --waline-code-bg-color: #f3f4f6;
+  --waline-bq-color: rgba(0, 0, 0, 0.03);
+  --waline-info-bg-color: rgba(59, 130, 246, 0.08);
+  --waline-info-color: #6b7280;
+}
+
+/* ==================== data-theme 属性选择器（iOS 兼容） ==================== */
+.waline-comments[data-theme="dark"] {
+  --waline-color: #ffffff;
+  --waline-bg-color: rgba(255, 255, 255, 0.05);
+  --waline-bg-color-light: rgba(255, 255, 255, 0.03);
+  --waline-bg-color-hover: rgba(255, 255, 255, 0.08);
+  --waline-border-color: rgba(255, 255, 255, 0.1);
+  --waline-disable-bg-color: rgba(255, 255, 255, 0.05);
+  --waline-disable-color: #666;
+  --waline-code-bg-color: #1e1e2e;
+  --waline-bq-color: rgba(255, 255, 255, 0.05);
+  --waline-info-bg-color: rgba(59, 130, 246, 0.1);
+  --waline-info-color: #9ca3af;
+}
+
+.waline-comments[data-theme="light"] {
+  --waline-color: #1f2937;
+  --waline-bg-color: rgba(0, 0, 0, 0.02);
+  --waline-bg-color-light: rgba(0, 0, 0, 0.01);
+  --waline-bg-color-hover: rgba(0, 0, 0, 0.04);
+  --waline-border-color: rgba(0, 0, 0, 0.1);
+  --waline-disable-bg-color: rgba(0, 0, 0, 0.02);
+  --waline-disable-color: #9ca3af;
+  --waline-code-bg-color: #f3f4f6;
+  --waline-bq-color: rgba(0, 0, 0, 0.03);
+  --waline-info-bg-color: rgba(59, 130, 246, 0.08);
+  --waline-info-color: #6b7280;
 }
 
 /* Waline 容器样式 */
