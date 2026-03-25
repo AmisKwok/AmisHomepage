@@ -15,39 +15,6 @@ export default function WalineComments({ path = '/guestbook' }) {
   const { theme } = useThemeStore();
 
   useEffect(() => {
-    if (!containerRef.current) return;
-
-    const isDark = theme === 'dark';
-    const container = containerRef.current;
-
-    if (isDark) {
-      container.style.setProperty('--waline-color', '#ffffff');
-      container.style.setProperty('--waline-bg-color', 'rgba(255, 255, 255, 0.05)');
-      container.style.setProperty('--waline-bg-color-light', 'rgba(255, 255, 255, 0.03)');
-      container.style.setProperty('--waline-bg-color-hover', 'rgba(255, 255, 255, 0.08)');
-      container.style.setProperty('--waline-border-color', 'rgba(255, 255, 255, 0.1)');
-      container.style.setProperty('--waline-disable-bg-color', 'rgba(255, 255, 255, 0.05)');
-      container.style.setProperty('--waline-disable-color', '#666');
-      container.style.setProperty('--waline-code-bg-color', '#1e1e2e');
-      container.style.setProperty('--waline-bq-color', 'rgba(255, 255, 255, 0.05)');
-      container.style.setProperty('--waline-info-bg-color', 'rgba(59, 130, 246, 0.1)');
-      container.style.setProperty('--waline-info-color', '#9ca3af');
-    } else {
-      container.style.setProperty('--waline-color', '#1f2937');
-      container.style.setProperty('--waline-bg-color', 'rgba(0, 0, 0, 0.02)');
-      container.style.setProperty('--waline-bg-color-light', 'rgba(0, 0, 0, 0.01)');
-      container.style.setProperty('--waline-bg-color-hover', 'rgba(0, 0, 0, 0.04)');
-      container.style.setProperty('--waline-border-color', 'rgba(0, 0, 0, 0.1)');
-      container.style.setProperty('--waline-disable-bg-color', 'rgba(0, 0, 0, 0.02)');
-      container.style.setProperty('--waline-disable-color', '#9ca3af');
-      container.style.setProperty('--waline-code-bg-color', '#f3f4f6');
-      container.style.setProperty('--waline-bq-color', 'rgba(0, 0, 0, 0.03)');
-      container.style.setProperty('--waline-info-bg-color', 'rgba(59, 130, 246, 0.08)');
-      container.style.setProperty('--waline-info-color', '#6b7280');
-    }
-  }, [theme]);
-
-  useEffect(() => {
     
     if (walineInstanceRef.current) {
       walineInstanceRef.current.destroy();
