@@ -34,7 +34,7 @@ export default function WalineComments({ path = '/guestbook' }) {
         serverURL: serverURL,
         path: path,
         lang: language === 'zh' ? 'zh-CN' : 'en',
-        dark: theme === 'dark',
+        dark: 'html.dark',
         reaction: false,
         search: false,
         pageview: true,

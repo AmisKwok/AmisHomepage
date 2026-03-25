@@ -1,9 +1,7 @@
 /* src/styles/waline.css */
 /* 使用官方排版，只修改颜色风格和添加毛玻璃效果 */
 
-/* 自定义 Waline 样式以匹配您的博客主题 */
-
-/* 亮色主题作为默认 */
+/* 自定义 Waline 样式以匹配主题 */
 :root {
   /* 字体大小 */
   --waline-font-size: 1rem;
@@ -17,18 +15,18 @@
   --waline-theme-color: #3b82f6;
   --waline-active-color: #8b5cf6;
 
-  /* 布局颜色 - 亮色主题（默认） */
-  --waline-color: #1f2937;
-  --waline-bg-color: rgba(0, 0, 0, 0.02);
-  --waline-bg-color-light: rgba(0, 0, 0, 0.01);
-  --waline-bg-color-hover: rgba(0, 0, 0, 0.04);
-  --waline-border-color: rgba(0, 0, 0, 0.1);
-  --waline-disable-bg-color: rgba(0, 0, 0, 0.02);
-  --waline-disable-color: #9ca3af;
-  --waline-code-bg-color: #f3f4f6;
+  /* 布局颜色 - 暗色主题（默认） */
+  --waline-color: #ffffff;
+  --waline-bg-color: rgba(255, 255, 255, 0.05);
+  --waline-bg-color-light: rgba(255, 255, 255, 0.03);
+  --waline-bg-color-hover: rgba(255, 255, 255, 0.08);
+  --waline-border-color: rgba(255, 255, 255, 0.1);
+  --waline-disable-bg-color: rgba(255, 255, 255, 0.05);
+  --waline-disable-color: #666;
+  --waline-code-bg-color: #1e1e2e;
 
   /* 特殊颜色 */
-  --waline-bq-color: rgba(0, 0, 0, 0.03);
+  --waline-bq-color: rgba(255, 255, 255, 0.05);
 
   /* 头像 */
   --waline-avatar-size: 3.25rem;
@@ -39,8 +37,8 @@
   --waline-badge-font-size: 0.775em;
 
   /* 信息 */
-  --waline-info-bg-color: rgba(59, 130, 246, 0.08);
-  --waline-info-color: #6b7280;
+  --waline-info-bg-color: rgba(59, 130, 246, 0.1);
+  --waline-info-color: #9ca3af;
   --waline-info-font-size: 0.625em;
 
   /* 渲染选择 */
@@ -49,19 +47,19 @@
   --waline-box-shadow: none;
 }
 
-/* 暗色主题 - 当 html.dark 存在时 */
-html.dark {
-  --waline-color: #ffffff;
-  --waline-bg-color: rgba(255, 255, 255, 0.05);
-  --waline-bg-color-light: rgba(255, 255, 255, 0.03);
-  --waline-bg-color-hover: rgba(255, 255, 255, 0.08);
-  --waline-border-color: rgba(255, 255, 255, 0.1);
-  --waline-disable-bg-color: rgba(255, 255, 255, 0.05);
-  --waline-disable-color: #666;
-  --waline-code-bg-color: #1e1e2e;
-  --waline-bq-color: rgba(255, 255, 255, 0.05);
-  --waline-info-bg-color: rgba(59, 130, 246, 0.1);
-  --waline-info-color: #9ca3af;
+/* 亮色主题适配 */
+html.light {
+  --waline-color: #1f2937;
+  --waline-bg-color: rgba(0, 0, 0, 0.02);
+  --waline-bg-color-light: rgba(0, 0, 0, 0.01);
+  --waline-bg-color-hover: rgba(0, 0, 0, 0.04);
+  --waline-border-color: rgba(0, 0, 0, 0.1);
+  --waline-disable-bg-color: rgba(0, 0, 0, 0.02);
+  --waline-disable-color: #9ca3af;
+  --waline-code-bg-color: #f3f4f6;
+  --waline-bq-color: rgba(0, 0, 0, 0.03);
+  --waline-info-bg-color: rgba(59, 130, 246, 0.08);
+  --waline-info-color: #6b7280;
 }
 
 /* Waline 容器样式 */

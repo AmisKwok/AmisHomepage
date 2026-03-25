@@ -193,6 +193,32 @@ export default function Home() {
           </div>
           
           <div className="md:hidden flex items-center gap-2">
+            {guestbookConfig?.enabled && (
+              <Link 
+                href="/guestbook"
+                className="w-8 h-8 flex items-center justify-center rounded-full hover:scale-110 transition-all duration-300"
+                style={{ 
+                  backgroundColor: theme === "dark" ? "rgba(255,255,255,0.2)" : "rgba(229,231,235,1)",
+                  color: textColor
+                }}
+                title={t("guestbook")}
+              >
+                <i className="fas fa-comments text-sm"></i>
+              </Link>
+            )}
+            {friendLinksConfig?.enabled && (
+              <Link 
+                href="/friends"
+                className="w-8 h-8 flex items-center justify-center rounded-full hover:scale-110 transition-all duration-300"
+                style={{ 
+                  backgroundColor: theme === "dark" ? "rgba(255,255,255,0.2)" : "rgba(229,231,235,1)",
+                  color: textColor
+                }}
+                title={t("friendLinks")}
+              >
+                <i className="fas fa-link text-sm"></i>
+              </Link>
+            )}
             <LanguageSwitcher />
             <ThemeSwitcher />
           </div>
