@@ -2,7 +2,10 @@
 /* 使用官方排版，只修改颜色风格和添加毛玻璃效果 */
 
 /* 自定义 Waline 样式以匹配主题 */
-:root {
+
+/* 暗色主题 */
+:root,
+html.dark {
   /* 字体大小 */
   --waline-font-size: 1rem;
 
@@ -15,7 +18,7 @@
   --waline-theme-color: #3b82f6;
   --waline-active-color: #8b5cf6;
 
-  /* 布局颜色 - 暗色主题（默认） */
+  /* 布局颜色 - 暗色主题 */
   --waline-color: #ffffff;
   --waline-bg-color: rgba(255, 255, 255, 0.05);
   --waline-bg-color-light: rgba(255, 255, 255, 0.03);
@@ -47,7 +50,7 @@
   --waline-box-shadow: none;
 }
 
-/* 亮色主题适配 */
+/* 亮色主题 */
 html.light {
   --waline-color: #1f2937;
   --waline-bg-color: rgba(0, 0, 0, 0.02);
