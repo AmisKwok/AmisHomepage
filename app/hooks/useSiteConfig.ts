@@ -28,6 +28,7 @@ export function useSiteConfig() {
           showLocalTime: config.showLocalTime,
           showCustomCursor: config.showCustomCursor,
           customCursorPath: config.customCursorPath,
+          typeWriterEffects: config.typeWriterEffects,
           site: {
             backgroundImage: config.site?.backgroundImage,
             textColor: config.site?.textColor,

@@ -5,6 +5,11 @@ export type I18nText = {
   en: string;
 };
 
+export interface TypeWriterEffects {
+  glitchEffect: boolean;
+  colorGradient: boolean;
+}
+
 export interface SiteConfig {
   name: string;
   title: string;

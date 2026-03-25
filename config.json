@@ -4,6 +4,12 @@
   "showLocalTime": true,
   "showCustomCursor": true,
   "customCursorPath": "/cursors/watermelon.cur",
+  "typeWriterEffects": {
+    "glitchEffect": true,
+    "colorGradient": false,
+    "glitchProbability": 15,
+    "glitchInterval": 1500
+  },
   "site": {
     "name": "Amis's Homepage",
     "title": "Amis's Homepage",

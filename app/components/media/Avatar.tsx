@@ -17,15 +17,16 @@ export default function Avatar({ src, alt, size = 120, className = "" }: AvatarP
     <div className={`relative group ${className}`}>
       {/* 呼吸光圈 */}
       <div 
-        className={`absolute inset-0 rounded-full animate-pulse-slow ${
+        className={`absolute inset-0 rounded-full ${
           theme === "dark" 
-            ? "bg-linear-to-r from-white/40 via-white/20 to-white/40" 
-            : "bg-linear-to-r from-gray-400/40 via-gray-200/20 to-gray-400/40"
+            ? "bg-linear-to-r from-blue-500/30 via-purple-500/30 to-pink-500/30" 
+            : "bg-linear-to-r from-orange-400/30 via-amber-400/30 to-yellow-400/30"
         }`}
         style={{ 
           width: size + 16, 
           height: size + 16,
           margin: -8,
+          animation: 'breathe 3s ease-in-out infinite',
         }}
       />
       
@@ -45,10 +46,14 @@ export default function Avatar({ src, alt, size = 120, className = "" }: AvatarP
       <div 
         className={`relative rounded-full overflow-hidden border-4 shadow-2xl transition-all duration-500 ease-out group-hover:scale-110 ${
           theme === "dark" 
-            ? "border-white/50 group-hover:shadow-white/30" 
-            : "border-gray-300 group-hover:shadow-gray-400/30"
+            ? "border-white/50 group-hover:shadow-blue-500/30" 
+            : "border-gray-300 group-hover:shadow-orange-500/30"
         }`}
-        style={{ width: size, height: size }}
+        style={{ 
+          width: size, 
+          height: size,
+          animation: 'breathe-avatar 3s ease-in-out infinite',
+        }}
       >
         <Image
           src={src}
@@ -69,6 +74,28 @@ export default function Avatar({ src, alt, size = 120, className = "" }: AvatarP
         }`}
         style={{ width: size, height: size }}
       />
+
+      {/* CSS 动画定义 */}
+      <style jsx>{`
+        @keyframes breathe {
+          0%, 100% {
+            transform: scale(1);
+            opacity: 0.4;
+          }
+          50% {
+            transform: scale(1.08);
+            opacity: 0.7;
+          }
+        }
+        @keyframes breathe-avatar {
+          0%, 100% {
+            transform: scale(1);
+          }
+          50% {
+            transform: scale(1.02);
+          }
+        }
+      `}</style>
     </div>
   );
 }

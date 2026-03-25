@@ -419,7 +419,8 @@ export default function ConfigPage() {
         showSkills: state.config.showSkills,
         showLocalTime: state.config.showLocalTime,
         showCustomCursor: state.config.showCustomCursor,
-        customCursorPath: state.config.customCursorPath
+        customCursorPath: state.config.customCursorPath,
+        typeWriterEffects: state.config.typeWriterEffects
       });
       setState(prev => ({ ...prev, isSaving: false, saveSuccess: true }));
       toast.success(t('configSaveSuccess'));
@@ -1002,6 +1003,99 @@ export default function ConfigPage() {
                           </div>
                         </div>
                       )}
+                    </div>
+
+                    <div className={`p-4 rounded-xl ${theme === 'dark' ? 'bg-white/5' : 'bg-gray-50'}`}>
+                      <div className="flex items-center gap-3 mb-4">
+                        <div className="w-8 h-8 rounded-lg bg-linear-to-br from-violet-500 to-purple-600 flex items-center justify-center">
+                          <i className="fas fa-keyboard text-white text-sm"></i>
+                        </div>
+                        <div>
+                          <label className={`block text-sm font-medium ${colors.text}`}>{t('typeWriterEffects')}</label>
+                          <p className={`text-xs ${colors.textSecondary}`}>{t('typeWriterEffectsHint')}</p>
+                        </div>
+                      </div>
+                      
+                      <div className="space-y-3 pt-3 border-t border-white/10">
+                        <div className="flex items-center justify-between">
+                          <div className="flex items-center gap-2">
+                            <i className={`fas fa-bolt ${colors.textSecondary}`}></i>
+                            <span className={`text-sm ${colors.text}`}>{t('glitchEffect')}</span>
+                          </div>
+                          <button
+                            onClick={() => handleInputChange('typeWriterEffects.glitchEffect', !state.config.typeWriterEffects?.glitchEffect)}
+                            className={`relative w-14 h-7 rounded-full transition-all duration-300 ${
+                              state.config.typeWriterEffects?.glitchEffect 
+                                ? 'bg-linear-to-r from-violet-500 to-purple-600' 
+                                : theme === 'dark' ? 'bg-white/20' : 'bg-gray-300'
+                            }`}
+                          >
+                            <span className={`absolute top-1 w-5 h-5 rounded-full bg-white shadow-md transition-all duration-300 ${state.config.typeWriterEffects?.glitchEffect ? 'left-8' : 'left-1'}`} />
+                          </button>
+                        </div>
+
+                        <div className="flex items-center justify-between">
+                          <div className="flex items-center gap-2">
+                            <i className={`fas fa-palette ${colors.textSecondary}`}></i>
+                            <span className={`text-sm ${colors.text}`}>{t('colorGradient')}</span>
+                          </div>
+                          <button
+                            onClick={() => handleInputChange('typeWriterEffects.colorGradient', !state.config.typeWriterEffects?.colorGradient)}
+                            className={`relative w-14 h-7 rounded-full transition-all duration-300 ${
+                              state.config.typeWriterEffects?.colorGradient 
+                                ? 'bg-linear-to-r from-pink-500 to-rose-600' 
+                                : theme === 'dark' ? 'bg-white/20' : 'bg-gray-300'
+                            }`}
+                          >
+                            <span className={`absolute top-1 w-5 h-5 rounded-full bg-white shadow-md transition-all duration-300 ${state.config.typeWriterEffects?.colorGradient ? 'left-8' : 'left-1'}`} />
+                          </button>
+                        </div>
+
+                        <div className="flex items-center justify-between">
+                          <div className="flex items-center gap-2">
+                            <i className={`fas fa-dice ${colors.textSecondary}`}></i>
+                            <span className={`text-sm ${colors.text}`}>{t('glitchProbability')}</span>
+                          </div>
+                          <div className="flex items-center gap-2">
+                            <input
+                              type="number"
+                              min="0"
+                              max="100"
+                              value={state.config.typeWriterEffects?.glitchProbability ?? 40}
+                              onChange={(e) => handleInputChange('typeWriterEffects.glitchProbability', parseInt(e.target.value) || 0)}
+                              className={`w-16 px-2 py-1 rounded-lg border text-center text-sm ${
+                                theme === 'dark' 
+                                  ? 'bg-white/10 border-white/20 text-white' 
+                                  : 'bg-white border-gray-300 text-gray-900'
+                              }`}
+                            />
+                            <span className={`text-xs ${colors.textSecondary}`}>%</span>
+                          </div>
+                        </div>
+
+                        <div className="flex items-center justify-between">
+                          <div className="flex items-center gap-2">
+                            <i className={`fas fa-clock ${colors.textSecondary}`}></i>
+                            <span className={`text-sm ${colors.text}`}>{t('glitchInterval')}</span>
+                          </div>
+                          <div className="flex items-center gap-2">
+                            <input
+                              type="number"
+                              min="500"
+                              max="5000"
+                              step="100"
+                              value={state.config.typeWriterEffects?.glitchInterval ?? 1500}
+                              onChange={(e) => handleInputChange('typeWriterEffects.glitchInterval', parseInt(e.target.value) || 1500)}
+                              className={`w-20 px-2 py-1 rounded-lg border text-center text-sm ${
+                                theme === 'dark' 
+                                  ? 'bg-white/10 border-white/20 text-white' 
+                                  : 'bg-white border-gray-300 text-gray-900'
+                              }`}
+                            />
+                            <span className={`text-xs ${colors.textSecondary}`}>ms</span>
+                          </div>
+                        </div>
+                      </div>
                     </div>
                   </div>
                 )}

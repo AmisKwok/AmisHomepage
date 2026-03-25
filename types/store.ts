@@ -5,6 +5,12 @@ export interface SiteContent {
   showLocalTime?: boolean;
   showCustomCursor?: boolean;
   customCursorPath?: string;
+  typeWriterEffects?: {
+    glitchEffect?: boolean;
+    colorGradient?: boolean;
+    glitchProbability?: number;
+    glitchInterval?: number;
+  };
   site?: {
     backgroundImage?: {
       dark?: string;

@@ -19,6 +19,7 @@ import { useTextColors } from "./hooks/useTextColors";
 import TypeWriter from "./components/content/TypeWriter";
 import LanguageSwitcher from "./components/ui/LanguageSwitcher";
 import ThemeSwitcher from "./components/ui/ThemeSwitcher";
+import SocialIcon from "./components/ui/SocialIcon";
 import DrawnTitle from "./components/effects/DrawnTitle";
 import Avatar from "./components/media/Avatar";
 import AboutCard from "./components/content/AboutCard";
@@ -258,65 +259,38 @@ export default function Home() {
           </div>
           
           <div id="site_social_icons" className="flex items-center gap-4 flex-wrap justify-center">
-            {linksConfig.email?.show !== false && (
-              <a 
-                href={linksConfig.email.url}
-                rel="external nofollow noreferrer" 
-                target="_blank" 
-                title={linksConfig.email.title[useLanguageStore.getState().language]}
-                className="w-10 h-10 flex items-center justify-center rounded-full hover:scale-110 transition-all duration-300"
-                style={{ 
-                  backgroundColor: theme === "dark" ? "rgba(255,255,255,0.2)" : "rgba(229,231,235,1)",
-                  color: textColor
-                }}
-              >
-                <i className="fas fa-envelope"></i>
-              </a>
-            )}
-            {linksConfig.github?.show !== false && (
-              <a 
-                href={linksConfig.github.url}
-                target="_blank" 
-                rel="noopener noreferrer"
-                title={linksConfig.github.title[useLanguageStore.getState().language]}
-                className="w-10 h-10 flex items-center justify-center rounded-full hover:scale-110 transition-all duration-300"
-                style={{ 
-                  backgroundColor: theme === "dark" ? "rgba(255,255,255,0.2)" : "rgba(229,231,235,1)",
-                  color: textColor
-                }}
-              >
-                <i className="fab fa-github"></i>
-              </a>
-            )}
-            {linksConfig.gitee?.show !== false && (
-              <a 
-                href={linksConfig.gitee.url}
-                target="_blank" 
-                rel="noopener noreferrer"
-                title={linksConfig.gitee.title[useLanguageStore.getState().language]}
-                className="w-10 h-10 flex items-center justify-center rounded-full hover:scale-110 transition-all duration-300"
-                style={{ 
-                  backgroundColor: theme === "dark" ? "rgba(255,255,255,0.2)" : "rgba(229,231,235,1)",
-                  color: textColor
-                }}
-              >
-                <i className="fab fa-gitee"></i>
-              </a>
-            )}
-            {linksConfig.blog?.show !== false && (
-              <a 
-                href={linksConfig.blog.url}
-                target="_blank"
-                title={linksConfig.blog.title[useLanguageStore.getState().language]}
-                className="w-10 h-10 flex items-center justify-center rounded-full hover:scale-110 transition-all duration-300"
-                style={{ 
-                  backgroundColor: theme === "dark" ? "rgba(255,255,255,0.2)" : "rgba(229,231,235,1)",
-                  color: textColor
-                }}
-              >
-                <i className="fas fa-blog"></i>
-              </a>
-            )}
+            <SocialIcon
+              href={linksConfig.email?.url || "#"}
+              icon="fas fa-envelope"
+              title={linksConfig.email?.title[useLanguageStore.getState().language] || ""}
+              show={linksConfig.email?.show !== false}
+              theme={theme}
+              textColor={textColor}
+            />
+            <SocialIcon
+              href={linksConfig.github?.url || "#"}
+              icon="fab fa-github"
+              title={linksConfig.github?.title[useLanguageStore.getState().language] || ""}
+              show={linksConfig.github?.show !== false}
+              theme={theme}
+              textColor={textColor}
+            />
+            <SocialIcon
+              href={linksConfig.gitee?.url || "#"}
+              icon="fab fa-gitee"
+              title={linksConfig.gitee?.title[useLanguageStore.getState().language] || ""}
+              show={linksConfig.gitee?.show !== false}
+              theme={theme}
+              textColor={textColor}
+            />
+            <SocialIcon
+              href={linksConfig.blog?.url || "#"}
+              icon="fas fa-blog"
+              title={linksConfig.blog?.title[useLanguageStore.getState().language] || ""}
+              show={linksConfig.blog?.show !== false}
+              theme={theme}
+              textColor={textColor}
+            />
           </div>
         </div>
         
