@@ -65,35 +65,6 @@ html.light {
   --waline-info-color: #6b7280;
 }
 
-/* ==================== data-theme 属性选择器（iOS 兼容） ==================== */
-.waline-comments[data-theme="dark"] {
-  --waline-color: #ffffff;
-  --waline-bg-color: rgba(255, 255, 255, 0.05);
-  --waline-bg-color-light: rgba(255, 255, 255, 0.03);
-  --waline-bg-color-hover: rgba(255, 255, 255, 0.08);
-  --waline-border-color: rgba(255, 255, 255, 0.1);
-  --waline-disable-bg-color: rgba(255, 255, 255, 0.05);
-  --waline-disable-color: #666;
-  --waline-code-bg-color: #1e1e2e;
-  --waline-bq-color: rgba(255, 255, 255, 0.05);
-  --waline-info-bg-color: rgba(59, 130, 246, 0.1);
-  --waline-info-color: #9ca3af;
-}
-
-.waline-comments[data-theme="light"] {
-  --waline-color: #1f2937;
-  --waline-bg-color: rgba(0, 0, 0, 0.02);
-  --waline-bg-color-light: rgba(0, 0, 0, 0.01);
-  --waline-bg-color-hover: rgba(0, 0, 0, 0.04);
-  --waline-border-color: rgba(0, 0, 0, 0.1);
-  --waline-disable-bg-color: rgba(0, 0, 0, 0.02);
-  --waline-disable-color: #9ca3af;
-  --waline-code-bg-color: #f3f4f6;
-  --waline-bq-color: rgba(0, 0, 0, 0.03);
-  --waline-info-bg-color: rgba(59, 130, 246, 0.08);
-  --waline-info-color: #6b7280;
-}
-
 /* Waline 容器样式 */
 .waline-comments {
   min-height: 300px;
