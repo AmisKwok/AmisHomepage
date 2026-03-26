@@ -10,6 +10,10 @@ export interface SiteContent {
     colorGradient?: boolean;
     glitchProbability?: number;
     glitchInterval?: number;
+    speedPreset?: 'fast' | 'medium' | 'slow' | 'custom';
+    typeSpeed?: number;
+    deleteSpeed?: number;
+    pauseTime?: number;
   };
   site?: {
     backgroundImage?: {

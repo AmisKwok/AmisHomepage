@@ -251,10 +251,7 @@ export default function Home() {
             <TypeWriter 
               key={useLanguageStore.getState().language}
               texts={[t("typeWriterText"), t("typeWriterText2")]} 
-              typeSpeed={120} 
-              deleteSpeed={80}
-              delay={2500} 
-              pauseTime={2000}
+              delay={2500}
             />
           </div>
           

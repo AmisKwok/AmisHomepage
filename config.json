@@ -8,7 +8,11 @@
     "glitchEffect": true,
     "colorGradient": false,
     "glitchProbability": 15,
-    "glitchInterval": 1500
+    "glitchInterval": 1500,
+    "speedPreset": "custom",
+    "typeSpeed": 160,
+    "deleteSpeed": 50,
+    "pauseTime": 2000
   },
   "site": {
     "name": "Amis's Homepage",

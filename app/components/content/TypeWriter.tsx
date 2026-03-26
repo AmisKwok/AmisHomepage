@@ -24,19 +24,22 @@ type Phase = "typing" | "pausing" | "deleting" | "idle";
 
 export default function TypeWriter({
   texts,
-  typeSpeed = 120,
-  deleteSpeed = 80,
+  typeSpeed: typeSpeedProp,
+  deleteSpeed: deleteSpeedProp,
   delay = 800,
-  pauseTime = 2000,
+  pauseTime: pauseTimeProp,
 }: TypeWriterProps) {
   const { siteContent } = useConfigStore();
   const { theme } = useThemeStore();
   
-  // 从配置读取效果开关
+  // 从配置读取效果开关和速度参数
   const glitchEffect = siteContent?.typeWriterEffects?.glitchEffect ?? false;
   const colorGradient = siteContent?.typeWriterEffects?.colorGradient ?? false;
   const glitchProbability = siteContent?.typeWriterEffects?.glitchProbability ?? 40;
   const glitchInterval = siteContent?.typeWriterEffects?.glitchInterval ?? 1500;
+  const typeSpeed = typeSpeedProp ?? siteContent?.typeWriterEffects?.typeSpeed ?? 140;
+  const deleteSpeed = deleteSpeedProp ?? siteContent?.typeWriterEffects?.deleteSpeed ?? 50;
+  const pauseTime = pauseTimeProp ?? siteContent?.typeWriterEffects?.pauseTime ?? 2000;
   
   // 当前显示的文本
   const [displayText, setDisplayText] = useState("");

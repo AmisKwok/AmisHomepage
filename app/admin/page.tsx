@@ -717,28 +717,51 @@ export default function ConfigPage() {
       )}
 
       {/* 桌面端侧边栏 */}
-      <aside className={`fixed left-4 top-1/2 -translate-y-1/2 ${sidebarCollapsed ? 'w-14' : 'w-56'} ${colors.sidebar} backdrop-blur-md border rounded-2xl p-4 hidden lg:block z-40 transition-all duration-300`}>
-        <div className="flex items-center justify-between mb-4">
-          {!sidebarCollapsed && <h4 className={`text-sm font-semibold ${colors.text}`}>{t('quickNav')}</h4>}
-          <div className="flex gap-1">
-            {!sidebarCollapsed && (
-              <>
-                <button
-                  onClick={expandAll}
-                  className={`p-1.5 rounded-lg hover:bg-white/10 transition-colors ${colors.textSecondary}`}
-                  title={t('expandAll')}
-                >
-                  <i className="fas fa-expand-alt text-xs"></i>
-                </button>
-                <button
-                  onClick={collapseAll}
-                  className={`p-1.5 rounded-lg hover:bg-white/10 transition-colors ${colors.textSecondary}`}
-                  title={t('collapseAll')}
-                >
-                  <i className="fas fa-compress-alt text-xs"></i>
-                </button>
-              </>
-            )}
+      <aside className={`fixed left-4 top-1/2 -translate-y-1/2 ${sidebarCollapsed ? 'w-14' : 'w-56'} ${colors.sidebar} backdrop-blur-md border rounded-2xl p-4 hidden lg:block z-40 transition-all duration-300 overflow-hidden`}>
+        <Link
+          href="/"
+          className={`flex items-center gap-3 px-3 py-2 rounded-xl transition-all ${
+            sidebarCollapsed ? 'justify-center' : ''
+          } hover:bg-blue-500/10 ${colors.text}`}
+          title={t('backToHome')}
+        >
+          <i className="fas fa-home text-sm shrink-0"></i>
+          <span className={`text-sm whitespace-nowrap transition-all duration-300 ${
+            sidebarCollapsed ? 'hidden' : 'opacity-100'
+          }`}>{t('backToHome')}</span>
+        </Link>
+        
+        <div className={`my-3 border-t transition-all duration-300 ${
+          theme === 'dark' ? 'border-white/10' : 'border-gray-200'
+        }`}></div>
+        
+        <div className={`flex items-center transition-all duration-300 ${
+          sidebarCollapsed ? 'justify-center mb-0' : 'justify-between mb-4'
+        }`}>
+          <h4 className={`text-sm font-semibold ${colors.text} whitespace-nowrap transition-all duration-300 ${
+            sidebarCollapsed ? 'hidden' : 'opacity-100'
+          }`}>{t('quickNav')}</h4>
+          <div className={`flex gap-1 shrink-0 transition-all duration-300 ${
+            sidebarCollapsed ? 'justify-center' : ''
+          }`}>
+            <button
+              onClick={expandAll}
+              className={`p-1.5 rounded-lg hover:bg-white/10 transition-all duration-300 ${colors.textSecondary} ${
+                sidebarCollapsed ? 'hidden' : 'opacity-100'
+              }`}
+              title={t('expandAll')}
+            >
+              <i className="fas fa-expand-alt text-xs"></i>
+            </button>
+            <button
+              onClick={collapseAll}
+              className={`p-1.5 rounded-lg hover:bg-white/10 transition-all duration-300 ${colors.textSecondary} ${
+                sidebarCollapsed ? 'hidden' : 'opacity-100'
+              }`}
+              title={t('collapseAll')}
+            >
+              <i className="fas fa-compress-alt text-xs"></i>
+            </button>
             <button
               onClick={() => setSidebarCollapsed(!sidebarCollapsed)}
               className={`p-1.5 rounded-lg hover:bg-white/10 transition-colors ${colors.textSecondary}`}
@@ -748,22 +771,22 @@ export default function ConfigPage() {
             </button>
           </div>
         </div>
-        {!sidebarCollapsed && (
-          <nav className="space-y-1">
-            {sections.map(section => (
-              <button
-                key={section.id}
-                onClick={() => scrollToSection(section.id)}
-                className={`w-full flex items-center gap-3 px-3 py-2 rounded-xl transition-all text-left ${
-                  activeSection === section.id ? colors.activeNav : `hover:bg-white/5 ${colors.textSecondary}`
-                }`}
-              >
-                <i className={`${section.icon} text-sm w-5`}></i>
-                <span className="text-sm">{t(section.title as any)}</span>
-              </button>
-            ))}
-          </nav>
-        )}
+        <nav className={`space-y-1 transition-all duration-300 ${
+          sidebarCollapsed ? 'opacity-0 h-0 overflow-hidden' : 'opacity-100'
+        }`}>
+          {sections.map(section => (
+            <button
+              key={section.id}
+              onClick={() => scrollToSection(section.id)}
+              className={`w-full flex items-center gap-3 px-3 py-2 rounded-xl transition-all text-left ${
+                activeSection === section.id ? colors.activeNav : `hover:bg-white/5 ${colors.textSecondary}`
+              }`}
+            >
+              <i className={`${section.icon} text-sm w-5 shrink-0`}></i>
+              <span className="text-sm whitespace-nowrap">{t(section.title as any)}</span>
+            </button>
+          ))}
+        </nav>
       </aside>
 
       {/* 移动端底部浮动按钮 */}
@@ -1086,6 +1109,124 @@ export default function ConfigPage() {
                               step="100"
                               value={state.config.typeWriterEffects?.glitchInterval ?? 1500}
                               onChange={(e) => handleInputChange('typeWriterEffects.glitchInterval', parseInt(e.target.value) || 1500)}
+                              className={`w-20 px-2 py-1 rounded-lg border text-center text-sm ${
+                                theme === 'dark' 
+                                  ? 'bg-white/10 border-white/20 text-white' 
+                                  : 'bg-white border-gray-300 text-gray-900'
+                              }`}
+                            />
+                            <span className={`text-xs ${colors.textSecondary}`}>ms</span>
+                          </div>
+                        </div>
+
+                        <div className="flex items-center justify-between">
+                          <div className="flex items-center gap-2">
+                            <i className={`fas fa-tachometer-alt ${colors.textSecondary}`}></i>
+                            <span className={`text-sm ${colors.text}`}>{t('speedPreset')}</span>
+                          </div>
+                          <select
+                            value={state.config.typeWriterEffects?.speedPreset ?? 'custom'}
+                            onChange={(e) => {
+                              const preset = e.target.value as 'fast' | 'medium' | 'slow' | 'custom';
+                              handleInputChange('typeWriterEffects.speedPreset', preset);
+                              
+                              if (preset === 'fast') {
+                                handleInputChange('typeWriterEffects.typeSpeed', 80);
+                                handleInputChange('typeWriterEffects.deleteSpeed', 50);
+                              } else if (preset === 'medium') {
+                                handleInputChange('typeWriterEffects.typeSpeed', 100);
+                                handleInputChange('typeWriterEffects.deleteSpeed', 60);
+                              } else if (preset === 'slow') {
+                                handleInputChange('typeWriterEffects.typeSpeed', 150);
+                                handleInputChange('typeWriterEffects.deleteSpeed', 100);
+                              }
+                            }}
+                            className={`px-3 py-1.5 rounded-lg border text-sm cursor-pointer transition-all duration-200 ${
+                              theme === 'dark' 
+                                ? 'bg-white/10 border-white/20 text-white hover:bg-white/20 focus:bg-white/15' 
+                                : 'bg-white border-gray-300 text-gray-900 hover:border-gray-400 focus:border-blue-500'
+                            } focus:outline-none focus:ring-2 ${
+                              theme === 'dark' ? 'focus:ring-white/20' : 'focus:ring-blue-500/20'
+                            }`}
+                          >
+                            <option value="fast" className={theme === 'dark' ? 'bg-gray-800 text-white' : 'bg-white text-gray-900'}>
+                              {t('speedFast')}
+                            </option>
+                            <option value="medium" className={theme === 'dark' ? 'bg-gray-800 text-white' : 'bg-white text-gray-900'}>
+                              {t('speedMedium')}
+                            </option>
+                            <option value="slow" className={theme === 'dark' ? 'bg-gray-800 text-white' : 'bg-white text-gray-900'}>
+                              {t('speedSlow')}
+                            </option>
+                            <option value="custom" className={theme === 'dark' ? 'bg-gray-800 text-white' : 'bg-white text-gray-900'}>
+                              {t('speedCustom')}
+                            </option>
+                          </select>
+                        </div>
+
+                        {state.config.typeWriterEffects?.speedPreset === 'custom' && (
+                          <>
+                            <div className="flex items-center justify-between">
+                              <div className="flex items-center gap-2">
+                                <i className={`fas fa-keyboard ${colors.textSecondary}`}></i>
+                                <span className={`text-sm ${colors.text}`}>{t('typeSpeed')}</span>
+                              </div>
+                              <div className="flex items-center gap-2">
+                                <input
+                                  type="number"
+                                  min="50"
+                                  max="300"
+                                  step="10"
+                                  value={state.config.typeWriterEffects?.typeSpeed ?? 140}
+                                  onChange={(e) => handleInputChange('typeWriterEffects.typeSpeed', parseInt(e.target.value) || 140)}
+                                  className={`w-20 px-2 py-1 rounded-lg border text-center text-sm ${
+                                    theme === 'dark' 
+                                      ? 'bg-white/10 border-white/20 text-white' 
+                                      : 'bg-white border-gray-300 text-gray-900'
+                                  }`}
+                                />
+                                <span className={`text-xs ${colors.textSecondary}`}>ms</span>
+                              </div>
+                            </div>
+
+                            <div className="flex items-center justify-between">
+                              <div className="flex items-center gap-2">
+                                <i className={`fas fa-backspace ${colors.textSecondary}`}></i>
+                                <span className={`text-sm ${colors.text}`}>{t('deleteSpeed')}</span>
+                              </div>
+                              <div className="flex items-center gap-2">
+                                <input
+                                  type="number"
+                                  min="20"
+                                  max="200"
+                                  step="10"
+                                  value={state.config.typeWriterEffects?.deleteSpeed ?? 50}
+                                  onChange={(e) => handleInputChange('typeWriterEffects.deleteSpeed', parseInt(e.target.value) || 50)}
+                                  className={`w-20 px-2 py-1 rounded-lg border text-center text-sm ${
+                                    theme === 'dark' 
+                                      ? 'bg-white/10 border-white/20 text-white' 
+                                      : 'bg-white border-gray-300 text-gray-900'
+                                  }`}
+                                />
+                                <span className={`text-xs ${colors.textSecondary}`}>ms</span>
+                              </div>
+                            </div>
+                          </>
+                        )}
+
+                        <div className="flex items-center justify-between">
+                          <div className="flex items-center gap-2">
+                            <i className={`fas fa-pause-circle ${colors.textSecondary}`}></i>
+                            <span className={`text-sm ${colors.text}`}>{t('pauseTime')}</span>
+                          </div>
+                          <div className="flex items-center gap-2">
+                            <input
+                              type="number"
+                              min="500"
+                              max="5000"
+                              step="100"
+                              value={state.config.typeWriterEffects?.pauseTime ?? 2000}
+                              onChange={(e) => handleInputChange('typeWriterEffects.pauseTime', parseInt(e.target.value) || 2000)}
                               className={`w-20 px-2 py-1 rounded-lg border text-center text-sm ${
                                 theme === 'dark' 
                                   ? 'bg-white/10 border-white/20 text-white' 
