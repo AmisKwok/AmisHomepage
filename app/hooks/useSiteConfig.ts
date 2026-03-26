@@ -29,6 +29,7 @@ export function useSiteConfig() {
           showCustomCursor: config.showCustomCursor,
           customCursorPath: config.customCursorPath,
           typeWriterEffects: config.typeWriterEffects,
+          heroTitleEffects: config.heroTitleEffects,
           site: {
             backgroundImage: config.site?.backgroundImage,
             textColor: config.site?.textColor,

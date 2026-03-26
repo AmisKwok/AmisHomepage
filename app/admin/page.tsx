@@ -420,7 +420,8 @@ export default function ConfigPage() {
         showLocalTime: state.config.showLocalTime,
         showCustomCursor: state.config.showCustomCursor,
         customCursorPath: state.config.customCursorPath,
-        typeWriterEffects: state.config.typeWriterEffects
+        typeWriterEffects: state.config.typeWriterEffects,
+        heroTitleEffects: state.config.heroTitleEffects
       });
       setState(prev => ({ ...prev, isSaving: false, saveSuccess: true }));
       toast.success(t('configSaveSuccess'));
@@ -1026,6 +1027,59 @@ export default function ConfigPage() {
                           </div>
                         </div>
                       )}
+                    </div>
+
+                    <div className={`p-4 rounded-xl ${theme === 'dark' ? 'bg-white/5' : 'bg-gray-50'}`}>
+                      <div className="flex items-center gap-3 mb-4">
+                        <div className="w-8 h-8 rounded-lg bg-linear-to-br from-pink-500 to-rose-600 flex items-center justify-center">
+                          <i className="fas fa-font text-white text-sm"></i>
+                        </div>
+                        <div>
+                          <label className={`block text-sm font-medium ${colors.text}`}>{t('heroTitleEffects')}</label>
+                          <p className={`text-xs ${colors.textSecondary}`}>{t('heroTitleEffectsHint')}</p>
+                        </div>
+                      </div>
+                      
+                      <div className="space-y-3 pt-3 border-t border-white/10">
+                        <div className="flex items-center justify-between">
+                          <div className="flex items-center gap-2">
+                            <i className={`fas fa-magic ${colors.textSecondary}`}></i>
+                            <span className={`text-sm ${colors.text}`}>{t('hoverPreset')}</span>
+                          </div>
+                          <select
+                            value={state.config.heroTitleEffects?.hoverPreset ?? 'scale'}
+                            onChange={(e) => {
+                              handleInputChange('heroTitleEffects.hoverPreset', e.target.value as 'scale' | 'bounce' | 'wobble' | 'strokeFlow' | 'colorFade' | 'none');
+                            }}
+                            className={`px-3 py-1.5 rounded-lg border text-sm cursor-pointer transition-all duration-200 ${
+                              theme === 'dark' 
+                                ? 'bg-white/10 border-white/20 text-white hover:bg-white/20 focus:bg-white/15' 
+                                : 'bg-white border-gray-300 text-gray-900 hover:border-gray-400 focus:border-blue-500'
+                            } focus:outline-none focus:ring-2 ${
+                              theme === 'dark' ? 'focus:ring-white/20' : 'focus:ring-blue-500/20'
+                            }`}
+                          >
+                            <option value="scale" className={theme === 'dark' ? 'bg-gray-800 text-white' : 'bg-white text-gray-900'}>
+                              {t('hoverScale')}
+                            </option>
+                            <option value="bounce" className={theme === 'dark' ? 'bg-gray-800 text-white' : 'bg-white text-gray-900'}>
+                              {t('hoverBounce')}
+                            </option>
+                            <option value="wobble" className={theme === 'dark' ? 'bg-gray-800 text-white' : 'bg-white text-gray-900'}>
+                              {t('hoverWobble')}
+                            </option>
+                            <option value="strokeFlow" className={theme === 'dark' ? 'bg-gray-800 text-white' : 'bg-white text-gray-900'}>
+                              {t('hoverStrokeFlow')}
+                            </option>
+                            <option value="colorFade" className={theme === 'dark' ? 'bg-gray-800 text-white' : 'bg-white text-gray-900'}>
+                              {t('hoverColorFade')}
+                            </option>
+                            <option value="none" className={theme === 'dark' ? 'bg-gray-800 text-white' : 'bg-white text-gray-900'}>
+                              {t('hoverNone')}
+                            </option>
+                          </select>
+                        </div>
+                      </div>
                     </div>
 
                     <div className={`p-4 rounded-xl ${theme === 'dark' ? 'bg-white/5' : 'bg-gray-50'}`}>

@@ -15,6 +15,9 @@ export interface SiteContent {
     deleteSpeed?: number;
     pauseTime?: number;
   };
+  heroTitleEffects?: {
+    hoverPreset?: 'scale' | 'bounce' | 'wobble' | 'strokeFlow' | 'colorFade' | 'none';
+  };
   site?: {
     backgroundImage?: {
       dark?: string;

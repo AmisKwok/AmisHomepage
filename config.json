@@ -14,6 +14,9 @@
     "deleteSpeed": 50,
     "pauseTime": 2000
   },
+  "heroTitleEffects": {
+    "hoverPreset": "wobble"
+  },
   "site": {
     "name": "Amis's Homepage",
     "title": "Amis's Homepage",
