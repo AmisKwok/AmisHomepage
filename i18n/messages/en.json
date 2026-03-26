@@ -170,5 +170,7 @@
   "enableFriendLinks": "Enable Friend Links",
   "sidebarCollapse": "Collapse Sidebar",
   "sidebarExpand": "Expand Sidebar",
-  "backToTop": "Back to Top"
+  "backToTop": "Back to Top",
+  "selectFile": "Select File",
+  "noFileSelected": "No files selected"
 }

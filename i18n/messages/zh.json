@@ -170,5 +170,7 @@
   "enableFriendLinks": "启用友链",
   "sidebarCollapse": "收起导航",
   "sidebarExpand": "展开导航",
-  "backToTop": "回到顶部"
+  "backToTop": "回到顶部",
+  "selectFile": "选择文件",
+  "noFileSelected": "未选择任何文件"
 }

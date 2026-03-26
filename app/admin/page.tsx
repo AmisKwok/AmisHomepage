@@ -15,6 +15,7 @@ import { toast, Toaster } from 'sonner';
 import LoadingScreen from '../components/effects/LoadingScreen';
 import PageTransition from '../components/effects/PageTransition';
 import SEOHead from '../components/seo/SEOHead';
+import FileInput from '../components/ui/FileInput';
 
 // 配置状态接口
 interface ConfigState {
@@ -718,7 +719,7 @@ export default function ConfigPage() {
       )}
 
       {/* 桌面端侧边栏 */}
-      <aside className={`fixed left-4 top-1/2 -translate-y-1/2 ${sidebarCollapsed ? 'w-14' : 'w-56'} ${colors.sidebar} backdrop-blur-md border rounded-2xl p-4 hidden lg:block z-40 transition-all duration-300 overflow-hidden`}>
+      <aside className={`fixed left-4 top-1/2 -translate-y-1/2 ${sidebarCollapsed ? 'w-14' : 'w-64'} ${colors.sidebar} backdrop-blur-md border rounded-2xl p-4 hidden lg:block z-40 transition-all duration-300 overflow-hidden`}>
         <Link
           href="/"
           className={`flex items-center gap-3 px-3 py-2 rounded-xl transition-all ${
@@ -784,7 +785,7 @@ export default function ConfigPage() {
               }`}
             >
               <i className={`${section.icon} text-sm w-5 shrink-0`}></i>
-              <span className="text-sm whitespace-nowrap">{t(section.title as any)}</span>
+              <span className="text-sm wrap-break-word text-left">{t(section.title as any)}</span>
             </button>
           ))}
         </nav>
@@ -827,7 +828,6 @@ export default function ConfigPage() {
             <i className="fas fa-save text-lg"></i>
           )}
         </button>
-        <span className={`text-xs ${colors.textSecondary} writing-mode-vertical`}>{t('saveToGithub')}</span>
         
         <button
           onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
@@ -836,7 +836,6 @@ export default function ConfigPage() {
         >
           <i className="fas fa-arrow-up text-lg"></i>
         </button>
-        <span className={`text-xs ${colors.textSecondary} writing-mode-vertical`}>{t('backToTop')}</span>
       </div>
 
       <div className="max-w-6xl mx-auto px-4 py-8 lg:px-28 xl:px-36 pt-20 lg:pt-8">
@@ -894,11 +893,12 @@ export default function ConfigPage() {
                           <label className={`block text-sm font-medium mb-2 ${colors.textSecondary}`}>
                             {t('pemKeyFile')} <span className="text-red-500">*</span>
                           </label>
-                          <input
-                            type="file"
+                          <FileInput
                             accept=".pem"
                             onChange={handlePemUpload}
-                            className={`w-full px-4 py-3 rounded-xl border ${colors.input} file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:bg-linear-to-r file:from-blue-500 file:to-purple-600 file:text-white file:cursor-pointer`}
+                            colors={colors}
+                            selectFileText={t('selectFile')}
+                            noFileSelectedText={t('noFileSelected')}
                           />
                           <p className={`text-xs mt-2 ${colors.textSecondary}`}>
                             {t('pemKeyHint')}
@@ -976,8 +976,7 @@ export default function ConfigPage() {
                                 onChange={(e) => handleInputChange('customCursorPath', e.target.value)}
                                 className={`flex-1 w-full sm:w-auto px-3 py-2 rounded-lg border ${colors.input} focus:outline-none focus:ring-2 focus:ring-blue-500/50 text-sm`}
                               />
-                              <input
-                                type="file"
+                              <FileInput
                                 accept=".cur"
                                 onChange={async (e) => {
                                   const file = e.target.files?.[0];
@@ -1005,7 +1004,10 @@ export default function ConfigPage() {
                                     toast.error(t('cursorUploadError'));
                                   }
                                 }}
-                                className={`w-full sm:w-auto px-3 py-2 rounded-lg border ${colors.input} file:mr-2 file:py-1 file:px-3 file:rounded-lg file:border-0 file:bg-linear-to-r file:from-cyan-500 file:to-blue-600 file:text-white file:cursor-pointer text-sm`}
+                                buttonGradient="from-cyan-500 to-blue-600"
+                                colors={colors}
+                                selectFileText={t('selectFile')}
+                                noFileSelectedText={t('noFileSelected')}
                               />
                             </div>
                           </div>
@@ -1017,13 +1019,6 @@ export default function ConfigPage() {
                               <i className={`fas fa-mouse-pointer ${colors.textSecondary}`}></i>
                             </div>
                             <span className={`text-xs ${colors.textSecondary} flex-1`}>{t('cursorPreviewHint')}</span>
-                            <button
-                              onClick={() => handleInputChange('customCursorPath', '/cursors/watermelon.cur')}
-                              className={`px-3 py-1.5 rounded-lg border ${colors.card} ${colors.text} hover:bg-red-500/10 hover:border-red-500/30 transition-all text-xs`}
-                            >
-                              <i className="fas fa-undo mr-1"></i>
-                              {t('resetCursor')}
-                            </button>
                           </div>
                         </div>
                       )}
@@ -1492,8 +1487,7 @@ export default function ConfigPage() {
                             onChange={(e) => handleInputChange('profile.avatar', e.target.value)}
                             className={`w-full px-4 py-3 rounded-xl border ${colors.input} focus:outline-none focus:ring-2 focus:ring-blue-500/50`}
                           />
-                          <input
-                            type="file"
+                          <FileInput
                             accept="image/*"
                             onChange={async (e) => {
                               const file = e.target.files?.[0];
@@ -1502,7 +1496,9 @@ export default function ConfigPage() {
                                 if (path) handleInputChange('profile.avatar', path);
                               }
                             }}
-                            className={`w-full px-4 py-3 rounded-xl border ${colors.input} file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:bg-linear-to-r file:from-blue-500 file:to-purple-600 file:text-white file:cursor-pointer`}
+                            colors={colors}
+                            selectFileText={t('selectFile')}
+                            noFileSelectedText={t('noFileSelected')}
                           />
                         </div>
                       </div>
@@ -2050,10 +2046,9 @@ export default function ConfigPage() {
                 {sections[9].expanded && (
                   <div className="mt-6 space-y-4">
                     <p className={`text-sm ${colors.textSecondary}`}>{t('musicUploadHint')}</p>
-                    <input
-                      type="file"
+                    <FileInput
                       accept="audio/*"
-                      multiple
+                      multiple={true}
                       onChange={async (e) => {
                         const files = e.target.files;
                         if (!files) return;
@@ -2062,7 +2057,10 @@ export default function ConfigPage() {
                         }
                         fetchMusicList();
                       }}
-                      className={`w-full px-4 py-3 rounded-xl border ${colors.input} file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:bg-linear-to-r file:from-pink-500 file:to-purple-600 file:text-white file:cursor-pointer`}
+                      buttonGradient="from-pink-500 to-purple-600"
+                      colors={colors}
+                      selectFileText={t('selectFile')}
+                      noFileSelectedText={t('noFileSelected')}
                     />
                     {musicList.length === 0 ? (
                       <p className={`text-center py-8 ${colors.textSecondary}`}>{t('noMusic')}</p>
