@@ -8,13 +8,20 @@ interface AvatarProps {
   alt: string;
   size?: number;
   className?: string;
+  onHoverStart?: () => void;
+  onHoverEnd?: () => void;
 }
 
-export default function Avatar({ src, alt, size = 120, className = "" }: AvatarProps) {
+export default function Avatar({ src, alt, size = 120, className = "", onHoverStart, onHoverEnd }: AvatarProps) {
   const { theme } = useThemeStore();
   
   return (
-    <div className={`relative group ${className}`}>
+    <div 
+      className={`relative group ${className}`}
+      onMouseEnter={onHoverStart}
+      onMouseLeave={onHoverEnd}
+    >
+      
       {/* 呼吸光圈 */}
       <div 
         className={`absolute inset-0 rounded-full ${

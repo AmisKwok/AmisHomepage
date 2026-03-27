@@ -1,4 +1,37 @@
 {
+  "showSkills": true,
+  "showProjects": true,
+  "showLocalTime": true,
+  "showGreetings": true,
+  "showCustomCursor": true,
+  "customCursorPath": "/cursors/default.cur",
+  "typeWriterEffects": {
+    "glitchEffect": true,
+    "colorGradient": false,
+    "glitchProbability": 15,
+    "glitchInterval": 1500,
+    "speedPreset": "medium",
+    "typeSpeed": 100,
+    "deleteSpeed": 50,
+    "pauseTime": 2000
+  },
+  "heroTitleEffects": {
+    "hoverPreset": "none"
+  },
+  "greetings": {
+    "morning": {
+      "zh": "早上好！我是您的名字，很高兴认识你！",
+      "en": "Good morning! I'm YourName, nice to meet you!"
+    },
+    "afternoon": {
+      "zh": "下午好！我是您的名字，欢迎来到我的主页！",
+      "en": "Good afternoon! I'm YourName, welcome to my homepage!"
+    },
+    "evening": {
+      "zh": "晚上好！我是您的名字，希望你今天过得愉快！",
+      "en": "Good evening! I'm YourName, hope you're having a great day!"
+    }
+  },
   "site": {
     "name": "您的名字's Homepage",
     "title": "您的名字's Homepage",

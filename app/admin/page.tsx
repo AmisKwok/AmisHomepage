@@ -422,10 +422,12 @@ export default function ConfigPage() {
         showProjects: state.config.showProjects,
         showSkills: state.config.showSkills,
         showLocalTime: state.config.showLocalTime,
+        showGreetings: state.config.showGreetings,
         showCustomCursor: state.config.showCustomCursor,
         customCursorPath: state.config.customCursorPath,
         typeWriterEffects: state.config.typeWriterEffects,
-        heroTitleEffects: state.config.heroTitleEffects
+        heroTitleEffects: state.config.heroTitleEffects,
+        greetings: state.config.greetings
       });
       setState(prev => ({ ...prev, isSaving: false, saveSuccess: true }));
       toast.success(t('configSaveSuccess'));
@@ -947,6 +949,116 @@ export default function ConfigPage() {
                         >
                           <span className={`absolute top-1 w-5 h-5 rounded-full bg-white shadow-md transition-all duration-300 ${state.config.showLocalTime ? 'left-8' : 'left-1'}`} />
                         </button>
+                      </div>
+                    </div>
+                    
+                    <div className={`p-4 rounded-xl ${theme === 'dark' ? 'bg-white/5' : 'bg-gray-50'}`}>
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center gap-3">
+                          <div className="w-8 h-8 rounded-lg bg-linear-to-br from-yellow-400 to-orange-500 flex items-center justify-center">
+                            <i className="fas fa-comment-dots text-white text-sm"></i>
+                          </div>
+                          <div>
+                            <label className={`block text-sm font-medium ${colors.text}`}>{t('greetingComponent')}</label>
+                            <p className={`text-xs ${colors.textSecondary}`}>{t('enableGreetings')}</p>
+                          </div>
+                        </div>
+                        <button
+                          onClick={() => handleInputChange('showGreetings', !state.config.showGreetings)}
+                          className={`relative w-14 h-7 rounded-full transition-all duration-300 ${
+                            state.config.showGreetings 
+                              ? 'bg-linear-to-r from-yellow-400 to-orange-500' 
+                              : theme === 'dark' ? 'bg-white/20' : 'bg-gray-300'
+                          }`}
+                        >
+                          <span className={`absolute top-1 w-5 h-5 rounded-full bg-white shadow-md transition-all duration-300 ${state.config.showGreetings ? 'left-8' : 'left-1'}`} />
+                        </button>
+                      </div>
+                    </div>
+
+                    <div className={`p-4 rounded-xl ${theme === 'dark' ? 'bg-white/5' : 'bg-gray-50'}`}>
+                      <div className="flex items-center gap-3 mb-4">
+                        <div className="w-8 h-8 rounded-lg bg-linear-to-br from-yellow-400 to-orange-500 flex items-center justify-center">
+                          <i className="fas fa-comment-dots text-white text-sm"></i>
+                        </div>
+                        <div>
+                          <label className={`block text-sm font-medium ${colors.text}`}>{t('greetingSettings')}</label>
+                          <p className={`text-xs ${colors.textSecondary}`}>{t('greetingHint')}</p>
+                        </div>
+                      </div>
+                      
+                      <div className="space-y-3 pt-3 border-t border-white/10">
+                        <div>
+                          <label className={`block text-xs font-medium mb-2 ${colors.textSecondary}`}>{t('greetingMorningLabel')}</label>
+                          <div className="space-y-2">
+                            <div>
+                              <label className={`block text-xs font-medium mb-1 ${colors.textSecondary}`}>{t('chinese')}</label>
+                              <input
+                                type="text"
+                                value={state.config.greetings?.morning?.zh || ''}
+                                onChange={(e) => handleInputChange('greetings.morning.zh', e.target.value)}
+                                className={`w-full px-3 py-2 rounded-lg border ${colors.input} focus:outline-none focus:ring-2 focus:ring-yellow-500/50 text-sm`}
+                              />
+                            </div>
+                            <div>
+                              <label className={`block text-xs font-medium mb-1 ${colors.textSecondary}`}>{t('english')}</label>
+                              <input
+                                type="text"
+                                value={state.config.greetings?.morning?.en || ''}
+                                onChange={(e) => handleInputChange('greetings.morning.en', e.target.value)}
+                                className={`w-full px-3 py-2 rounded-lg border ${colors.input} focus:outline-none focus:ring-2 focus:ring-yellow-500/50 text-sm`}
+                              />
+                            </div>
+                          </div>
+                        </div>
+                        
+                        <div>
+                          <label className={`block text-xs font-medium mb-2 ${colors.textSecondary}`}>{t('greetingAfternoonLabel')}</label>
+                          <div className="space-y-2">
+                            <div>
+                              <label className={`block text-xs font-medium mb-1 ${colors.textSecondary}`}>{t('chinese')}</label>
+                              <input
+                                type="text"
+                                value={state.config.greetings?.afternoon?.zh || ''}
+                                onChange={(e) => handleInputChange('greetings.afternoon.zh', e.target.value)}
+                                className={`w-full px-3 py-2 rounded-lg border ${colors.input} focus:outline-none focus:ring-2 focus:ring-orange-500/50 text-sm`}
+                              />
+                            </div>
+                            <div>
+                              <label className={`block text-xs font-medium mb-1 ${colors.textSecondary}`}>{t('english')}</label>
+                              <input
+                                type="text"
+                                value={state.config.greetings?.afternoon?.en || ''}
+                                onChange={(e) => handleInputChange('greetings.afternoon.en', e.target.value)}
+                                className={`w-full px-3 py-2 rounded-lg border ${colors.input} focus:outline-none focus:ring-2 focus:ring-orange-500/50 text-sm`}
+                              />
+                            </div>
+                          </div>
+                        </div>
+                        
+                        <div>
+                          <label className={`block text-xs font-medium mb-2 ${colors.textSecondary}`}>{t('greetingEveningLabel')}</label>
+                          <div className="space-y-2">
+                            <div>
+                              <label className={`block text-xs font-medium mb-1 ${colors.textSecondary}`}>{t('chinese')}</label>
+                              <input
+                                type="text"
+                                value={state.config.greetings?.evening?.zh || ''}
+                                onChange={(e) => handleInputChange('greetings.evening.zh', e.target.value)}
+                                className={`w-full px-3 py-2 rounded-lg border ${colors.input} focus:outline-none focus:ring-2 focus:ring-blue-500/50 text-sm`}
+                              />
+                            </div>
+                            <div>
+                              <label className={`block text-xs font-medium mb-1 ${colors.textSecondary}`}>{t('english')}</label>
+                              <input
+                                type="text"
+                                value={state.config.greetings?.evening?.en || ''}
+                                onChange={(e) => handleInputChange('greetings.evening.en', e.target.value)}
+                                className={`w-full px-3 py-2 rounded-lg border ${colors.input} focus:outline-none focus:ring-2 focus:ring-blue-500/50 text-sm`}
+                              />
+                            </div>
+                          </div>
+                        </div>
                       </div>
                     </div>
                     

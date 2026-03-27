@@ -3,6 +3,7 @@ export interface SiteContent {
   showProjects?: boolean;
   showSkills?: boolean;
   showLocalTime?: boolean;
+  showGreetings?: boolean;
   showCustomCursor?: boolean;
   customCursorPath?: string;
   typeWriterEffects?: {
@@ -17,6 +18,20 @@ export interface SiteContent {
   };
   heroTitleEffects?: {
     hoverPreset?: 'scale' | 'bounce' | 'wobble' | 'strokeFlow' | 'colorFade' | 'none';
+  };
+  greetings?: {
+    morning?: {
+      zh?: string;
+      en?: string;
+    };
+    afternoon?: {
+      zh?: string;
+      en?: string;
+    };
+    evening?: {
+      zh?: string;
+      en?: string;
+    };
   };
   site?: {
     backgroundImage?: {

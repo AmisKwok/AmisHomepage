@@ -26,10 +26,12 @@ export function useSiteConfig() {
           showProjects: config.showProjects,
           showSkills: config.showSkills,
           showLocalTime: config.showLocalTime,
+          showGreetings: config.showGreetings,
           showCustomCursor: config.showCustomCursor,
           customCursorPath: config.customCursorPath,
           typeWriterEffects: config.typeWriterEffects,
           heroTitleEffects: config.heroTitleEffects,
+          greetings: config.greetings,
           site: {
             backgroundImage: config.site?.backgroundImage,
             textColor: config.site?.textColor,

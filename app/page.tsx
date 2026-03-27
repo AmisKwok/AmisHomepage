@@ -5,7 +5,7 @@
  */
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { linksConfig, guestbookConfig, friendLinksConfig } from "./site-config";
@@ -54,11 +54,108 @@ export default function Home() {
   // 页面加载状态
   const [isLoaded, setIsLoaded] = useState(false);
   const [mounted, setMounted] = useState(false);
+  // 问候语状态
+  const [greeting, setGreeting] = useState("");
+  // 头像悬停状态
+  const [isAvatarHovered, setIsAvatarHovered] = useState(false);
+  // 问候语拆分后的短语
+  const [greetingParts, setGreetingParts] = useState<string[]>([]);
+  // 每个短语的位置（左边还是右边）
+  const [phrasePositions, setPhrasePositions] = useState<{ [key: number]: 'left' | 'right' }>({});
+  // 随机显示的索引
+  const [visibleIndices, setVisibleIndices] = useState<number[]>([]);
+
+  // 获取问候语的函数
+  const getGreeting = useCallback(() => {
+    const hour = new Date().getHours();
+    const currentLang = useLanguageStore.getState().language;
+    
+    // 从配置中获取问候语，如果没有配置则使用默认翻译
+    if (hour >= 5 && hour < 12) {
+      return siteContent?.greetings?.morning?.[currentLang] || t("greetingMorning");
+    } else if (hour >= 12 && hour < 18) {
+      return siteContent?.greetings?.afternoon?.[currentLang] || t("greetingAfternoon");
+    } else {
+      return siteContent?.greetings?.evening?.[currentLang] || t("greetingEvening");
+    }
+  }, [t, siteContent]);
 
   // 初始化语言状态
   useEffect(() => {
     hydrate();
   }, [hydrate]);
+
+  // 更新问候语
+  useEffect(() => {
+    if (hydrated) {
+      setGreeting(getGreeting());
+      // 每分钟更新一次问候语，确保在时间跨过时也能更新
+      const interval = setInterval(() => {
+        setGreeting(getGreeting());
+      }, 60000);
+      return () => clearInterval(interval);
+    }
+  }, [hydrated, getGreeting, siteContent]);
+
+  // 拆分问候语为短语（按标点符号）
+  useEffect(() => {
+    if (greeting) {
+      const parts = greeting.split(/([!！。？?，,])/).reduce((acc, part, index) => {
+        if (index % 2 === 0 && part.trim()) {
+          acc.push(part.trim());
+        } else if (index % 2 === 1 && acc.length > 0) {
+          acc[acc.length - 1] += part;
+        }
+        return acc;
+      }, [] as string[]);
+      setGreetingParts(parts.length > 0 ? parts : [greeting]);
+    }
+  }, [greeting]);
+
+  // 头像悬停时随机顺序显示短语并重新分配位置
+  useEffect(() => {
+    if (isAvatarHovered && greetingParts.length > 0) {
+      setVisibleIndices([]);
+      // 每次悬停时重新随机分配位置
+      const positions: { [key: number]: 'left' | 'right' } = {};
+      greetingParts.forEach((_, index) => {
+        positions[index] = Math.random() > 0.5 ? 'left' : 'right';
+      });
+      setPhrasePositions(positions);
+      
+      const indices = Array.from({ length: greetingParts.length }, (_, i) => i);
+      const shuffled = [...indices].sort(() => Math.random() - 0.5);
+      
+      let i = 0;
+      const interval = setInterval(() => {
+        if (i < shuffled.length) {
+          setVisibleIndices(prev => {
+            const newIndices = [...prev, shuffled[i]];
+            return newIndices;
+          });
+          i++;
+        } else {
+          clearInterval(interval);
+          // 确保所有短语都显示了
+          setTimeout(() => {
+            setVisibleIndices(prev => {
+              const allIndices = Array.from({ length: greetingParts.length }, (_, i) => i);
+              const missingIndices = allIndices.filter(index => !prev.includes(index));
+              if (missingIndices.length > 0) {
+                return [...prev, ...missingIndices];
+              }
+              return prev;
+            });
+          }, 100);
+        }
+      }, 300);
+      return () => clearInterval(interval);
+    } else if (!isAvatarHovered) {
+      setVisibleIndices([]);
+    }
+  }, [isAvatarHovered, greetingParts]);
+
+
 
   // 页面加载完成
   useEffect(() => {
@@ -233,12 +330,65 @@ export default function Home() {
             opacity: isLanguageChanging ? 0 : 1
           }}
         >
-          <Avatar 
-            src="/images/avatar.jpg" 
-            alt="Amis" 
-            size={140} 
-            className="mb-6"
-          />
+          {/* 头像和问候语容器 - 移动端隐藏问候语 */}
+          <div className="relative flex items-center justify-center gap-8 mb-6">
+            {/* 左侧短语容器 */}
+            {siteContent?.showGreetings !== false && (
+              <div className="hidden md:flex flex-col items-end justify-center w-56 lg:w-64 gap-3">
+                {greetingParts.map((part, index) => (
+                  phrasePositions[index] === 'left' && (
+                    <span
+                      key={`left-${index}`}
+                      className={`text-lg lg:text-xl font-medium transition-all duration-300 ${
+                        visibleIndices.includes(index) 
+                          ? 'opacity-100 translate-x-0 scale-100' 
+                          : 'opacity-0 -translate-x-6 scale-75'
+                      }`}
+                      style={{
+                        color: textColor,
+                        transitionDelay: `${visibleIndices.indexOf(index) * 0.15}s`
+                      }}
+                    >
+                      {part}
+                    </span>
+                  )
+                ))}
+              </div>
+            )}
+            
+            <Avatar 
+              src="/images/avatar.jpg" 
+              alt="Amis" 
+              size={140} 
+              className=""
+              onHoverStart={() => siteContent?.showGreetings !== false && setIsAvatarHovered(true)}
+              onHoverEnd={() => setIsAvatarHovered(false)}
+            />
+            
+            {/* 右侧短语容器 */}
+            {siteContent?.showGreetings !== false && (
+              <div className="hidden md:flex flex-col items-start justify-center w-56 lg:w-64 gap-3">
+                {greetingParts.map((part, index) => (
+                  phrasePositions[index] === 'right' && (
+                    <span
+                      key={`right-${index}`}
+                      className={`text-lg lg:text-xl font-medium transition-all duration-300 ${
+                        visibleIndices.includes(index) 
+                          ? 'opacity-100 translate-x-0 scale-100' 
+                          : 'opacity-0 translate-x-6 scale-75'
+                      }`}
+                      style={{
+                        color: textColor,
+                        transitionDelay: `${visibleIndices.indexOf(index) * 0.15}s`
+                      }}
+                    >
+                      {part}
+                    </span>
+                  )
+                ))}
+              </div>
+            )}
+          </div>
           
           <div className="min-h-[80px] flex items-center justify-center w-[90vw] mb-4">
             <DrawnTitle text={t("siteTitle")} className="w-full" />

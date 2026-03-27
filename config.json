@@ -2,6 +2,7 @@
   "showSkills": true,
   "showProjects": true,
   "showLocalTime": true,
+  "showGreetings": true,
   "showCustomCursor": true,
   "customCursorPath": "/cursors/watermelon.cur",
   "typeWriterEffects": {
@@ -16,6 +17,20 @@
   },
   "heroTitleEffects": {
     "hoverPreset": "wobble"
+  },
+  "greetings": {
+    "morning": {
+      "zh": "早上好！我是Amis！很高兴认识你！",
+      "en": "Good morning! I'm Amis! nice to meet you!"
+    },
+    "afternoon": {
+      "zh": "下午好！我是Amis！欢迎来到我的主页！",
+      "en": "Good afternoon! I'm Amis! welcome to my homepage!"
+    },
+    "evening": {
+      "zh": "晚上好！我是Amis！希望你今天过得愉快！",
+      "en": "Good evening! I'm Amis! hope you're having a great day!"
+    }
   },
   "site": {
     "name": "Amis's Homepage",
