@@ -1,11 +1,13 @@
 /**
  * 动态线条组件
  * 用于页面背景装饰效果
+ * 支持通过 effectsStore 动态开关
  */
 
 "use client";
 
 import { motion } from "framer-motion";
+import { useEffectsStore } from "@/app/stores/effects-store";
 
 interface DynamicLinesProps {
   theme: string;
@@ -18,6 +20,10 @@ export default function DynamicLines({
   lineCount = 6,
   opacity = 0.15
 }: DynamicLinesProps) {
+  const { effectsEnabled } = useEffectsStore();
+  
+  if (!effectsEnabled) return null;
+  
   return (
     <svg 
       className="absolute inset-0 w-full h-full pointer-events-none" 

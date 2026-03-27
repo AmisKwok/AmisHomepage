@@ -5,6 +5,7 @@ export interface SiteContent {
   showLocalTime?: boolean;
   showGreetings?: boolean;
   showCustomCursor?: boolean;
+  showEffectsToggle?: boolean;
   customCursorPath?: string;
   typeWriterEffects?: {
     glitchEffect?: boolean;

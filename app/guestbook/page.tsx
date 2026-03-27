@@ -11,6 +11,8 @@ import { motion } from "framer-motion";
 import { useLanguageStore, useTranslation } from "../stores/language-store";
 import { useThemeStore } from "../stores/theme-store";
 import { guestbookConfig } from "../site-config";
+import { useEffectsStore } from "../stores/effects-store";
+import { usePageColors } from "../hooks/usePageColors";
 import LoadingScreen from "../components/effects/LoadingScreen";
 import PageTransition from "../components/effects/PageTransition";
 import PageNav from "../components/layout/PageNav";
@@ -56,28 +58,26 @@ const floatVariants = {
       ease: "easeInOut" as const,
     },
   },
+  static: {
+    y: 0,
+    transition: {
+      duration: 0,
+    },
+  },
 };
 
 export default function GuestbookPage() {
   const { t } = useTranslation();
   const { hydrated, hydrate, language } = useLanguageStore();
   const { theme } = useThemeStore();
+  const { effectsEnabled } = useEffectsStore();
+  const colors = usePageColors({ glowColor: 'pink' });
   const [mounted, setMounted] = useState(false);
 
-  // 初始化语言状态
   useEffect(() => {
     hydrate();
     setMounted(true);
   }, [hydrate]);
-
-  // 主题颜色配置
-  const colors = {
-    background: theme === "dark" ? "bg-linear-to-br from-[#0a0a0a] via-[#0f0f23] to-[#1a1a2e]" : "bg-linear-to-br from-gray-50 via-white to-gray-100",
-    card: theme === "dark" ? "bg-white/5 backdrop-blur-md border border-white/10" : "bg-white/80 backdrop-blur-md border border-gray-200",
-    text: theme === "dark" ? "text-white" : "text-gray-900",
-    textSecondary: theme === "dark" ? "text-gray-400" : "text-gray-600",
-    glow: theme === "dark" ? "shadow-pink-500/20" : "shadow-pink-500/10",
-  };
 
   // Waline 配置
   const walineUrl = guestbookConfig?.walineUrl || "";
@@ -94,9 +94,9 @@ export default function GuestbookPage() {
       />
       <motion.div 
         className={`min-h-screen ${colors.background} relative overflow-hidden`}
-        initial="hidden"
-        animate="visible"
-        variants={containerVariants}
+        initial={effectsEnabled ? "hidden" : false}
+        animate={effectsEnabled ? "visible" : false}
+        variants={effectsEnabled ? containerVariants : undefined}
       >
         {/* 顶部工具栏 */}
         <TopToolbar />
@@ -104,21 +104,26 @@ export default function GuestbookPage() {
         <ParticleBackground theme={theme} />
         <DynamicLines theme={theme} />
         
-        <div className="absolute inset-0 overflow-hidden pointer-events-none">
-          <motion.div 
-            className="absolute -top-40 -right-40 w-80 h-80 bg-linear-to-br from-pink-500/20 to-purple-500/20 rounded-full blur-3xl"
-            animate={{ scale: [1, 1.2, 1], opacity: [0.3, 0.5, 0.3] }}
-            transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
-          />
-          <motion.div 
-            className="absolute -bottom-40 -left-40 w-80 h-80 bg-linear-to-br from-blue-500/20 to-cyan-500/20 rounded-full blur-3xl"
-            animate={{ scale: [1.2, 1, 1.2], opacity: [0.3, 0.5, 0.3] }}
-            transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
-          />
-        </div>
+        {effectsEnabled && (
+          <div className="absolute inset-0 overflow-hidden pointer-events-none">
+            <motion.div 
+              className="absolute -top-40 -right-40 w-80 h-80 bg-linear-to-br from-pink-500/20 to-purple-500/20 rounded-full blur-3xl"
+              animate={{ scale: [1, 1.2, 1], opacity: [0.3, 0.5, 0.3] }}
+              transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
+            />
+            <motion.div 
+              className="absolute -bottom-40 -left-40 w-80 h-80 bg-linear-to-br from-blue-500/20 to-cyan-500/20 rounded-full blur-3xl"
+              animate={{ scale: [1.2, 1, 1.2], opacity: [0.3, 0.5, 0.3] }}
+              transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
+            />
+          </div>
+        )}
 
         <div className="max-w-4xl mx-auto px-4 py-8 relative z-10">
-          <motion.header className="mb-8" variants={itemVariants}>
+          <motion.header 
+            className="mb-8" 
+            variants={effectsEnabled ? itemVariants : undefined}
+          >
             <PageNav
               cardClass={colors.card}
               textClass={colors.text}
@@ -130,13 +135,15 @@ export default function GuestbookPage() {
                 <motion.div 
                   className="relative inline-block"
                   variants={floatVariants}
-                  animate="animate"
+                  animate={effectsEnabled ? "animate" : "static"}
                 >
-                  <motion.div 
-                    className="absolute inset-0 bg-linear-to-br from-pink-500 to-rose-600 rounded-2xl blur-xl opacity-50"
-                    animate={{ scale: [1, 1.1, 1] }}
-                    transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
-                  />
+                  {effectsEnabled && (
+                    <motion.div 
+                      className="absolute inset-0 bg-linear-to-br from-pink-500 to-rose-600 rounded-2xl blur-xl opacity-50"
+                      animate={{ scale: [1, 1.1, 1] }}
+                      transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+                    />
+                  )}
                   <div className="relative inline-flex items-center justify-center w-12 h-12 sm:w-14 sm:h-14 rounded-2xl bg-linear-to-br from-pink-500 to-rose-600 shadow-lg">
                     <i className="fas fa-comments text-white text-xl sm:text-2xl"></i>
                   </div>
@@ -144,9 +151,9 @@ export default function GuestbookPage() {
                 
                 <motion.h1 
                   className={`text-2xl sm:text-3xl lg:text-4xl font-bold ${colors.text} bg-linear-to-r from-pink-500 via-rose-500 to-purple-500 bg-clip-text text-transparent`}
-                  initial={{ opacity: 0, y: 20 }}
+                  initial={effectsEnabled ? { opacity: 0, y: 20 } : false}
                   animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.2 }}
+                  transition={effectsEnabled ? { delay: 0.2 } : { duration: 0 }}
                 >
                   {pageTitle}
                 </motion.h1>
@@ -154,9 +161,9 @@ export default function GuestbookPage() {
               
               <motion.p 
                 className={`${colors.textSecondary} text-base sm:text-lg`}
-                initial={{ opacity: 0 }}
+                initial={effectsEnabled ? { opacity: 0 } : false}
                 animate={{ opacity: 1 }}
-                transition={{ delay: 0.3 }}
+                transition={effectsEnabled ? { delay: 0.3 } : { duration: 0 }}
               >
                 {t('guestbookSubtitle')}
               </motion.p>
@@ -165,8 +172,8 @@ export default function GuestbookPage() {
 
           <motion.div 
             className={`${colors.card} rounded-2xl sm:rounded-3xl p-4 sm:p-6 lg:p-8 min-h-[500px] shadow-xl ${colors.glow}`}
-            variants={itemVariants}
-            whileHover={{ boxShadow: theme === "dark" ? "0 25px 50px -12px rgba(236, 72, 153, 0.25)" : "0 25px 50px -12px rgba(236, 72, 153, 0.15)" }}
+            variants={effectsEnabled ? itemVariants : undefined}
+            whileHover={effectsEnabled ? { boxShadow: theme === "dark" ? "0 25px 50px -12px rgba(236, 72, 153, 0.25)" : "0 25px 50px -12px rgba(236, 72, 153, 0.15)" } : undefined}
           >
             {walineUrl ? (
               <WalineComments path="/guestbook" />
@@ -190,7 +197,7 @@ export default function GuestbookPage() {
 
           <motion.div 
             className={`mt-6 sm:mt-8 flex flex-row justify-center sm:grid sm:grid-cols-3 gap-3 sm:gap-4 ${colors.card} rounded-2xl p-4 sm:p-6 overflow-x-auto sm:overflow-visible`}
-            variants={itemVariants}
+            variants={effectsEnabled ? itemVariants : undefined}
           >
             {[
               { icon: "fa-heart", color: "from-pink-500 to-rose-500", label: t('beFriendly') },
@@ -200,7 +207,7 @@ export default function GuestbookPage() {
               <motion.div 
                 key={index}
                 className="flex flex-col items-center gap-2 text-center min-w-[80px] sm:min-w-0 shrink-0 sm:shrink"
-                whileHover={{ scale: 1.05 }}
+                whileHover={effectsEnabled ? { scale: 1.05 } : undefined}
               >
                 <div className={`w-10 h-10 rounded-xl bg-linear-to-br ${item.color} flex items-center justify-center shadow-lg`}>
                   <i className={`fas ${item.icon} text-white`}></i>

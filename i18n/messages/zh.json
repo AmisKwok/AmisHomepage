@@ -192,5 +192,9 @@
   "backToTop": "回到顶部",
   "selectFile": "选择文件",
   "noFileSelected": "未选择任何文件",
-  "moreOptions": "更多选项"
+  "moreOptions": "更多选项",
+  "enableEffects": "开启特效",
+  "disableEffects": "关闭特效",
+  "effectsToggle": "特效开关按钮",
+  "effectsToggleHint": "开启后显示特效切换按钮，关闭后隐藏按钮"
 }

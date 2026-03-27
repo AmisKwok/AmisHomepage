@@ -4,6 +4,7 @@
   "showLocalTime": true,
   "showGreetings": true,
   "showCustomCursor": true,
+  "showEffectsToggle": false,
   "customCursorPath": "/cursors/watermelon.cur",
   "typeWriterEffects": {
     "glitchEffect": true,

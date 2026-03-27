@@ -28,6 +28,7 @@ export function useSiteConfig() {
           showLocalTime: config.showLocalTime,
           showGreetings: config.showGreetings,
           showCustomCursor: config.showCustomCursor,
+          showEffectsToggle: config.showEffectsToggle,
           customCursorPath: config.customCursorPath,
           typeWriterEffects: config.typeWriterEffects,
           heroTitleEffects: config.heroTitleEffects,

@@ -2,11 +2,13 @@
  * 首次加载动画组件
  * 仅在用户首次访问网站时显示
  * 使用 sessionStorage 标记已加载状态，页面切换时不再显示
+ * 支持通过 effectsStore 动态开关
  */
 /* eslint-disable react-hooks/set-state-in-effect */
 "use client";
 
 import { useEffect, useState } from "react";
+import { useEffectsStore } from "@/app/stores/effects-store";
 
 // sessionStorage 键名
 const LOADED_KEY = "site-first-loaded";
@@ -14,8 +16,15 @@ const LOADED_KEY = "site-first-loaded";
 export default function LoadingScreen() {
   const [isLoading, setIsLoading] = useState(false);
   const [theme, setTheme] = useState<"dark" | "light">("dark");
+  const { effectsEnabled } = useEffectsStore();
 
   useEffect(() => {
+    // 特效关闭时不显示加载动画
+    if (!effectsEnabled) {
+      sessionStorage.setItem(LOADED_KEY, "true");
+      return;
+    }
+
     // 检查是否已经加载过
     const hasLoaded = sessionStorage.getItem(LOADED_KEY);
     
@@ -43,7 +52,7 @@ export default function LoadingScreen() {
     }, 800);
 
     return () => clearTimeout(timer);
-  }, []);
+  }, [effectsEnabled]);
 
   // 不加载时不渲染
   if (!isLoading) return null;

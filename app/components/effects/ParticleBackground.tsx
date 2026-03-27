@@ -2,12 +2,14 @@
 /**
  * 粒子背景组件
  * 用于页面背景装饰效果
+ * 支持通过 effectsStore 动态开关
  */
 
 "use client";
 
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
+import { useEffectsStore } from "@/app/stores/effects-store";
 
 interface ParticleBackgroundProps {
   theme: string;
@@ -18,6 +20,7 @@ export default function ParticleBackground({
   theme, 
   particleCount = 80 
 }: ParticleBackgroundProps) {
+  const { effectsEnabled } = useEffectsStore();
   const [particles, setParticles] = useState<Array<{ 
     id: number; 
     x: number; 
@@ -40,6 +43,8 @@ export default function ParticleBackground({
     }));
     setParticles(newParticles);
   }, [particleCount]);
+
+  if (!effectsEnabled) return null;
 
   return (
     <div className="absolute inset-0 overflow-hidden pointer-events-none">

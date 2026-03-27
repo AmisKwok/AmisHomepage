@@ -25,6 +25,7 @@ import Avatar from "./components/media/Avatar";
 import AboutCard from "./components/content/AboutCard";
 import FeaturedProjects from "./components/content/FeaturedProjects";
 import Skills from "./components/content/Skills";
+import EffectsToggleButton from "./components/ui/EffectsToggleButton";
 // 效果组件
 import StarryBackground from "./components/effects/StarryBackground";
 import LightBackground from "./components/effects/LightBackground";
@@ -154,8 +155,6 @@ export default function Home() {
       setVisibleIndices([]);
     }
   }, [isAvatarHovered, greetingParts]);
-
-
 
   // 页面加载完成
   useEffect(() => {
@@ -288,6 +287,7 @@ export default function Home() {
             )}
             <LanguageSwitcher />
             <ThemeSwitcher />
+            {siteContent?.showEffectsToggle !== false && <EffectsToggleButton />}
           </div>
           
           <div className="md:hidden flex items-center gap-2">

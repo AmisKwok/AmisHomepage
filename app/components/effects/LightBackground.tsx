@@ -2,11 +2,13 @@
  * 浅色背景组件
  * 在浅色模式下显示飘落的树叶效果
  * 使用 Canvas 绘制动态树叶粒子
+ * 支持通过 effectsStore 动态开关
  */
 "use client";
 
 import { useEffect, useRef } from "react";
 import { useThemeStore } from "../../stores/theme-store";
+import { useEffectsStore } from "../../stores/effects-store";
 
 // 树叶粒子接口
 interface Leaf {
@@ -26,11 +28,12 @@ interface Leaf {
 
 export default function LightBackground() {
   const { theme } = useThemeStore();
+  const { effectsEnabled } = useEffectsStore();
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
   useEffect(() => {
-    // 只在亮色模式下运行
-    if (theme !== "light") return;
+    // 只在亮色模式且特效开启时运行
+    if (theme !== "light" || !effectsEnabled) return;
 
     const canvas = canvasRef.current;
     if (!canvas) return;
@@ -158,10 +161,10 @@ export default function LightBackground() {
     return () => {
       window.removeEventListener("resize", resizeCanvas);
     };
-  }, [theme]);
+  }, [theme, effectsEnabled]);
 
-  // 暗色模式下不渲染
-  if (theme !== "light") return null;
+  // 暗色模式或特效关闭时不渲染
+  if (theme !== "light" || !effectsEnabled) return null;
 
   return (
     <canvas

@@ -14,6 +14,8 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useLanguageStore, useTranslation } from "../stores/language-store";
 import { useThemeStore } from "../stores/theme-store";
 import { friendLinksConfig } from "../site-config";
+import { useEffectsStore } from "../stores/effects-store";
+import { usePageColors } from "../hooks/usePageColors";
 import LoadingScreen from "../components/effects/LoadingScreen";
 import PageTransition from "../components/effects/PageTransition";
 import PageNav from "../components/layout/PageNav";
@@ -74,29 +76,27 @@ const floatVariants = {
       ease: "easeInOut" as const,
     },
   },
+  static: {
+    y: 0,
+    transition: {
+      duration: 0,
+    },
+  },
 };
 
 export default function FriendLinksPage() {
   const { t } = useTranslation();
   const { hydrated, hydrate, language } = useLanguageStore();
   const { theme } = useThemeStore();
+  const { effectsEnabled } = useEffectsStore();
+  const colors = usePageColors();
   const [mounted, setMounted] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
 
-  // 初始化语言状态
   useEffect(() => {
     hydrate();
     setMounted(true);
   }, [hydrate]);
-
-  // 主题颜色配置
-  const colors = {
-    background: theme === "dark" ? "bg-linear-to-br from-[#0a0a0a] via-[#0f0f23] to-[#1a1a2e]" : "bg-linear-to-br from-gray-50 via-white to-gray-100",
-    card: theme === "dark" ? "bg-white/5 backdrop-blur-md border border-white/10 hover:border-white/20" : "bg-white/80 backdrop-blur-md border border-gray-200 hover:border-gray-300",
-    text: theme === "dark" ? "text-white" : "text-gray-900",
-    textSecondary: theme === "dark" ? "text-gray-400" : "text-gray-600",
-    glow: theme === "dark" ? "shadow-violet-500/20" : "shadow-violet-500/10",
-  };
 
   const links: FriendLink[] = friendLinksConfig?.links || [];
   const pageTitle = friendLinksConfig?.title?.[language] || t("friendLinks");
@@ -134,9 +134,9 @@ export default function FriendLinksPage() {
       />
       <motion.div 
         className={`min-h-screen ${colors.background} relative overflow-hidden`}
-        initial="hidden"
-        animate="visible"
-        variants={containerVariants}
+        initial={effectsEnabled ? "hidden" : false}
+        animate={effectsEnabled ? "visible" : false}
+        variants={effectsEnabled ? containerVariants : undefined}
       >
         {/* 顶部工具栏 */}
         <TopToolbar />
@@ -161,7 +161,10 @@ export default function FriendLinksPage() {
         </div>
 
         <div className="max-w-6xl mx-auto px-4 py-8 relative z-10">
-          <motion.header className="mb-10" variants={itemVariants}>
+          <motion.header 
+            className="mb-10" 
+            variants={effectsEnabled ? itemVariants : undefined}
+          >
             <PageNav
               cardClass={colors.card}
               textClass={colors.text}
@@ -173,13 +176,15 @@ export default function FriendLinksPage() {
                 <motion.div 
                   className="relative inline-block"
                   variants={floatVariants}
-                  animate="animate"
+                  animate={effectsEnabled ? "animate" : "static"}
                 >
-                  <motion.div 
-                    className="absolute inset-0 bg-linear-to-br from-violet-500 to-purple-600 rounded-2xl blur-xl opacity-50"
-                    animate={{ scale: [1, 1.1, 1] }}
-                    transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
-                  />
+                  {effectsEnabled && (
+                    <motion.div 
+                      className="absolute inset-0 bg-linear-to-br from-violet-500 to-purple-600 rounded-2xl blur-xl opacity-50"
+                      animate={{ scale: [1, 1.1, 1] }}
+                      transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+                    />
+                  )}
                   <div className="relative inline-flex items-center justify-center w-12 h-12 sm:w-14 sm:h-14 rounded-2xl bg-linear-to-br from-violet-500 to-purple-600 shadow-lg">
                     <i className="fas fa-link text-white text-xl sm:text-2xl"></i>
                   </div>
@@ -187,9 +192,9 @@ export default function FriendLinksPage() {
                 
                 <motion.h1 
                   className={`text-2xl sm:text-3xl lg:text-4xl font-bold ${colors.text} bg-linear-to-r from-violet-500 via-purple-500 to-indigo-500 bg-clip-text text-transparent`}
-                  initial={{ opacity: 0, y: 20 }}
+                  initial={effectsEnabled ? { opacity: 0, y: 20 } : false}
                   animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.2 }}
+                  transition={effectsEnabled ? { delay: 0.2 } : { duration: 0 }}
                 >
                   {pageTitle}
                 </motion.h1>
@@ -197,9 +202,9 @@ export default function FriendLinksPage() {
               
               <motion.p 
                 className={`${colors.textSecondary} text-base sm:text-lg`}
-                initial={{ opacity: 0 }}
+                initial={effectsEnabled ? { opacity: 0 } : false}
                 animate={{ opacity: 1 }}
-                transition={{ delay: 0.3 }}
+                transition={effectsEnabled ? { delay: 0.3 } : { duration: 0 }}
               >
                 {t('friendLinksSubtitle')}
               </motion.p>
@@ -207,9 +212,9 @@ export default function FriendLinksPage() {
               {/* 搜索框 */}
               <motion.div 
                 className="mt-6 max-w-md mx-auto"
-                initial={{ opacity: 0, y: 10 }}
+                initial={effectsEnabled ? { opacity: 0, y: 10 } : false}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.4 }}
+                transition={effectsEnabled ? { delay: 0.4 } : { duration: 0 }}
               >
                 <div className="relative">
                   <input
@@ -245,7 +250,7 @@ export default function FriendLinksPage() {
           {filteredLinks.length > 0 ? (
             <motion.div 
               className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"
-              variants={containerVariants}
+              variants={effectsEnabled ? containerVariants : undefined}
             >
               <AnimatePresence mode="popLayout">
                 {filteredLinks.map((link, index) => (
@@ -255,13 +260,13 @@ export default function FriendLinksPage() {
                     target="_blank"
                     rel="noopener noreferrer"
                     className={`group block ${colors.card} rounded-2xl p-4 sm:p-6 transition-all duration-300 shadow-lg ${colors.glow} relative overflow-hidden`}
-                    variants={cardVariants}
+                    variants={effectsEnabled ? cardVariants : undefined}
                     custom={index}
-                    initial="hidden"
-                    animate="visible"
-                    exit="hidden"
+                    initial={effectsEnabled ? "hidden" : false}
+                    animate={effectsEnabled ? "visible" : false}
+                    exit={effectsEnabled ? "hidden" : undefined}
                     layout
-                    whileHover={{ y: -8, scale: 1.02 }}
+                    whileHover={effectsEnabled ? { y: -8, scale: 1.02 } : undefined}
                   >
                   <motion.div 
                     className="absolute inset-0 bg-linear-to-br from-violet-500/0 to-purple-500/0 group-hover:from-violet-500/5 group-hover:to-purple-500/5 transition-all duration-300"
@@ -270,7 +275,7 @@ export default function FriendLinksPage() {
                   <div className="relative flex items-start gap-3 sm:gap-4">
                     <motion.div 
                       className="relative w-12 h-12 sm:w-14 sm:h-14 lg:w-16 lg:h-16 rounded-xl overflow-hidden bg-linear-to-br from-violet-500/20 to-purple-500/20 shrink-0 shadow-lg"
-                      whileHover={{ scale: 1.1, rotate: 5 }}
+                      whileHover={effectsEnabled ? { scale: 1.1, rotate: 5 } : undefined}
                     >
                       {getFaviconUrl(link.url, link.avatar) ? (
                         <Image

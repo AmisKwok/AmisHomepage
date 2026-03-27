@@ -424,6 +424,7 @@ export default function ConfigPage() {
         showLocalTime: state.config.showLocalTime,
         showGreetings: state.config.showGreetings,
         showCustomCursor: state.config.showCustomCursor,
+        showEffectsToggle: state.config.showEffectsToggle,
         customCursorPath: state.config.customCursorPath,
         typeWriterEffects: state.config.typeWriterEffects,
         heroTitleEffects: state.config.heroTitleEffects,
@@ -1142,6 +1143,30 @@ export default function ConfigPage() {
                           </div>
                         </div>
                       )}
+                    </div>
+
+                    <div className={`p-4 rounded-xl ${theme === 'dark' ? 'bg-white/5' : 'bg-gray-50'}`}>
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center gap-3">
+                          <div className="w-8 h-8 rounded-lg bg-linear-to-br from-violet-500 to-purple-600 flex items-center justify-center">
+                            <i className="fas fa-wand-magic-sparkles text-white text-sm"></i>
+                          </div>
+                          <div>
+                            <label className={`block text-sm font-medium ${colors.text}`}>{t('effectsToggle')}</label>
+                            <p className={`text-xs ${colors.textSecondary}`}>{t('effectsToggleHint')}</p>
+                          </div>
+                        </div>
+                        <button
+                          onClick={() => handleInputChange('showEffectsToggle', !state.config.showEffectsToggle)}
+                          className={`relative w-14 h-7 rounded-full transition-all duration-300 ${
+                            state.config.showEffectsToggle 
+                              ? 'bg-linear-to-r from-violet-500 to-purple-600' 
+                              : theme === 'dark' ? 'bg-white/20' : 'bg-gray-300'
+                          }`}
+                        >
+                          <span className={`absolute top-1 w-5 h-5 rounded-full bg-white shadow-md transition-all duration-300 ${state.config.showEffectsToggle ? 'left-8' : 'left-1'}`} />
+                        </button>
+                      </div>
                     </div>
 
                     <div className={`p-4 rounded-xl ${theme === 'dark' ? 'bg-white/5' : 'bg-gray-50'}`}>

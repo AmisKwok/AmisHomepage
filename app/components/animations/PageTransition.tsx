@@ -3,6 +3,7 @@
 import { motion, AnimatePresence } from 'framer-motion';
 import { usePathname } from 'next/navigation';
 import { ReactNode } from 'react';
+import { useEffectsStore } from '@/app/stores/effects-store';
 
 interface PageTransitionProps {
   children: ReactNode;
@@ -34,6 +35,11 @@ const pageTransition = {
 
 export default function PageTransition({ children }: PageTransitionProps) {
   const pathname = usePathname();
+  const { effectsEnabled } = useEffectsStore();
+
+  if (!effectsEnabled) {
+    return <>{children}</>;
+  }
 
   return (
     <AnimatePresence mode="wait">

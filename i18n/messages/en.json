@@ -192,5 +192,9 @@
   "backToTop": "Back to Top",
   "selectFile": "Select File",
   "noFileSelected": "No files selected",
-  "moreOptions": "More Options"
+  "moreOptions": "More Options",
+  "enableEffects": "Enable Effects",
+  "disableEffects": "Disable Effects",
+  "effectsToggle": "Effects Toggle Button",
+  "effectsToggleHint": "Show effects toggle button when enabled, hide when disabled"
 }

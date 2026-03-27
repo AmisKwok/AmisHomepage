@@ -2,11 +2,13 @@
  * 星空背景组件
  * 在深色模式下显示动态星空粒子效果
  * 使用 Canvas 绘制漂浮的星星粒子
+ * 支持通过 effectsStore 动态开关
  */
 "use client";
 
 import { useEffect, useRef } from "react";
 import { useThemeStore } from "../../stores/theme-store";
+import { useEffectsStore } from "../../stores/effects-store";
 
 // 粒子接口
 interface Particle {
@@ -20,11 +22,12 @@ interface Particle {
 
 export default function StarryBackground() {
   const { theme } = useThemeStore();
+  const { effectsEnabled } = useEffectsStore();
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
   useEffect(() => {
-    // 只在暗色模式下运行
-    if (theme !== "dark") return;
+    // 只在暗色模式且特效开启时运行
+    if (theme !== "dark" || !effectsEnabled) return;
 
     const canvas = canvasRef.current;
     if (!canvas) return;
@@ -120,10 +123,10 @@ export default function StarryBackground() {
     return () => {
       window.removeEventListener("resize", resizeCanvas);
     };
-  }, [theme]);
+  }, [theme, effectsEnabled]);
 
-  // 亮色模式下不渲染
-  if (theme !== "dark") return null;
+  // 亮色模式或特效关闭时不渲染
+  if (theme !== "dark" || !effectsEnabled) return null;
 
   return (
     <canvas
