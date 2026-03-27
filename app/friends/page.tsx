@@ -1,14 +1,16 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /**
  * 友链页面
  * 展示友情链接列表
  * 支持响应式布局和主题切换
+ * 支持瀑布流布局、粒子背景、搜索功能
  */
-/* eslint-disable react-hooks/set-state-in-effect */
+ 
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import Image from "next/image";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { useLanguageStore, useTranslation } from "../stores/language-store";
 import { useThemeStore } from "../stores/theme-store";
 import { friendLinksConfig } from "../site-config";
@@ -16,6 +18,9 @@ import LoadingScreen from "../components/effects/LoadingScreen";
 import PageTransition from "../components/effects/PageTransition";
 import PageNav from "../components/layout/PageNav";
 import SEOHead from "../components/seo/SEOHead";
+import ParticleBackground from "../components/effects/ParticleBackground";
+import DynamicLines from "../components/effects/DynamicLines";
+import TopToolbar from "../components/ui/TopToolbar";
 import type { FriendLink } from "../../types";
 
 // 容器动画配置
@@ -76,6 +81,7 @@ export default function FriendLinksPage() {
   const { hydrated, hydrate, language } = useLanguageStore();
   const { theme } = useThemeStore();
   const [mounted, setMounted] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
 
   // 初始化语言状态
   useEffect(() => {
@@ -94,6 +100,18 @@ export default function FriendLinksPage() {
 
   const links: FriendLink[] = friendLinksConfig?.links || [];
   const pageTitle = friendLinksConfig?.title?.[language] || t("friendLinks");
+
+  // 过滤友链
+  const filteredLinks = useMemo(() => {
+    if (!searchQuery.trim()) return links;
+    const query = searchQuery.toLowerCase();
+    return links.filter(link => 
+      link.name.toLowerCase().includes(query) ||
+      link.description?.[language]?.toLowerCase().includes(query) ||
+      link.description?.zh?.toLowerCase().includes(query) ||
+      link.url.toLowerCase().includes(query)
+    );
+  }, [links, searchQuery, language]);
 
   const getFaviconUrl = (url: string, avatar?: string) => {
     if (avatar) return avatar;
@@ -120,6 +138,15 @@ export default function FriendLinksPage() {
         animate="visible"
         variants={containerVariants}
       >
+        {/* 顶部工具栏 */}
+        <TopToolbar />
+        
+        {/* 粒子背景 */}
+        <ParticleBackground theme={theme} />
+        
+        {/* 动态线条 */}
+        <DynamicLines theme={theme} />
+        
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
           <motion.div 
             className="absolute -top-40 -right-40 w-80 h-80 bg-linear-to-br from-violet-500/20 to-purple-500/20 rounded-full blur-3xl"
@@ -142,29 +169,32 @@ export default function FriendLinksPage() {
             />
             
             <div className="text-center">
-              <motion.div 
-                className="relative inline-block mb-6"
-                variants={floatVariants}
-                animate="animate"
-              >
+              <div className="flex items-center justify-center gap-4 mb-4">
                 <motion.div 
-                  className="absolute inset-0 bg-linear-to-br from-violet-500 to-purple-600 rounded-2xl blur-xl opacity-50"
-                  animate={{ scale: [1, 1.1, 1] }}
-                  transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
-                />
-                <div className="relative inline-flex items-center justify-center w-16 h-16 sm:w-20 sm:h-20 rounded-2xl bg-linear-to-br from-violet-500 to-purple-600 shadow-lg">
-                  <i className="fas fa-link text-white text-2xl sm:text-3xl"></i>
-                </div>
-              </motion.div>
+                  className="relative inline-block"
+                  variants={floatVariants}
+                  animate="animate"
+                >
+                  <motion.div 
+                    className="absolute inset-0 bg-linear-to-br from-violet-500 to-purple-600 rounded-2xl blur-xl opacity-50"
+                    animate={{ scale: [1, 1.1, 1] }}
+                    transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+                  />
+                  <div className="relative inline-flex items-center justify-center w-12 h-12 sm:w-14 sm:h-14 rounded-2xl bg-linear-to-br from-violet-500 to-purple-600 shadow-lg">
+                    <i className="fas fa-link text-white text-xl sm:text-2xl"></i>
+                  </div>
+                </motion.div>
+                
+                <motion.h1 
+                  className={`text-2xl sm:text-3xl lg:text-4xl font-bold ${colors.text} bg-linear-to-r from-violet-500 via-purple-500 to-indigo-500 bg-clip-text text-transparent`}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.2 }}
+                >
+                  {pageTitle}
+                </motion.h1>
+              </div>
               
-              <motion.h1 
-                className={`text-2xl sm:text-3xl lg:text-4xl font-bold ${colors.text} mb-3 bg-linear-to-r from-violet-500 via-purple-500 to-indigo-500 bg-clip-text text-transparent`}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.2 }}
-              >
-                {pageTitle}
-              </motion.h1>
               <motion.p 
                 className={`${colors.textSecondary} text-base sm:text-lg`}
                 initial={{ opacity: 0 }}
@@ -173,25 +203,68 @@ export default function FriendLinksPage() {
               >
                 {language === "zh" ? "与优秀的人为伍，与有趣的灵魂相遇 ✨" : "Connect with interesting souls ✨"}
               </motion.p>
+              
+              {/* 搜索框 */}
+              <motion.div 
+                className="mt-6 max-w-md mx-auto"
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.4 }}
+              >
+                <div className="relative">
+                  <input
+                    type="text"
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    placeholder={language === "zh" ? "搜索友链..." : "Search friend links..."}
+                    className={`w-full px-4 py-3 pl-12 rounded-xl ${colors.card} ${colors.text} placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-violet-500/50 transition-all`}
+                  />
+                  <i className="fas fa-search absolute left-4 top-1/2 -translate-y-1/2 text-gray-400"></i>
+                  {searchQuery && (
+                    <button
+                      onClick={() => setSearchQuery("")}
+                      className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors"
+                    >
+                      <i className="fas fa-times"></i>
+                    </button>
+                  )}
+                </div>
+                {searchQuery && (
+                  <motion.p 
+                    className={`mt-2 text-sm ${colors.textSecondary}`}
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                  >
+                    {language === "zh" 
+                      ? `找到 ${filteredLinks.length} 个友链` 
+                      : `Found ${filteredLinks.length} friend links`}
+                  </motion.p>
+                )}
+              </motion.div>
             </div>
           </motion.header>
 
-          {links.length > 0 ? (
+          {filteredLinks.length > 0 ? (
             <motion.div 
               className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"
               variants={containerVariants}
             >
-              {links.map((link, index) => (
-                <motion.a
-                  key={link.id}
-                  href={link.url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className={`group ${colors.card} rounded-2xl p-4 sm:p-6 transition-all duration-300 shadow-lg ${colors.glow} relative overflow-hidden`}
-                  variants={cardVariants}
-                  custom={index}
-                  whileHover={{ y: -8, scale: 1.02 }}
-                >
+              <AnimatePresence mode="popLayout">
+                {filteredLinks.map((link, index) => (
+                  <motion.a
+                    key={link.id}
+                    href={link.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className={`group block ${colors.card} rounded-2xl p-4 sm:p-6 transition-all duration-300 shadow-lg ${colors.glow} relative overflow-hidden`}
+                    variants={cardVariants}
+                    custom={index}
+                    initial="hidden"
+                    animate="visible"
+                    exit="hidden"
+                    layout
+                    whileHover={{ y: -8, scale: 1.02 }}
+                  >
                   <motion.div 
                     className="absolute inset-0 bg-linear-to-br from-violet-500/0 to-purple-500/0 group-hover:from-violet-500/5 group-hover:to-purple-500/5 transition-all duration-300"
                   />
@@ -246,7 +319,8 @@ export default function FriendLinksPage() {
                     </motion.span>
                   </div>
                 </motion.a>
-              ))}
+                ))}
+              </AnimatePresence>
             </motion.div>
           ) : (
             <motion.div 
@@ -260,7 +334,9 @@ export default function FriendLinksPage() {
                 <i className="fas fa-user-friends text-white text-4xl"></i>
               </motion.div>
               <h3 className={`text-2xl font-semibold ${colors.text} mb-3`}>
-                {t("noFriendLinks")}
+                {searchQuery 
+                  ? (language === "zh" ? "未找到匹配的友链" : "No matching friend links found")
+                  : t("noFriendLinks")}
               </h3>
               <p className={`${colors.textSecondary} max-w-md mx-auto`}>
                 {language === "zh" 
@@ -275,22 +351,22 @@ export default function FriendLinksPage() {
             variants={itemVariants}
           >
             <div className="absolute inset-0 bg-linear-to-r from-violet-500/5 via-purple-500/5 to-indigo-500/5" />
-            <div className="relative">
+            <div className="relative flex items-center justify-center gap-3 sm:gap-4 mb-3">
               <motion.div 
-                className="inline-flex items-center justify-center w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-linear-to-br from-violet-500 to-purple-600 mb-3 sm:mb-4 shadow-lg"
+                className="inline-flex items-center justify-center w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-linear-to-br from-violet-500 to-purple-600 shadow-lg"
                 whileHover={{ scale: 1.1, rotate: 5 }}
               >
                 <i className="fas fa-handshake text-white text-lg sm:text-xl"></i>
               </motion.div>
-              <h3 className={`font-semibold text-base sm:text-lg ${colors.text} mb-2`}>
+              <h3 className={`font-semibold text-base sm:text-lg ${colors.text}`}>
                 {language === "zh" ? "申请友链" : "Apply for Friend Link"}
               </h3>
-              <p className={`text-xs sm:text-sm ${colors.textSecondary} max-w-md mx-auto px-2`}>
-                {language === "zh" 
-                  ? "欢迎交换友链，请通过邮件或留言板联系我" 
-                  : "Welcome to exchange friend links, please contact me via email or guestbook"}
-              </p>
             </div>
+            <p className={`text-xs sm:text-sm ${colors.textSecondary} max-w-md mx-auto px-2`}>
+              {language === "zh" 
+                ? "欢迎交换友链，请通过邮件或留言板联系我" 
+                : "Welcome to exchange friend links, please contact me via email or guestbook"}
+            </p>
           </motion.div>
         </div>
       </motion.div>

@@ -15,6 +15,9 @@ import LoadingScreen from "../components/effects/LoadingScreen";
 import PageTransition from "../components/effects/PageTransition";
 import PageNav from "../components/layout/PageNav";
 import SEOHead from "../components/seo/SEOHead";
+import ParticleBackground from "../components/effects/ParticleBackground";
+import DynamicLines from "../components/effects/DynamicLines";
+import TopToolbar from "../components/ui/TopToolbar";
 import WalineComments from "../components/waline/WalineComments.jsx";
 import "../css/waline.css";
 
@@ -95,6 +98,12 @@ export default function GuestbookPage() {
         animate="visible"
         variants={containerVariants}
       >
+        {/* 顶部工具栏 */}
+        <TopToolbar />
+        
+        <ParticleBackground theme={theme} />
+        <DynamicLines theme={theme} />
+        
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
           <motion.div 
             className="absolute -top-40 -right-40 w-80 h-80 bg-linear-to-br from-pink-500/20 to-purple-500/20 rounded-full blur-3xl"
@@ -117,29 +126,32 @@ export default function GuestbookPage() {
             />
             
             <div className="text-center">
-              <motion.div 
-                className="relative inline-block mb-6"
-                variants={floatVariants}
-                animate="animate"
-              >
+              <div className="flex items-center justify-center gap-4 mb-4">
                 <motion.div 
-                  className="absolute inset-0 bg-linear-to-br from-pink-500 to-rose-600 rounded-2xl blur-xl opacity-50"
-                  animate={{ scale: [1, 1.1, 1] }}
-                  transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
-                />
-                <div className="relative inline-flex items-center justify-center w-16 h-16 sm:w-20 sm:h-20 rounded-2xl bg-linear-to-br from-pink-500 to-rose-600 shadow-lg">
-                  <i className="fas fa-comments text-white text-2xl sm:text-3xl"></i>
-                </div>
-              </motion.div>
+                  className="relative inline-block"
+                  variants={floatVariants}
+                  animate="animate"
+                >
+                  <motion.div 
+                    className="absolute inset-0 bg-linear-to-br from-pink-500 to-rose-600 rounded-2xl blur-xl opacity-50"
+                    animate={{ scale: [1, 1.1, 1] }}
+                    transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+                  />
+                  <div className="relative inline-flex items-center justify-center w-12 h-12 sm:w-14 sm:h-14 rounded-2xl bg-linear-to-br from-pink-500 to-rose-600 shadow-lg">
+                    <i className="fas fa-comments text-white text-xl sm:text-2xl"></i>
+                  </div>
+                </motion.div>
+                
+                <motion.h1 
+                  className={`text-2xl sm:text-3xl lg:text-4xl font-bold ${colors.text} bg-linear-to-r from-pink-500 via-rose-500 to-purple-500 bg-clip-text text-transparent`}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.2 }}
+                >
+                  {pageTitle}
+                </motion.h1>
+              </div>
               
-              <motion.h1 
-                className={`text-2xl sm:text-3xl lg:text-4xl font-bold ${colors.text} mb-3 bg-linear-to-r from-pink-500 via-rose-500 to-purple-500 bg-clip-text text-transparent`}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.2 }}
-              >
-                {pageTitle}
-              </motion.h1>
               <motion.p 
                 className={`${colors.textSecondary} text-base sm:text-lg`}
                 initial={{ opacity: 0 }}

@@ -172,5 +172,6 @@
   "sidebarExpand": "Expand Sidebar",
   "backToTop": "Back to Top",
   "selectFile": "Select File",
-  "noFileSelected": "No files selected"
+  "noFileSelected": "No files selected",
+  "moreOptions": "More Options"
 }

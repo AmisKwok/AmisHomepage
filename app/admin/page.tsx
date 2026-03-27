@@ -16,6 +16,9 @@ import LoadingScreen from '../components/effects/LoadingScreen';
 import PageTransition from '../components/effects/PageTransition';
 import SEOHead from '../components/seo/SEOHead';
 import FileInput from '../components/ui/FileInput';
+import ParticleBackground from '../components/effects/ParticleBackground';
+import DynamicLines from '../components/effects/DynamicLines';
+import TopToolbar from '../components/ui/TopToolbar';
 
 // 配置状态接口
 interface ConfigState {
@@ -663,7 +666,12 @@ export default function ConfigPage() {
   );
 
   return (
-    <div className={`min-h-screen ${colors.background}`}>
+    <div className={`min-h-screen ${colors.background} relative overflow-hidden`}>
+      {/* 顶部工具栏 */}
+      <TopToolbar />
+      
+      <ParticleBackground theme={theme} />
+      <DynamicLines theme={theme} />
       <Toaster position="top-center" richColors />
       <SEOHead title={t("configManagement")} />
       
@@ -671,10 +679,10 @@ export default function ConfigPage() {
       <div className="fixed top-0 left-0 right-0 z-50 lg:hidden bg-white/80 dark:bg-white/10 backdrop-blur-md border-b border-gray-200 dark:border-white/10 px-4 py-3">
         <Link
           href="/"
-          className={`inline-flex items-center gap-2 px-3 py-2 rounded-xl border ${colors.card} ${colors.text} hover:bg-blue-500/10 transition-all`}
+          className={`inline-flex items-center gap-2 px-3 py-2 rounded-xl border ${colors.card} ${colors.text} hover:bg-blue-500/10 transition-all group`}
         >
-          <i className="fas fa-arrow-left"></i>
-          <span className="text-sm">{t('backToHome')}</span>
+          <i className="fas fa-home group-hover:scale-110 transition-transform"></i>
+          <span className="hidden sm:inline text-sm">{t('backToHome')}</span>
         </Link>
         <button
           onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
@@ -843,9 +851,9 @@ export default function ConfigPage() {
           <div className="flex items-center justify-center gap-4 mb-4">
             <Link
               href="/"
-              className={`px-3 sm:px-4 py-2 rounded-xl border ${colors.card} ${colors.text} hover:bg-blue-500/10 transition-all flex items-center gap-2 text-sm sm:text-base`}
+              className={`px-3 sm:px-4 py-2 rounded-xl border ${colors.card} ${colors.text} hover:bg-blue-500/10 transition-all flex items-center gap-2 text-sm sm:text-base group`}
             >
-              <i className="fas fa-arrow-left"></i>
+              <i className="fas fa-home group-hover:scale-110 transition-transform"></i>
               <span className="hidden sm:inline">{t('backToHome')}</span>
             </Link>
             <div className="inline-flex items-center gap-2 sm:gap-3">

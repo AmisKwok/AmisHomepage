@@ -172,5 +172,6 @@
   "sidebarExpand": "展开导航",
   "backToTop": "回到顶部",
   "selectFile": "选择文件",
-  "noFileSelected": "未选择任何文件"
+  "noFileSelected": "未选择任何文件",
+  "moreOptions": "更多选项"
 }
