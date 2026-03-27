@@ -18,6 +18,11 @@ export default function WalineComments({ path = '/guestbook' }) {
     if (containerRef.current) {
       containerRef.current.setAttribute('data-theme', theme);
     }
+    
+    // 动态更新 Waline 实例的主题
+    if (walineInstanceRef.current && typeof walineInstanceRef.current.update === 'function') {
+      walineInstanceRef.current.update({ dark: theme === 'dark' });
+    }
   }, [theme]);
 
   useEffect(() => {
@@ -40,7 +45,7 @@ export default function WalineComments({ path = '/guestbook' }) {
         serverURL: serverURL,
         path: path,
         lang: language === 'zh' ? 'zh-CN' : 'en',
-        dark: 'html.dark',
+        dark: theme === 'dark',
         reaction: false,
         search: false,
         pageview: true,
