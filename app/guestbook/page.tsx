@@ -158,7 +158,7 @@ export default function GuestbookPage() {
                 animate={{ opacity: 1 }}
                 transition={{ delay: 0.3 }}
               >
-                {language === "zh" ? "欢迎留下你的足迹 ✨" : "Leave your footprint here ✨"}
+                {t('guestbookSubtitle')}
               </motion.p>
             </div>
           </motion.header>
@@ -179,12 +179,10 @@ export default function GuestbookPage() {
                   <i className="fas fa-cog text-white text-4xl"></i>
                 </motion.div>
                 <h3 className={`text-2xl font-semibold ${colors.text} mb-3`}>
-                  {language === "zh" ? "留言板未配置" : "Guestbook Not Configured"}
+                  {t('guestbookNotConfigured')}
                 </h3>
                 <p className={`${colors.textSecondary} max-w-md`}>
-                  {language === "zh" 
-                    ? "请在配置页面设置 Waline 服务端地址，开启访客留言功能" 
-                    : "Please configure Waline server URL in the admin page to enable guest comments"}
+                  {t('guestbookNotConfiguredDesc')}
                 </p>
               </div>
             )}
@@ -195,9 +193,9 @@ export default function GuestbookPage() {
             variants={itemVariants}
           >
             {[
-              { icon: "fa-heart", color: "from-pink-500 to-rose-500", label: language === "zh" ? "友善交流" : "Be Friendly" },
-              { icon: "fa-shield-alt", color: "from-blue-500 to-cyan-500", label: language === "zh" ? "尊重他人" : "Be Respectful" },
-              { icon: "fa-smile", color: "from-yellow-500 to-orange-500", label: language === "zh" ? "分享快乐" : "Share Joy" },
+              { icon: "fa-heart", color: "from-pink-500 to-rose-500", label: t('beFriendly') },
+              { icon: "fa-shield-alt", color: "from-blue-500 to-cyan-500", label: t('beRespectful') },
+              { icon: "fa-smile", color: "from-yellow-500 to-orange-500", label: t('shareJoy') },
             ].map((item, index) => (
               <motion.div 
                 key={index}

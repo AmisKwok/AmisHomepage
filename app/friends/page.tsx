@@ -201,7 +201,7 @@ export default function FriendLinksPage() {
                 animate={{ opacity: 1 }}
                 transition={{ delay: 0.3 }}
               >
-                {language === "zh" ? "与优秀的人为伍，与有趣的灵魂相遇 ✨" : "Connect with interesting souls ✨"}
+                {t('friendLinksSubtitle')}
               </motion.p>
               
               {/* 搜索框 */}
@@ -216,7 +216,7 @@ export default function FriendLinksPage() {
                     type="text"
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
-                    placeholder={language === "zh" ? "搜索友链..." : "Search friend links..."}
+                    placeholder={t('searchFriendLinks')}
                     className={`w-full px-4 py-3 pl-12 rounded-xl ${colors.card} ${colors.text} placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-violet-500/50 transition-all`}
                   />
                   <i className="fas fa-search absolute left-4 top-1/2 -translate-y-1/2 text-gray-400"></i>
@@ -235,9 +235,7 @@ export default function FriendLinksPage() {
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                   >
-                    {language === "zh" 
-                      ? `找到 ${filteredLinks.length} 个友链` 
-                      : `Found ${filteredLinks.length} friend links`}
+                    {t('foundFriendLinks', { count: filteredLinks.length })}
                   </motion.p>
                 )}
               </motion.div>
@@ -335,13 +333,13 @@ export default function FriendLinksPage() {
               </motion.div>
               <h3 className={`text-2xl font-semibold ${colors.text} mb-3`}>
                 {searchQuery 
-                  ? (language === "zh" ? "未找到匹配的友链" : "No matching friend links found")
+                  ? t('noMatchingFriendLinks')
                   : t("noFriendLinks")}
               </h3>
               <p className={`${colors.textSecondary} max-w-md mx-auto`}>
-                {language === "zh" 
-                  ? "暂无友链，请在配置页面添加" 
-                  : "No friend links yet, please add in the admin page"}
+                {searchQuery 
+                  ? t('tryOtherKeywords')
+                  : t('lookingForFriends')}
               </p>
             </motion.div>
           )}
@@ -359,13 +357,11 @@ export default function FriendLinksPage() {
                 <i className="fas fa-handshake text-white text-lg sm:text-xl"></i>
               </motion.div>
               <h3 className={`font-semibold text-base sm:text-lg ${colors.text}`}>
-                {language === "zh" ? "申请友链" : "Apply for Friend Link"}
+                {t('applyFriendLink')}
               </h3>
             </div>
             <p className={`text-xs sm:text-sm ${colors.textSecondary} max-w-md mx-auto px-2`}>
-              {language === "zh" 
-                ? "欢迎交换友链，请通过邮件或留言板联系我" 
-                : "Welcome to exchange friend links, please contact me via email or guestbook"}
+              {t('applyFriendLinkDesc')}
             </p>
           </motion.div>
         </div>
