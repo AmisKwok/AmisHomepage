@@ -196,5 +196,10 @@
   "enableEffects": "开启特效",
   "disableEffects": "关闭特效",
   "effectsToggle": "特效开关按钮",
-  "effectsToggleHint": "开启后显示特效切换按钮，关闭后隐藏按钮"
+  "effectsToggleHint": "开启后显示特效切换按钮，关闭后隐藏按钮",
+  "walineNick": "昵称",
+  "walineMail": "邮箱",
+  "walinePlaceholder": "说点什么吧...",
+  "walineNickPlaceholder": "请输入昵称",
+  "walineMailPlaceholder": "请输入邮箱"
 }

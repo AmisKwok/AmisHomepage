@@ -196,5 +196,10 @@
   "enableEffects": "Enable Effects",
   "disableEffects": "Disable Effects",
   "effectsToggle": "Effects Toggle Button",
-  "effectsToggleHint": "Show effects toggle button when enabled, hide when disabled"
+  "effectsToggleHint": "Show effects toggle button when enabled, hide when disabled",
+  "walineNick": "Nickname",
+  "walineMail": "Email",
+  "walinePlaceholder": "Say something...",
+  "walineNickPlaceholder": "Enter your nickname",
+  "walineMailPlaceholder": "Enter your email"
 }
