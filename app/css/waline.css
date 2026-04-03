@@ -464,9 +464,10 @@ html.light .waline-reply {
 /* 回复内容容器样式 */
 .wl-content,
 .waline-content {
-  display: inline-block;
+  display: block;
   position: relative;
   min-height: 24px;
+  width: 100%;
 }
 
 /* 回复目标样式 */
@@ -479,10 +480,10 @@ html.light .waline-reply {
   background-color: rgba(59, 130, 246, 0.1);
   border-radius: 4px;
   line-height: 20px;
-  margin-bottom: 0;
+  margin-bottom: 8px;
   font-size: 14px;
   vertical-align: middle;
-  height: 20px;
+  height: auto;
   box-sizing: border-box;
 }
 
@@ -495,7 +496,7 @@ html.light .waline-reply {
   padding: 0;
   font-size: 14px;
   vertical-align: middle;
-  height: 33px;
+  height: auto;
   box-sizing: border-box;
 }
 
@@ -503,40 +504,39 @@ html.light .waline-reply {
 .wl-reply-to span,
 .waline-reply-to span {
   display: inline-block;
-  line-height: 32px;
+  line-height: 20px;
   margin: 0;
   padding: 0;
   font-size: 14px;
   vertical-align: middle;
-  height: 44px;
+  height: auto;
   box-sizing: border-box;
 }
 
 /* 回复内容文本样式 */
 .wl-content > div:not(.wl-reply-to),
 .waline-content > div:not(.waline-reply-to) {
-  display: inline-block;
-  line-height: 20px;
+  display: block;
+  line-height: 1.5;
   margin-top: 0;
-  margin-left: 8px;
   font-size: 14px;
   padding: 0;
-  margin: 0 0 0 8px;
-  vertical-align: middle;
-  height: 40px;
+  margin: 0;
+  vertical-align: baseline;
+  height: auto;
   box-sizing: border-box;
 }
 
 /* 回复内容中的段落样式 */
 .wl-content > div:not(.wl-reply-to) p,
 .waline-content > div:not(.waline-reply-to) p {
-  display: inline-block;
-  line-height: 20px;
-  margin: 0;
+  display: block;
+  line-height: 1.5;
+  margin: 10px 0;
   padding: 0;
   font-size: 14px;
-  vertical-align: middle;
-  height: 0px;
+  vertical-align: baseline;
+  height: auto;
   box-sizing: border-box;
 }
 
@@ -642,15 +642,27 @@ html.light .waline-sort-item {
 
 /* 代码块样式 */
 .waline-comments pre {
-  background-color: var(--waline-code-bg-color);
+  background-color: #1e1e2e;
   border-radius: 8px;
   padding: 12px;
   overflow-x: auto;
   margin: 10px 0;
+  max-width: 100%;
+  word-wrap: break-word;
+  white-space: pre-wrap;
+  font-family: var(--font-mono);
+  font-size: 0.9em;
+  line-height: 1.4;
+  position: relative;
+  z-index: 1;
+  color: #f8f8f2;
+  display: block;
+  clear: both;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .waline-comments code {
-  background-color: var(--waline-code-bg-color);
+  background-color: #1e1e2e;
   color: #f8f8f2;
   padding: 2px 4px;
   border-radius: 3px;
@@ -662,6 +674,24 @@ html.light .waline-sort-item {
   background-color: transparent;
   padding: 0;
   border-radius: 0;
+  color: inherit;
+  font-family: inherit;
+  font-size: inherit;
+  display: block;
+  white-space: pre-wrap;
+  overflow-x: auto;
+  line-height: inherit;
+}
+
+html.light .waline-comments pre {
+  background-color: #f3f4f6;
+  color: #1f2937;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+html.light .waline-comments code {
+  background-color: #f3f4f6;
+  color: #1f2937;
 }
 
 /* 引用样式 */
